@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		  package="io.jasonsparc.chemistry">
+		  package="io.jasonsparc.chemistry.app">
 
 	<application
 		android:allowBackup="true"

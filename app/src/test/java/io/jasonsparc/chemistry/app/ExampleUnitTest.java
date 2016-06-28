@@ -1,4 +1,4 @@
-package io.jasonsparc.chemistry;
+package io.jasonsparc.chemistry.app;
 
 import org.junit.Test;
 
