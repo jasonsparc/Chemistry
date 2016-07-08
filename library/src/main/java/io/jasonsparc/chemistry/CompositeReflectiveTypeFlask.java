@@ -1,7 +1,6 @@
 package io.jasonsparc.chemistry;
 
 import android.support.annotation.AnyRes;
-import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.view.ViewGroup;
 final class CompositeReflectiveTypeFlask<VH extends RecyclerView.ViewHolder> extends ReflectiveTypeFlask<VH> {
 	@NonNull final ViewFactory viewFactory;
 
-	public CompositeReflectiveTypeFlask(@IntRange(from = MIN_RES_ID) @AnyRes final int viewType, @NonNull ViewFactory viewFactory, @NonNull Class<VH> vhCls) {
+	public CompositeReflectiveTypeFlask(@ViewTypeId @AnyRes final int viewType, @NonNull ViewFactory viewFactory, @NonNull Class<VH> vhCls) {
 		super(viewType, vhCls);
 		this.viewFactory = viewFactory;
 	}

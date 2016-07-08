@@ -1,7 +1,6 @@
 package io.jasonsparc.chemistry;
 
 import android.support.annotation.AnyRes;
-import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +13,7 @@ final class InflateTypeFlask<VH extends RecyclerView.ViewHolder> extends TypeFla
 	@LayoutRes final int itemLayout;
 	@NonNull final VhFactory<? extends VH> vhFactory;
 
-	public InflateTypeFlask(@IntRange(from = MIN_RES_ID) @AnyRes final int viewType, @LayoutRes final int itemLayout, @NonNull VhFactory<? extends VH> vhFactory) {
+	public InflateTypeFlask(@ViewTypeId @AnyRes final int viewType, @LayoutRes final int itemLayout, @NonNull VhFactory<? extends VH> vhFactory) {
 		super(viewType);
 		this.itemLayout = itemLayout;
 		this.vhFactory = vhFactory;

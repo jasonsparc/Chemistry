@@ -1,7 +1,6 @@
 package io.jasonsparc.chemistry;
 
 import android.support.annotation.AnyRes;
-import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -21,8 +20,6 @@ public interface Flask<VH extends RecyclerView.ViewHolder> {
 	 */
 	AnyFlask ANY = AnyFlask.INSTANCE;
 
-	int MIN_RES_ID = 0x0100_0000;
-
 	/**
 	 * Provides the view type of the items associated with this {@link Flask}. The value returned
 	 * here must be a resource identifier (i.e. a layout resource, a string resource, an id
@@ -34,7 +31,7 @@ public interface Flask<VH extends RecyclerView.ViewHolder> {
 	 *
 	 * @see RecyclerView.Adapter#getItemViewType(int)
 	 */
-	@IntRange(from = MIN_RES_ID)
+	@ViewTypeId
 	@AnyRes
 	int getViewType();
 

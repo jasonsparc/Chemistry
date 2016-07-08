@@ -1,7 +1,6 @@
 package io.jasonsparc.chemistry;
 
 import android.support.annotation.AnyRes;
-import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,11 +10,11 @@ import android.view.ViewGroup;
  * Created by jason on 07/07/2016.
  */
 public abstract class TypeFlask<VH extends RecyclerView.ViewHolder> implements Flask<VH> {
-	@IntRange(from = MIN_RES_ID)
-	@AnyRes final int viewType;
+	@ViewTypeId @AnyRes
+	final int viewType;
 
-	protected TypeFlask(@IntRange(from = MIN_RES_ID) @AnyRes int viewType) {
-		if (viewType < MIN_RES_ID) {
+	protected TypeFlask(@ViewTypeId @AnyRes int viewType) {
+		if (viewType < ViewTypeId.MIN_RES_ID) {
 			throw new IllegalArgumentException("Invalid view type! Must be a resource identifier.");
 		}
 		this.viewType = viewType;
@@ -31,14 +30,14 @@ public abstract class TypeFlask<VH extends RecyclerView.ViewHolder> implements F
 	public abstract VH createViewHolder(ViewGroup parent);
 
 	public static <VH extends RecyclerView.ViewHolder> TypeFlask<VH> make(
-			@IntRange(from = MIN_RES_ID) @AnyRes final int viewType,
+			@ViewTypeId @AnyRes final int viewType,
 			@NonNull final ViewFactory viewFactory,
 			@NonNull final VhFactory<? extends VH> vhFactory) {
 		return new CompositeTypeFlask<>(viewType, viewFactory, vhFactory);
 	}
 
 	public static <VH extends RecyclerView.ViewHolder> TypeFlask<VH> make(
-			@IntRange(from = MIN_RES_ID) @AnyRes final int viewType,
+			@ViewTypeId @AnyRes final int viewType,
 			@LayoutRes final int itemLayout,
 			@NonNull final VhFactory<? extends VH> vhFactory) {
 		return new InflateTypeFlask<>(viewType, itemLayout, vhFactory);
@@ -50,14 +49,14 @@ public abstract class TypeFlask<VH extends RecyclerView.ViewHolder> implements F
 	}
 
 	public static <VH extends RecyclerView.ViewHolder> TypeFlask<VH> make(
-			@IntRange(from = MIN_RES_ID) @AnyRes final int viewType,
+			@ViewTypeId @AnyRes final int viewType,
 			@NonNull final ViewFactory viewFactory,
 			@NonNull final Class<VH> vhCls) {
 		return new CompositeReflectiveTypeFlask<>(viewType, viewFactory, vhCls);
 	}
 
 	public static <VH extends RecyclerView.ViewHolder> TypeFlask<VH> make(
-			@IntRange(from = MIN_RES_ID) @AnyRes final int viewType,
+			@ViewTypeId @AnyRes final int viewType,
 			@LayoutRes final int itemLayout,
 			@NonNull final Class<VH> vhCls) {
 		return new InflateReflectiveTypeFlask<>(viewType, itemLayout, vhCls);
