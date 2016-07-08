@@ -19,7 +19,6 @@ final class InflateTypeFlask<VH extends RecyclerView.ViewHolder> extends TypeFla
 		this.vhFactory = vhFactory;
 	}
 
-	@NonNull
 	@Override
 	public VH createViewHolder(ViewGroup parent) {
 		return vhFactory.createViewHolder(InflateUtils.inflate(itemLayout, parent));

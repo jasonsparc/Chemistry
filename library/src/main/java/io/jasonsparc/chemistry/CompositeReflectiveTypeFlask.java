@@ -17,7 +17,6 @@ final class CompositeReflectiveTypeFlask<VH extends RecyclerView.ViewHolder> ext
 		this.viewFactory = viewFactory;
 	}
 
-	@NonNull
 	@Override
 	protected View createView(ViewGroup parent) {
 		return viewFactory.createView(parent);

@@ -25,7 +25,6 @@ public abstract class TypeFlask<VH extends RecyclerView.ViewHolder> implements F
 		return viewType;
 	}
 
-	@NonNull
 	@Override
 	public abstract VH createViewHolder(ViewGroup parent);
 

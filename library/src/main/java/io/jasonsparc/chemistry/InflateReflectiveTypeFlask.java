@@ -18,7 +18,6 @@ final class InflateReflectiveTypeFlask<VH extends RecyclerView.ViewHolder> exten
 		this.itemLayout = itemLayout;
 	}
 
-	@NonNull
 	@Override
 	protected View createView(ViewGroup parent) {
 		return InflateUtils.inflate(itemLayout, parent);

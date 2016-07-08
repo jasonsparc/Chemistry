@@ -1,6 +1,5 @@
 package io.jasonsparc.chemistry;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -17,7 +16,6 @@ public final class AnyFlask implements Flask<RecyclerView.ViewHolder> {
 		throw new UnsupportedOperationException();
 	}
 
-	@NonNull
 	@Override
 	public final RecyclerView.ViewHolder createViewHolder(ViewGroup parent) {
 		throw new UnsupportedOperationException();

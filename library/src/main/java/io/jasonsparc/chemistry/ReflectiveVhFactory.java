@@ -1,5 +1,6 @@
 package io.jasonsparc.chemistry;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -11,9 +12,9 @@ import java.lang.reflect.Constructor;
 public class ReflectiveVhFactory<VH extends RecyclerView.ViewHolder> implements VhFactory<VH> {
 	static final Class<?>[] sConstructorSignature = {View.class};
 
-	final Constructor<VH> constructor;
+	@NonNull final Constructor<VH> constructor;
 
-	public ReflectiveVhFactory(Class<VH> cls) {
+	public ReflectiveVhFactory(@NonNull Class<VH> cls) {
 		this.constructor = getConstructor(cls);
 	}
 
@@ -26,7 +27,8 @@ public class ReflectiveVhFactory<VH extends RecyclerView.ViewHolder> implements 
 		}
 	}
 
-	static <VH> Constructor<VH> getConstructor(Class<VH> cls) {
+	@NonNull
+	static <VH> Constructor<VH> getConstructor(@NonNull Class<VH> cls) {
 		try {
 			Constructor<VH> constructor = cls.getDeclaredConstructor(sConstructorSignature);
 			// the constructor might not be public

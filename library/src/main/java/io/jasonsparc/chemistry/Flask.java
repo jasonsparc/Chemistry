@@ -1,7 +1,6 @@
 package io.jasonsparc.chemistry;
 
 import android.support.annotation.AnyRes;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -35,6 +34,5 @@ public interface Flask<VH extends RecyclerView.ViewHolder> {
 	@AnyRes
 	int getViewType();
 
-	@NonNull
 	VH createViewHolder(ViewGroup parent);
 }

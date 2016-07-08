@@ -12,17 +12,15 @@ import java.lang.reflect.Constructor;
  * Created by jason on 07/07/2016.
  */
 public abstract class ReflectiveTypeFlask<VH extends RecyclerView.ViewHolder> extends TypeFlask<VH> {
-	final Constructor<VH> constructor;
+	@NonNull final Constructor<VH> constructor;
 
 	protected ReflectiveTypeFlask(@ViewTypeId @AnyRes int viewType, @NonNull Class<VH> vhCls) {
 		super(viewType);
 		this.constructor = ReflectiveVhFactory.getConstructor(vhCls);
 	}
 
-	@NonNull
 	protected abstract View createView(ViewGroup parent);
 
-	@NonNull
 	@Override
 	public VH createViewHolder(ViewGroup parent) {
 		try {

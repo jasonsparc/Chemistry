@@ -12,7 +12,7 @@ import android.view.ViewGroup;
  */
 public class InflateUtils {
 
-	public static View inflate(Context context, @LayoutRes int layoutRes, @NonNull ViewGroup parent) {
+	public static View inflate(@NonNull Context context, @LayoutRes int layoutRes, @NonNull ViewGroup parent) {
 		return LayoutInflater.from(context).inflate(layoutRes, parent, false);
 	}
 

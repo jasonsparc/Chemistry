@@ -18,7 +18,6 @@ final class CompositeTypeFlask<VH extends RecyclerView.ViewHolder> extends TypeF
 		this.vhFactory = vhFactory;
 	}
 
-	@NonNull
 	@Override
 	public VH createViewHolder(ViewGroup parent) {
 		return vhFactory.createViewHolder(viewFactory.createView(parent));
