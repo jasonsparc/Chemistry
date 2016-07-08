@@ -1,6 +1,7 @@
 package io.jasonsparc.chemistry;
 
 import android.support.annotation.IntRange;
+import android.support.v7.widget.RecyclerView;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -19,6 +20,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @Retention(CLASS)
 @IntRange(from = MIN_RES_ID, to = Integer.MAX_VALUE)
 public @interface ViewTypeId {
+
+	int WILDCARD = RecyclerView.INVALID_TYPE;
 
 	/**
 	 * The minimum int value that represents a valid resource identifier.
