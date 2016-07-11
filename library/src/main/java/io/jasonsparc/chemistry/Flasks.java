@@ -5,6 +5,8 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
+import java.util.Collection;
+
 import io.jasonsparc.chemistry.internal.flasks.CompositeReflectiveTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.CompositeTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.InflateReflectiveTypedFlask;
@@ -43,5 +45,17 @@ public class Flasks {
 
 	public static <VH extends ViewHolder> Flask<VH> make(@LayoutRes int itemLayout, @NonNull Class<? extends VH> vhCls) {
 		return new InflateReflectiveTypedFlask<>(itemLayout, itemLayout, vhCls);
+	}
+
+	// Utilities
+
+	@SafeVarargs
+	public static <FL extends Flask<? extends ViewHolder>> FL[] array(@NonNull FL... flasks) {
+		return flasks;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <VH extends ViewHolder> Flask<? extends VH>[] array(@NonNull Collection<? extends Flask<? extends VH>> flasks) {
+		return flasks.toArray(new Flask[flasks.size()]);
 	}
 }
