@@ -11,6 +11,9 @@ import io.jasonsparc.chemistry.internal.flasks.CompositeReflectiveTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.CompositeTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.InflateReflectiveTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.InflateTypedFlask;
+import io.jasonsparc.chemistry.internal.predicates.FlaskArrayBindPredicate;
+import io.jasonsparc.chemistry.internal.predicates.FlaskBindPredicate;
+import io.jasonsparc.chemistry.internal.predicates.FlaskCollectionBindPredicate;
 
 /**
  * TODO Docs
@@ -57,5 +60,20 @@ public class Flasks {
 	@SuppressWarnings("unchecked")
 	public static <VH extends ViewHolder> Flask<? extends VH>[] array(@NonNull Collection<? extends Flask<? extends VH>> flasks) {
 		return flasks.toArray(new Flask[flasks.size()]);
+	}
+
+	// Bind Predicates
+
+	public static <VH extends ViewHolder> BindPredicate<VH> matches(Flask<? extends VH> flask) {
+		return new FlaskBindPredicate<>(flask);
+	}
+
+	@SafeVarargs
+	public static <VH extends ViewHolder> BindPredicate<VH> matches(@NonNull Flask<? extends VH>... flasks) {
+		return new FlaskArrayBindPredicate<>(flasks);
+	}
+
+	public static <VH extends ViewHolder> BindPredicate<VH> matches(@NonNull Collection<? extends Flask<? extends VH>> flasks) {
+		return new FlaskCollectionBindPredicate<>(flasks);
 	}
 }
