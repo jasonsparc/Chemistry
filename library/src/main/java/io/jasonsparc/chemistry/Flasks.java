@@ -4,6 +4,7 @@ import android.support.annotation.AnyRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.view.View;
 
 import java.util.Collection;
 
@@ -48,6 +49,38 @@ public class Flasks {
 
 	public static <VH extends ViewHolder> Flask<VH> make(@LayoutRes int itemLayout, @NonNull Class<? extends VH> vhCls) {
 		return new InflateReflectiveTypedFlask<>(itemLayout, itemLayout, vhCls);
+	}
+
+	static {
+		class VHS extends ViewHolder {
+			public VHS(View itemView) { super(itemView); }
+		}
+		class VH2 extends VHS {
+			public VH2(View itemView) { super(itemView); }
+		}
+		class VH3 extends VHS {
+			public VH3(View itemView) { super(itemView); }
+		}
+
+		abstract class Flask1 implements Flask<VH2> { }
+
+		//noinspection ConstantConditions,UnnecessaryLocalVariable
+		Flask<?> f = null;
+		//noinspection UnnecessaryLocalVariable,ConstantConditions
+		Flask<? extends ViewHolder> f2 = f;
+
+		chem().bind(Number.class, BindPredicates.of(VH2.class, VH3.class, VHS.class), new ItemBinder<Number, ViewHolder>() {
+			@Override
+			public void bindViewHolder(ViewHolder holder, Number number) {
+
+			}
+		});
+	}
+
+	static Chemistry chem() {
+		Chemistry chem = null;
+		assert chem != null;
+		return chem;
 	}
 
 	// Utilities
