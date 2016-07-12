@@ -13,8 +13,10 @@ public abstract class Chemistry {
 
 	/**
 	 * TODO Improve Docs
-	 * <br>- associates a flask to the specified item class
-	 * <br>- a null selector deletes the association
+	 * <br>- associates a flask to the specified item class.
+	 * <br>- a null item class associates a null item to a flask selector.
+	 * <br>- a null flask selector removes any associated flask selectors for the specified item
+	 * class.
 	 *
 	 * @param itemClass
 	 * @param flaskSelector
@@ -23,5 +25,17 @@ public abstract class Chemistry {
 	 */
 	public abstract <Item> Chemistry flask(@Nullable Class<? extends Item> itemClass, @Nullable FlaskSelector<? super Item> flaskSelector);
 
+	/**
+	 * TODO More Docs
+	 * <br>- a null item class provides binding to a null item.
+	 * <br>- a null item binder removes any item binders for the specified item class.
+	 *
+	 * @param itemClass
+	 * @param bindPredicate
+	 * @param itemBinder
+	 * @param <Item>
+	 * @param <VH>
+	 * @return
+	 */
 	public abstract <Item, VH extends ViewHolder> Chemistry bind(@Nullable Class<? extends Item> itemClass, @NonNull BindPredicate<? extends VH> bindPredicate, @Nullable ItemBinder<? super Item, ? super VH> itemBinder);
 }
