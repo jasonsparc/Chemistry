@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
  */
 public abstract class Chemistry {
 
+	public abstract <Item> Chemistry identify(@Nullable Class<? extends Item> itemClass, @Nullable IdSelector<? super Item> idSelector);
+
 	/**
 	 * TODO Improve Docs
 	 * <br>- associates a flask to the specified item class.
