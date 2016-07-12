@@ -5,6 +5,10 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
 
 import java.util.Collection;
 
+import io.jasonsparc.chemistry.internal.predicates.VhClassArrayBindPredicate;
+import io.jasonsparc.chemistry.internal.predicates.VhClassBindPredicate;
+import io.jasonsparc.chemistry.internal.predicates.VhClassCollectionBindPredicate;
+
 /**
  * Created by jason on 12/07/2016.
  */
@@ -21,5 +25,18 @@ public class BindPredicates {
 
 	public static <VH extends ViewHolder> BindPredicate<VH> matches(@NonNull Collection<? extends Flask<? extends VH>> flasks) {
 		return Flasks.matches(flasks);
+	}
+
+	public static <VH extends ViewHolder> BindPredicate<VH> of(@NonNull Class<? extends VH> vhCls) {
+		return new VhClassBindPredicate<>(vhCls);
+	}
+
+	@SafeVarargs
+	public static <VH extends ViewHolder> BindPredicate<VH> of(@NonNull Class<? extends VH>... vhClsz) {
+		return new VhClassArrayBindPredicate<>(vhClsz);
+	}
+
+	public static <VH extends ViewHolder> BindPredicate<VH> of(@NonNull Collection<Class<? extends VH>> vhClsz) {
+		return new VhClassCollectionBindPredicate<>(vhClsz);
 	}
 }
