@@ -3,15 +3,20 @@ package io.jasonsparc.chemistry;
 import android.support.annotation.AnyRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.util.SimpleArrayMap;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.SparseArray;
 
 import java.util.Collection;
 
+import io.jasonsparc.chemistry.flasks.FlaskSwitch;
+import io.jasonsparc.chemistry.internal.flasks.CompositeFlaskSelector;
 import io.jasonsparc.chemistry.internal.flasks.CompositeReflectiveTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.CompositeTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.InflateReflectiveTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.InflateTypedFlask;
+import io.jasonsparc.chemistry.internal.flasks.MapFlaskSwitch;
 import io.jasonsparc.chemistry.internal.predicates.FlaskArrayBindPredicate;
 import io.jasonsparc.chemistry.internal.predicates.FlaskBindPredicate;
 import io.jasonsparc.chemistry.internal.predicates.FlaskCollectionBindPredicate;
@@ -91,5 +96,35 @@ public class Flasks {
 
 	public static <VH extends ViewHolder> BindPredicate<VH> matches(@NonNull Collection<? extends Flask<? extends VH>> flasks) {
 		return new FlaskCollectionBindPredicate<>(flasks);
+	}
+
+	// Flask Selectors
+
+	public static <Item> FlaskSelector<Item> select(@NonNull TypeSelector<? super Item> typeSelector, @NonNull Flask<?>[] flaskSelections, @Nullable Flask<?> defaultCase) {
+		return new CompositeFlaskSelector<>(typeSelector, flaskSelections, defaultCase);
+	}
+
+	public static <Item> FlaskSelector<Item> select(@NonNull TypeSelector<? super Item> typeSelector, @NonNull Collection<? extends Flask<?>> flaskSelections, @Nullable Flask<?> defaultCase) {
+		return new CompositeFlaskSelector<>(typeSelector, flaskSelections, defaultCase);
+	}
+
+	public static <Item> FlaskSelector<Item> select(@NonNull TypeSelector<? super Item> typeSelector, @NonNull Flask<?>[] flaskSelections) {
+		return new CompositeFlaskSelector<>(typeSelector, flaskSelections, null);
+	}
+
+	public static <Item> FlaskSelector<Item> select(@NonNull TypeSelector<? super Item> typeSelector, @NonNull Collection<? extends Flask<?>> flaskSelections) {
+		return new CompositeFlaskSelector<>(typeSelector, flaskSelections, null);
+	}
+
+	public static <Item, K> FlaskSwitch<Item, K> mapSelect(@NonNull CaseSelector<? super Item, ? extends K> caseSelector, @NonNull SimpleArrayMap<? super K, ? extends Flask<?>> mapOfCases, @Nullable Flask<?> defaultCase) {
+		return MapFlaskSwitch.make(caseSelector, mapOfCases, defaultCase);
+	}
+
+	public static <Item, K> FlaskSwitch<Item, K> mapSelect(@NonNull CaseSelector<? super Item, ? extends K> caseSelector, @NonNull SimpleArrayMap<? super K, ? extends Flask<?>> mapOfCases) {
+		return MapFlaskSwitch.make(caseSelector, mapOfCases, null);
+	}
+
+	public static <Item, K> FlaskSwitch.Boiler<Item, K> mapSelect(@NonNull CaseSelector<? super Item, ? extends K> caseSelector) {
+		return MapFlaskSwitch.boiler(caseSelector);
 	}
 }
