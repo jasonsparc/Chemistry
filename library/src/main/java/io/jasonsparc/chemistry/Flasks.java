@@ -4,6 +4,7 @@ import android.support.annotation.AnyRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.SparseArray;
 
 import java.util.Collection;
 
@@ -60,6 +61,21 @@ public class Flasks {
 	@SuppressWarnings("unchecked")
 	public static <VH extends ViewHolder> Flask<? extends VH>[] array(@NonNull Collection<? extends Flask<? extends VH>> flasks) {
 		return flasks.toArray(new Flask[flasks.size()]);
+	}
+
+	@SafeVarargs
+	public static <FL extends Flask<? extends ViewHolder>> SparseArray<FL> sparseArray(@NonNull FL... flasks) {
+		SparseArray<FL> ret = new SparseArray<>(flasks.length);
+		for (FL flask : flasks)
+			ret.put(flask.getViewType(), flask);
+		return ret;
+	}
+
+	public static <FL extends Flask<? extends ViewHolder>> SparseArray<FL> sparseArray(@NonNull Collection<? extends FL> flasks) {
+		SparseArray<FL> ret = new SparseArray<>(flasks.size());
+		for (FL flask : flasks)
+			ret.put(flask.getViewType(), flask);
+		return ret;
 	}
 
 	// Bind Predicates
