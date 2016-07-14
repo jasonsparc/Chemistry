@@ -46,4 +46,15 @@ public abstract class Chemistry {
 	public <Item, VH extends ViewHolder> Chemistry bind(@Nullable Class<? extends Item> itemClass, @NonNull BindPredicate<? extends VH> bindPredicate, @Nullable ItemBinder<? super Item, ? super VH> itemBinder) {
 		return null;
 	}
+
+	// Find Operations
+
+	@Nullable
+	public abstract <Item> FlaskSelector<? super Item> findFlaskSelector(@Nullable Class<? extends Item> itemClass);
+
+	@Nullable
+	public abstract <Item, VH extends ViewHolder> ItemBinder<? super Item, ? super VH> findItemBinder(@Nullable Class<? extends Item> itemClass, @NonNull Class<? extends VH> vhClass, Flask<? extends VH> flask);
+
+	@Nullable
+	public abstract <Item> IdSelector<? super Item> findIdSelector(@Nullable Class<? extends Item> itemClass);
 }
