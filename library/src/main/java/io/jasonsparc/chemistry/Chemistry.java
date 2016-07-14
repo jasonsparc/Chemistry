@@ -11,7 +11,9 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
  */
 public abstract class Chemistry {
 
-	public abstract <Item> Chemistry identify(@Nullable Class<? extends Item> itemClass, @Nullable IdSelector<? super Item> idSelector);
+	public <Item> Chemistry identify(@Nullable Class<? extends Item> itemClass, @Nullable IdSelector<? super Item> idSelector) {
+		return null;
+	}
 
 	/**
 	 * TODO Improve Docs
@@ -25,7 +27,9 @@ public abstract class Chemistry {
 	 * @param <Item>
 	 * @return
 	 */
-	public abstract <Item> Chemistry flask(@Nullable Class<? extends Item> itemClass, @Nullable FlaskSelector<? super Item> flaskSelector);
+	public <Item> Chemistry flask(@Nullable Class<? extends Item> itemClass, @Nullable FlaskSelector<? super Item> flaskSelector) {
+		return null;
+	}
 
 	/**
 	 * TODO More Docs
@@ -39,5 +43,7 @@ public abstract class Chemistry {
 	 * @param <VH>
 	 * @return
 	 */
-	public abstract <Item, VH extends ViewHolder> Chemistry bind(@Nullable Class<? extends Item> itemClass, @NonNull BindPredicate<? extends VH> bindPredicate, @Nullable ItemBinder<? super Item, ? super VH> itemBinder);
+	public <Item, VH extends ViewHolder> Chemistry bind(@Nullable Class<? extends Item> itemClass, @NonNull BindPredicate<? extends VH> bindPredicate, @Nullable ItemBinder<? super Item, ? super VH> itemBinder) {
+		return null;
+	}
 }
