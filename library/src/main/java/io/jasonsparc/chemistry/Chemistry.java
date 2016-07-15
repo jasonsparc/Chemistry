@@ -31,23 +31,23 @@ public abstract class Chemistry {
 	/**
 	 * TODO Improve Docs
 	 * <br>- associates a flask to the specified item class.
-	 * <br>- a null item class associates a null item to a flask selector.
 	 * <br>- a null flask selector removes any associated flask selectors for the specified item
 	 * class.
+	 * <br>- use `void.class` as the item class to associate a null item to a flask selector.
 	 *
 	 * @param itemClass
 	 * @param flaskSelector
 	 * @param <Item>
 	 * @return
 	 */
-	public <Item> Chemistry flask(@Nullable Class<? extends Item> itemClass, @Nullable FlaskSelector<? super Item> flaskSelector) {
+	public <Item> Chemistry flask(@NonNull Class<? extends Item> itemClass, @Nullable FlaskSelector<? super Item> flaskSelector) {
 		return null;
 	}
 
 	/**
 	 * TODO More Docs
-	 * <br>- a null item class provides binding to a null item.
 	 * <br>- a null item binder removes any item binders for the specified item class.
+	 * <br>- use `void.class` as the item class to provide bindings to a null item.
 	 *
 	 * @param itemClass
 	 * @param bindPredicate
@@ -56,11 +56,11 @@ public abstract class Chemistry {
 	 * @param <VH>
 	 * @return
 	 */
-	public <Item, VH extends ViewHolder> Chemistry bind(@Nullable Class<? extends Item> itemClass, @NonNull BindPredicate<? extends VH> bindPredicate, @Nullable ItemBinder<? super Item, ? super VH> itemBinder) {
+	public <Item, VH extends ViewHolder> Chemistry bind(@NonNull Class<? extends Item> itemClass, @NonNull BindPredicate<? extends VH> bindPredicate, @Nullable ItemBinder<? super Item, ? super VH> itemBinder) {
 		return null;
 	}
 
-	public <Item> Chemistry identify(@Nullable Class<? extends Item> itemClass, @Nullable IdSelector<? super Item> idSelector) {
+	public <Item> Chemistry identify(@NonNull Class<? extends Item> itemClass, @Nullable IdSelector<? super Item> idSelector) {
 		return null;
 	}
 
@@ -103,11 +103,11 @@ public abstract class Chemistry {
 	// Find Operations
 
 	@Nullable
-	public abstract <Item> FlaskSelector<? super Item> findFlaskSelector(@Nullable Class<? extends Item> itemClass, int flags);
+	public abstract <Item> FlaskSelector<? super Item> findFlaskSelector(@NonNull Class<? extends Item> itemClass, int flags);
 
 	@Nullable
-	public abstract <Item, VH extends ViewHolder> ItemBinder<? super Item, ? super VH> findItemBinder(@Nullable Class<? extends Item> itemClass, @NonNull Class<? extends VH> vhClass, Flask<? extends VH> flask, int flags);
+	public abstract <Item, VH extends ViewHolder> ItemBinder<? super Item, ? super VH> findItemBinder(@NonNull Class<? extends Item> itemClass, @NonNull Class<? extends VH> vhClass, Flask<? extends VH> flask, int flags);
 
 	@Nullable
-	public abstract <Item> IdSelector<? super Item> findIdSelector(@Nullable Class<? extends Item> itemClass, int flags);
+	public abstract <Item> IdSelector<? super Item> findIdSelector(@NonNull Class<? extends Item> itemClass, int flags);
 }

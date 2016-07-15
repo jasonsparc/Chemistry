@@ -24,7 +24,7 @@ public final class FallbackChemistry extends Chemistry {
 
 	@Nullable
 	@Override
-	public <Item> FlaskSelector<? super Item> findFlaskSelector(@Nullable Class<? extends Item> itemClass, int flags) {
+	public <Item> FlaskSelector<? super Item> findFlaskSelector(@NonNull Class<? extends Item> itemClass, int flags) {
 		try {
 			return base.findFlaskSelector(itemClass, flags | SIGNAL_TRANSCENDENT);
 		} catch (TranscendentSignal ts) {
@@ -39,7 +39,7 @@ public final class FallbackChemistry extends Chemistry {
 
 	@Nullable
 	@Override
-	public <Item, VH extends ViewHolder> ItemBinder<? super Item, ? super VH> findItemBinder(@Nullable Class<? extends Item> itemClass, @NonNull Class<? extends VH> vhClass, Flask<? extends VH> flask, int flags) {
+	public <Item, VH extends ViewHolder> ItemBinder<? super Item, ? super VH> findItemBinder(@NonNull Class<? extends Item> itemClass, @NonNull Class<? extends VH> vhClass, Flask<? extends VH> flask, int flags) {
 		try {
 			return base.findItemBinder(itemClass, vhClass, flask, flags | SIGNAL_TRANSCENDENT);
 		} catch (TranscendentSignal ts) {
@@ -54,7 +54,7 @@ public final class FallbackChemistry extends Chemistry {
 
 	@Nullable
 	@Override
-	public <Item> IdSelector<? super Item> findIdSelector(@Nullable Class<? extends Item> itemClass, int flags) {
+	public <Item> IdSelector<? super Item> findIdSelector(@NonNull Class<? extends Item> itemClass, int flags) {
 		try {
 			return base.findIdSelector(itemClass, flags | SIGNAL_TRANSCENDENT);
 		} catch (TranscendentSignal ts) {
