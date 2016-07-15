@@ -13,7 +13,7 @@ import io.jasonsparc.chemistry.ItemBinder;
 /**
  * Created by jason on 15/07/2016.
  */
-public final class TranscendentFallbackChemistry extends Chemistry {
+public final class TranscendentFallbackChemistry extends IdentityChemistry {
 	@NonNull final Chemistry fallback;
 
 	public TranscendentFallbackChemistry(@Nullable Chemistry fallback) {
@@ -42,5 +42,17 @@ public final class TranscendentFallbackChemistry extends Chemistry {
 		if ((flags & SIGNAL_TRANSCENDENT) != 0)
 			throw TranscendentSignal.getWith(fallback);
 		return fallback.findIdSelector(itemClass, flags);
+	}
+
+	// Special Identity-like Overrides
+
+	@Override
+	public Chemistry prepend(@NonNull Chemistry chemistry) {
+		return new FallbackChemistry(chemistry, fallback);
+	}
+
+	@Override
+	public Chemistry append(@NonNull Chemistry chemistry) {
+		return new FallbackChemistry(chemistry, fallback);
 	}
 }

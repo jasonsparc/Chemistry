@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
-import io.jasonsparc.chemistry.Chemistry;
 import io.jasonsparc.chemistry.Flask;
 import io.jasonsparc.chemistry.FlaskSelector;
 import io.jasonsparc.chemistry.IdSelector;
@@ -13,7 +12,7 @@ import io.jasonsparc.chemistry.ItemBinder;
 /**
  * Created by jason on 15/07/2016.
  */
-public final class NullChemistry extends Chemistry {
+public final class NullChemistry extends IdentityChemistry {
 	public static final NullChemistry INSTANCE = new NullChemistry();
 
 	private NullChemistry() { }

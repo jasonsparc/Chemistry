@@ -66,4 +66,10 @@ public final class FallbackChemistry extends Chemistry {
 			return fallback.findIdSelector(itemClass, flags);
 		}
 	}
+
+	// Identity-like Overrides
+
+	public Chemistry fallback(@Nullable Chemistry fallback) {
+		return new FallbackChemistry(base, fallback);
+	}
 }
