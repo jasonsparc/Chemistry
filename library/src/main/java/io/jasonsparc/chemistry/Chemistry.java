@@ -30,6 +30,8 @@ public abstract class Chemistry {
 	 */
 	public static final int SIGNAL_TRANSCENDENT = 1;
 
+	public Chemistry() { }
+
 	// Chaining Bases
 
 	public static Chemistry base() {
