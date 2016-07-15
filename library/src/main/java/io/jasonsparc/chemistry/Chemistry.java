@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
+import io.jasonsparc.chemistry.internal.impl.ConcatChemistry;
 import io.jasonsparc.chemistry.internal.impl.FallbackChemistry;
 import io.jasonsparc.chemistry.internal.impl.TranscendentFallbackChemistry;
 import io.jasonsparc.chemistry.internal.impl.TranscendentSignal;
@@ -61,6 +62,32 @@ public abstract class Chemistry {
 
 	public <Item> Chemistry identify(@Nullable Class<? extends Item> itemClass, @Nullable IdSelector<? super Item> idSelector) {
 		return null;
+	}
+
+	// Concatenation Operators
+
+	public Chemistry prepend(@NonNull Chemistry chemistry) {
+		return new ConcatChemistry(chemistry, this);
+	}
+
+	public Chemistry append(@NonNull Chemistry chemistry) {
+		return new ConcatChemistry(this, chemistry);
+	}
+
+	public Chemistry prepend(@NonNull Chemistry... chemistries) {
+		Chemistry out = this;
+		for (Chemistry chemistry : chemistries) {
+			out = out.prepend(chemistry);
+		}
+		return out;
+	}
+
+	public Chemistry append(@NonNull Chemistry... chemistries) {
+		Chemistry out = this;
+		for (Chemistry chemistry : chemistries) {
+			out = out.append(chemistry);
+		}
+		return out;
 	}
 
 	// Fallback Mechanism
