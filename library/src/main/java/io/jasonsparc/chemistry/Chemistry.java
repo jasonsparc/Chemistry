@@ -133,6 +133,10 @@ public abstract class Chemistry {
 		return new TranscendentFallbackChemistry(this);
 	}
 
+	public Chemistry asFallbackFor(@NonNull Chemistry target) {
+		return target.fallback(this);
+	}
+
 	// Find Operations
 
 	@Nullable
