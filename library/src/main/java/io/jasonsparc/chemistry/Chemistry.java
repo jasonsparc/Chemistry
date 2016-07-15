@@ -33,7 +33,7 @@ public abstract class Chemistry {
 	public Chemistry() { }
 
 	@SuppressWarnings("TypeParameterHidesVisibleType")
-	public <R extends Chemistry> Chemistry compose(Transformer<R> transformer) {
+	public <R extends Chemistry> Chemistry compose(@NonNull Transformer<R> transformer) {
 		return transformer.applyOn(this);
 	}
 
