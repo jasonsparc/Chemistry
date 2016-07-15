@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
+import io.jasonsparc.chemistry.internal.impl.BindFlaskOpChemistry;
 import io.jasonsparc.chemistry.internal.impl.BindOpChemistry;
 import io.jasonsparc.chemistry.internal.impl.ChemistryDefaults;
 import io.jasonsparc.chemistry.internal.impl.ConcatChemistry;
@@ -77,6 +78,10 @@ public abstract class Chemistry {
 		return new FlaskOpChemistry(this, itemClass, flaskSelector);
 	}
 
+	public <Item> Chemistry flask(@NonNull Class<? extends Item> itemClass, @Nullable Flask<?> flask) {
+		return new FlaskOpChemistry(this, itemClass, flask == null ? null : Flasks.select(flask));
+	}
+
 	/**
 	 * TODO More Docs
 	 * <br>- a null item binder removes any item binders for the specified item class.
@@ -91,6 +96,10 @@ public abstract class Chemistry {
 	 */
 	public <Item, VH extends ViewHolder> Chemistry bind(@NonNull Class<? extends Item> itemClass, @NonNull BindPredicate<? extends VH> bindPredicate, @Nullable ItemBinder<? super Item, ? super VH> itemBinder) {
 		return new BindOpChemistry(this, itemClass, bindPredicate, itemBinder);
+	}
+
+	public <Item, VH extends ViewHolder> Chemistry bind(@NonNull Class<? extends Item> itemClass, Flask<? extends VH> flask, @Nullable ItemBinder<? super Item, ? super VH> itemBinder) {
+		return new BindFlaskOpChemistry(this, itemClass, flask, itemBinder);
 	}
 
 	public <Item> Chemistry identify(@NonNull Class<? extends Item> itemClass, @Nullable IdSelector<? super Item> idSelector) {
