@@ -50,11 +50,11 @@ public abstract class Chemistry {
 	// Find Operations
 
 	@Nullable
-	public abstract <Item> FlaskSelector<? super Item> findFlaskSelector(@Nullable Class<? extends Item> itemClass);
+	public abstract <Item> FlaskSelector<? super Item> findFlaskSelector(@Nullable Class<? extends Item> itemClass, int flags);
 
 	@Nullable
-	public abstract <Item, VH extends ViewHolder> ItemBinder<? super Item, ? super VH> findItemBinder(@Nullable Class<? extends Item> itemClass, @NonNull Class<? extends VH> vhClass, Flask<? extends VH> flask);
+	public abstract <Item, VH extends ViewHolder> ItemBinder<? super Item, ? super VH> findItemBinder(@Nullable Class<? extends Item> itemClass, @NonNull Class<? extends VH> vhClass, Flask<? extends VH> flask, int flags);
 
 	@Nullable
-	public abstract <Item> IdSelector<? super Item> findIdSelector(@Nullable Class<? extends Item> itemClass);
+	public abstract <Item> IdSelector<? super Item> findIdSelector(@Nullable Class<? extends Item> itemClass, int flags);
 }
