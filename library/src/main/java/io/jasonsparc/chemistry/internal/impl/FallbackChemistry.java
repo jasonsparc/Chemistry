@@ -31,7 +31,8 @@ public final class FallbackChemistry extends Chemistry {
 			if ((flags & SIGNAL_TRANSCENDENT) != 0) {
 				throw ts.with(fallback);
 			}
-			ts.fallbackRequest = null;
+			ts.clear();
+
 			return fallback.findFlaskSelector(itemClass, flags);
 		}
 	}
@@ -45,7 +46,8 @@ public final class FallbackChemistry extends Chemistry {
 			if ((flags & SIGNAL_TRANSCENDENT) != 0) {
 				throw ts.with(fallback);
 			}
-			ts.fallbackRequest = null;
+			ts.clear();
+
 			return fallback.findItemBinder(itemClass, vhClass, flask, flags);
 		}
 	}
@@ -59,7 +61,8 @@ public final class FallbackChemistry extends Chemistry {
 			if ((flags & SIGNAL_TRANSCENDENT) != 0) {
 				throw ts.with(fallback);
 			}
-			ts.fallbackRequest = null;
+			ts.clear();
+
 			return fallback.findIdSelector(itemClass, flags);
 		}
 	}

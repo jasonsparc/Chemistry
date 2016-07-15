@@ -1,5 +1,7 @@
 package io.jasonsparc.chemistry.internal.impl;
 
+import android.support.annotation.NonNull;
+
 import io.jasonsparc.chemistry.Chemistry;
 import io.jasonsparc.chemistry.internal.util.ThreadUtils;
 import io.jasonsparc.chemistry.internal.util.ThrowableSignal;
@@ -10,7 +12,8 @@ import io.jasonsparc.chemistry.internal.util.ThrowableSignal;
 @SuppressWarnings({"ThrowableInstanceNeverThrown", "ThrowableResultOfMethodCallIgnored"})
 public final class TranscendentSignal extends ThrowableSignal {
 
-	public Chemistry fallbackRequest;
+	@NonNull
+	public Chemistry fallbackRequest = NullChemistry.INSTANCE;
 
 	public static TranscendentSignal get() {
 		// Optimizes for the common case.
@@ -18,15 +21,19 @@ public final class TranscendentSignal extends ThrowableSignal {
 				? sMainThreadInstance : OtherInternal.sInstance.get();
 	}
 
-	public static TranscendentSignal getWith(Chemistry fallback) {
+	public static TranscendentSignal getWith(@NonNull Chemistry fallback) {
 		TranscendentSignal signal = get();
 		signal.fallbackRequest = fallback;
 		return signal;
 	}
 
-	public final TranscendentSignal with(Chemistry fallback) {
+	public final TranscendentSignal with(@NonNull Chemistry fallback) {
 		this.fallbackRequest = fallback;
 		return this;
+	}
+
+	public final void clear() {
+		fallbackRequest = NullChemistry.INSTANCE;
 	}
 
 	// Internals
