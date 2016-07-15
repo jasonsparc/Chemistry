@@ -4,8 +4,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
+import io.jasonsparc.chemistry.internal.impl.BindOpChemistry;
 import io.jasonsparc.chemistry.internal.impl.ConcatChemistry;
 import io.jasonsparc.chemistry.internal.impl.FallbackChemistry;
+import io.jasonsparc.chemistry.internal.impl.FlaskOpChemistry;
+import io.jasonsparc.chemistry.internal.impl.IdentifyOpChemistry;
 import io.jasonsparc.chemistry.internal.impl.TranscendentFallbackChemistry;
 import io.jasonsparc.chemistry.internal.impl.TranscendentSignal;
 
@@ -41,7 +44,7 @@ public abstract class Chemistry {
 	 * @return
 	 */
 	public <Item> Chemistry flask(@NonNull Class<? extends Item> itemClass, @Nullable FlaskSelector<? super Item> flaskSelector) {
-		return null;
+		return new FlaskOpChemistry(this, itemClass, flaskSelector);
 	}
 
 	/**
@@ -57,11 +60,11 @@ public abstract class Chemistry {
 	 * @return
 	 */
 	public <Item, VH extends ViewHolder> Chemistry bind(@NonNull Class<? extends Item> itemClass, @NonNull BindPredicate<? extends VH> bindPredicate, @Nullable ItemBinder<? super Item, ? super VH> itemBinder) {
-		return null;
+		return new BindOpChemistry(this, itemClass, bindPredicate, itemBinder);
 	}
 
 	public <Item> Chemistry identify(@NonNull Class<? extends Item> itemClass, @Nullable IdSelector<? super Item> idSelector) {
-		return null;
+		return new IdentifyOpChemistry(this, itemClass, idSelector);
 	}
 
 	// Concatenation Operators
