@@ -13,6 +13,7 @@ import io.jasonsparc.chemistry.internal.impl.FlaskOpChemistry;
 import io.jasonsparc.chemistry.internal.impl.IdentifyOpChemistry;
 import io.jasonsparc.chemistry.internal.impl.TranscendentFallbackChemistry;
 import io.jasonsparc.chemistry.internal.impl.TranscendentSignal;
+import io.jasonsparc.chemistry.internal.impl.WrapOpChemistry;
 
 /**
  * TODO Implement
@@ -44,6 +45,19 @@ public abstract class Chemistry {
 	public interface Transformer<R extends Chemistry> {
 
 		R applyOn(Chemistry chemistry);
+	}
+
+	/**
+	 * TODO Improve Docs
+	 * <br>- wraps this chain inside a new Chemistry instance, often used to hide any subclass
+	 * implementations.
+	 * <br>- if the existing chain is already a wrapped Chemistry instance, the implementation can
+	 * first unwrap the chain and then wrap the result inside a new wrapper instance.
+	 *
+	 * @return
+	 */
+	public Chemistry wrap() {
+		return new WrapOpChemistry(this);
 	}
 
 	// Chaining Bases
