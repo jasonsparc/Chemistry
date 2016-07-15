@@ -4,12 +4,26 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
+import io.jasonsparc.chemistry.internal.impl.FallbackChemistry;
+import io.jasonsparc.chemistry.internal.impl.TranscendentFallbackChemistry;
+import io.jasonsparc.chemistry.internal.impl.TranscendentSignal;
+
 /**
  * TODO Implement
  *
  * Created by jason on 07/07/2016.
  */
 public abstract class Chemistry {
+	/**
+	 * TODO Improve Docs
+	 * If this flag was set, the following should happen:
+	 * <p>
+	 * <br>- the root of the chain must throw {@link TranscendentSignal}.
+	 * <br>- the base must throw {@link TranscendentSignal} and pass any fallbacks upwards.
+	 * <br>- the catcher of the {@link TranscendentSignal} (who set this flag) must clear
+	 * the currently set fallback.
+	 */
+	public static final int SIGNAL_TRANSCENDENT = 1;
 
 	// Adapter Composition
 
@@ -47,6 +61,16 @@ public abstract class Chemistry {
 
 	public <Item> Chemistry identify(@Nullable Class<? extends Item> itemClass, @Nullable IdSelector<? super Item> idSelector) {
 		return null;
+	}
+
+	// Fallback Mechanism
+
+	public Chemistry fallback(@Nullable Chemistry fallback) {
+		return new FallbackChemistry(this, fallback);
+	}
+
+	public Chemistry asFallback() {
+		return new TranscendentFallbackChemistry(this);
 	}
 
 	// Find Operations
