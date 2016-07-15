@@ -17,6 +17,7 @@ import io.jasonsparc.chemistry.internal.flasks.CompositeTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.InflateReflectiveTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.InflateTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.MapFlaskSwitch;
+import io.jasonsparc.chemistry.internal.flasks.SingletonFlaskSelector;
 import io.jasonsparc.chemistry.internal.predicates.FlaskArrayBindPredicate;
 import io.jasonsparc.chemistry.internal.predicates.FlaskBindPredicate;
 import io.jasonsparc.chemistry.internal.predicates.FlaskCollectionBindPredicate;
@@ -99,6 +100,10 @@ public class Flasks {
 	}
 
 	// Flask Selectors
+
+	public static <Item> FlaskSelector<Item> select(Flask<?> flask) {
+		return new SingletonFlaskSelector<>(flask);
+	}
 
 	public static <Item> FlaskSelector<Item> select(@NonNull TypeSelector<? super Item> typeSelector, @NonNull Flask<?>[] flaskSelections, @Nullable Flask<?> defaultCase) {
 		return new CompositeFlaskSelector<>(typeSelector, flaskSelections, defaultCase);
