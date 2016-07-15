@@ -11,9 +11,7 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
  */
 public abstract class Chemistry {
 
-	public <Item> Chemistry identify(@Nullable Class<? extends Item> itemClass, @Nullable IdSelector<? super Item> idSelector) {
-		return null;
-	}
+	// Adapter Composition
 
 	/**
 	 * TODO Improve Docs
@@ -44,6 +42,10 @@ public abstract class Chemistry {
 	 * @return
 	 */
 	public <Item, VH extends ViewHolder> Chemistry bind(@Nullable Class<? extends Item> itemClass, @NonNull BindPredicate<? extends VH> bindPredicate, @Nullable ItemBinder<? super Item, ? super VH> itemBinder) {
+		return null;
+	}
+
+	public <Item> Chemistry identify(@Nullable Class<? extends Item> itemClass, @Nullable IdSelector<? super Item> idSelector) {
 		return null;
 	}
 
