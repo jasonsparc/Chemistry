@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
 import io.jasonsparc.chemistry.internal.impl.BindOpChemistry;
+import io.jasonsparc.chemistry.internal.impl.ChemistryDefaults;
 import io.jasonsparc.chemistry.internal.impl.ConcatChemistry;
 import io.jasonsparc.chemistry.internal.impl.FallbackChemistry;
 import io.jasonsparc.chemistry.internal.impl.FlaskOpChemistry;
@@ -28,6 +29,20 @@ public abstract class Chemistry {
 	 * the currently set fallback.
 	 */
 	public static final int SIGNAL_TRANSCENDENT = 1;
+
+	// Chaining Bases
+
+	public static Chemistry base() {
+		return ChemistryDefaults.DEFAULT_BASE;
+	}
+
+	public static Chemistry defaultFallback() {
+		return ChemistryDefaults.DEFAULT_FALLBACK;
+	}
+
+	public static Chemistry emptyBase() {
+		return ChemistryDefaults.EMPTY_BASE;
+	}
 
 	// Adapter Composition
 
