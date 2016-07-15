@@ -32,6 +32,19 @@ public abstract class Chemistry {
 
 	public Chemistry() { }
 
+	@SuppressWarnings("TypeParameterHidesVisibleType")
+	public <R extends Chemistry> Chemistry compose(Transformer<R> transformer) {
+		return transformer.applyOn(this);
+	}
+
+	/**
+	 * Transformer function used by {@link #compose}.
+	 */
+	public interface Transformer<R extends Chemistry> {
+
+		R applyOn(Chemistry chemistry);
+	}
+
 	// Chaining Bases
 
 	public static Chemistry base() {
