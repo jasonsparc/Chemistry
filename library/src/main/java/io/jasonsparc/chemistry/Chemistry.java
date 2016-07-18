@@ -1,5 +1,6 @@
 package io.jasonsparc.chemistry;
 
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -56,20 +57,24 @@ public abstract class Chemistry {
 	 *
 	 * @return
 	 */
+	@CheckResult
 	public Chemistry wrap() {
 		return new WrapOpChemistry(this);
 	}
 
 	// Chaining Bases
 
+	@CheckResult
 	public static Chemistry base() {
 		return ChemistryDefaults.DEFAULT_BASE;
 	}
 
+	@CheckResult
 	public static Chemistry defaultFallback() {
 		return ChemistryDefaults.DEFAULT_FALLBACK;
 	}
 
+	@CheckResult
 	public static Chemistry emptyBase() {
 		return ChemistryDefaults.EMPTY_BASE;
 	}
@@ -88,10 +93,12 @@ public abstract class Chemistry {
 	 * @param <Item>
 	 * @return
 	 */
+	@CheckResult
 	public <Item> Chemistry flask(@NonNull Class<? extends Item> itemClass, @Nullable FlaskSelector<? super Item> flaskSelector) {
 		return new FlaskOpChemistry(this, itemClass, flaskSelector);
 	}
 
+	@CheckResult
 	public <Item> Chemistry flask(@NonNull Class<? extends Item> itemClass, @Nullable Flask<?> flask) {
 		return new FlaskOpChemistry(this, itemClass, flask == null ? null : Flasks.select(flask));
 	}
@@ -108,28 +115,34 @@ public abstract class Chemistry {
 	 * @param <VH>
 	 * @return
 	 */
+	@CheckResult
 	public <Item, VH extends ViewHolder> Chemistry bind(@NonNull Class<? extends Item> itemClass, @NonNull BindPredicate<? extends VH> bindPredicate, @Nullable ItemBinder<? super Item, ? super VH> itemBinder) {
 		return new BindOpChemistry(this, itemClass, bindPredicate, itemBinder);
 	}
 
+	@CheckResult
 	public <Item, VH extends ViewHolder> Chemistry bind(@NonNull Class<? extends Item> itemClass, Flask<? extends VH> flask, @Nullable ItemBinder<? super Item, ? super VH> itemBinder) {
 		return new BindFlaskOpChemistry(this, itemClass, flask, itemBinder);
 	}
 
+	@CheckResult
 	public <Item> Chemistry identify(@NonNull Class<? extends Item> itemClass, @Nullable IdSelector<? super Item> idSelector) {
 		return new IdentifyOpChemistry(this, itemClass, idSelector);
 	}
 
 	// Concatenation Operators
 
+	@CheckResult
 	public Chemistry prepend(@NonNull Chemistry chemistry) {
 		return new ConcatChemistry(chemistry, this);
 	}
 
+	@CheckResult
 	public Chemistry append(@NonNull Chemistry chemistry) {
 		return new ConcatChemistry(this, chemistry);
 	}
 
+	@CheckResult
 	public Chemistry prepend(@NonNull Chemistry... chemistries) {
 		Chemistry out = this;
 		for (Chemistry chemistry : chemistries) {
@@ -138,6 +151,7 @@ public abstract class Chemistry {
 		return out;
 	}
 
+	@CheckResult
 	public Chemistry append(@NonNull Chemistry... chemistries) {
 		Chemistry out = this;
 		for (Chemistry chemistry : chemistries) {
@@ -148,14 +162,17 @@ public abstract class Chemistry {
 
 	// Fallback Mechanism
 
+	@CheckResult
 	public Chemistry fallback(@Nullable Chemistry fallback) {
 		return new FallbackChemistry(this, fallback);
 	}
 
+	@CheckResult
 	public Chemistry asFallback() {
 		return new TranscendentFallbackChemistry(this);
 	}
 
+	@CheckResult
 	public Chemistry asFallbackFor(@NonNull Chemistry target) {
 		return target.fallback(this);
 	}
