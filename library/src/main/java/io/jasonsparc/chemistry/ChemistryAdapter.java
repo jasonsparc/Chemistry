@@ -92,6 +92,11 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 		return viewType;
 	}
 
+	@NonNull
+	public final Chemistry getChemistry() {
+		return chemistry;
+	}
+
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		final Flask flask = getInternalState().flasks.get(viewType);
