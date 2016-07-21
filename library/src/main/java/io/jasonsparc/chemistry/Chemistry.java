@@ -17,7 +17,7 @@ import io.jasonsparc.chemistry.internal.impl.TranscendentSignal;
 import io.jasonsparc.chemistry.internal.impl.WrapOpChemistry;
 
 /**
- * TODO Implement
+ * TODO Docs
  *
  * Created by jason on 07/07/2016.
  */
