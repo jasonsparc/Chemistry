@@ -22,6 +22,9 @@ import io.jasonsparc.chemistry.internal.impl.WrapOpChemistry;
  * Created by jason on 07/07/2016.
  */
 public abstract class Chemistry {
+
+	public static final Class<?> NULL_ITEM_CLASS = void.class;
+
 	/**
 	 * TODO Improve Docs
 	 * If this flag was set, the following should happen:
@@ -34,6 +37,11 @@ public abstract class Chemistry {
 	public static final int SIGNAL_TRANSCENDENT = 1;
 
 	public Chemistry() { }
+
+	@NonNull
+	public static Class<?> getItemClass(Object item) {
+		return item == null ? NULL_ITEM_CLASS : item.getClass();
+	}
 
 	@SuppressWarnings("TypeParameterHidesVisibleType")
 	public <R extends Chemistry> Chemistry compose(@NonNull Transformer<R> transformer) {
@@ -86,7 +94,8 @@ public abstract class Chemistry {
 	 * <br>- associates a flask to the specified item class.
 	 * <br>- a null flask selector removes any associated flask selectors for the specified item
 	 * class.
-	 * <br>- use `void.class` as the item class to associate a null item to a flask selector.
+	 * <br>- use `{@link #NULL_ITEM_CLASS}` as the item class to associate a null item to a flask
+	 * selector.
 	 *
 	 * @param itemClass
 	 * @param flaskSelector
@@ -106,7 +115,7 @@ public abstract class Chemistry {
 	/**
 	 * TODO More Docs
 	 * <br>- a null item binder removes any item binders for the specified item class.
-	 * <br>- use `void.class` as the item class to provide bindings to a null item.
+	 * <br>- use `{@link #NULL_ITEM_CLASS}` as the item class to provide bindings to a null item.
 	 *
 	 * @param itemClass
 	 * @param bindPredicate
