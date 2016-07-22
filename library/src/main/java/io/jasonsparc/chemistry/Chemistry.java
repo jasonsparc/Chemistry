@@ -15,6 +15,7 @@ import io.jasonsparc.chemistry.internal.impl.IdentifyOpChemistry;
 import io.jasonsparc.chemistry.internal.impl.TranscendentFallbackChemistry;
 import io.jasonsparc.chemistry.internal.impl.TranscendentSignal;
 import io.jasonsparc.chemistry.internal.impl.WrapOpChemistry;
+import io.jasonsparc.chemistry.util.Function;
 
 /**
  * TODO Docs
@@ -51,8 +52,9 @@ public abstract class Chemistry {
 	/**
 	 * Transformer function used by {@link #compose}.
 	 */
-	public interface Transformer<R extends Chemistry> {
+	public interface Transformer<R extends Chemistry> extends Function<Chemistry, R> {
 
+		@Override
 		R applyOn(Chemistry chemistry);
 	}
 
