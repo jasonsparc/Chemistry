@@ -15,6 +15,7 @@ import io.jasonsparc.chemistry.internal.impl.IdentifyOpChemistry;
 import io.jasonsparc.chemistry.internal.impl.TranscendentFallbackChemistry;
 import io.jasonsparc.chemistry.internal.impl.TranscendentSignal;
 import io.jasonsparc.chemistry.internal.impl.WrapOpChemistry;
+import io.jasonsparc.chemistry.util.Function;
 
 /**
  * TODO Docs
@@ -45,15 +46,16 @@ public abstract class Chemistry {
 
 	@SuppressWarnings("TypeParameterHidesVisibleType")
 	public <R extends Chemistry> Chemistry compose(@NonNull Transformer<R> transformer) {
-		return transformer.applyOn(this);
+		return transformer.apply(this);
 	}
 
 	/**
 	 * Transformer function used by {@link #compose}.
 	 */
-	public interface Transformer<R extends Chemistry> {
+	public interface Transformer<R extends Chemistry> extends Function<Chemistry, R> {
 
-		R applyOn(Chemistry chemistry);
+		@Override
+		R apply(Chemistry chemistry);
 	}
 
 	/**
