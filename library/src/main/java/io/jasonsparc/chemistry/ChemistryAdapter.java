@@ -141,19 +141,14 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 	}
 
 	@NonNull
-	protected CacheState onCreateInternalState() {
-		return new CacheState();
-	}
-
-	@NonNull
-	protected CacheState getCacheState() {
+	CacheState getCacheState() {
 		if (cacheState == null) {
-			cacheState = onCreateInternalState();
+			cacheState = new CacheState();
 		}
 		return cacheState;
 	}
 
-	protected static class CacheState {
+	static class CacheState {
 		IdentityHashMap<Class<?>, FlaskSelector> flaskSelectors = new IdentityHashMap<>();
 		IdentityHashMap<Class<?>, IdSelector> idSelectors = new IdentityHashMap<>();
 		SparseArray<Flask> flasks = new SparseArray<>();
