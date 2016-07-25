@@ -2,12 +2,13 @@ package io.jasonsparc.chemistry;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.util.ArrayMap;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.SparseArray;
 import android.view.ViewGroup;
+
+import java.util.IdentityHashMap;
 
 import static io.jasonsparc.chemistry.Chemistry.getItemClass;
 
@@ -153,8 +154,8 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 	}
 
 	protected static class CacheState {
-		ArrayMap<Class<?>, FlaskSelector> flaskSelectors = new ArrayMap<>();
-		ArrayMap<Class<?>, IdSelector> idSelectors = new ArrayMap<>();
+		IdentityHashMap<Class<?>, FlaskSelector> flaskSelectors = new IdentityHashMap<>();
+		IdentityHashMap<Class<?>, IdSelector> idSelectors = new IdentityHashMap<>();
 		SparseArray<Flask> flasks = new SparseArray<>();
 		LongSparseArray<ItemBinder> itemBinders = new LongSparseArray<>();
 	}
