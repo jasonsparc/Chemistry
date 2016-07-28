@@ -128,6 +128,8 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 
 			itemBinder = chemistry.findItemBinder(itemClass, holder.getClass(), flask, 0);
 
+			// TODO Insert formula API here...
+
 			if (itemBinder == null) {
 				throw new NullPointerException(item == null
 						? "No `ItemBinder` found! Item Class: null item; VH Class: " + holder.getClass().getName() + "; Flask: " + flask
