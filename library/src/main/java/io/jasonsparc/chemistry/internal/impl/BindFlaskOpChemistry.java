@@ -16,7 +16,7 @@ public final class BindFlaskOpChemistry extends BaseChemistry {
 	final Flask<?> checkFlask;
 	@Nullable final ItemBinder itemBinder;
 
-	public <Item, VH extends ViewHolder> BindFlaskOpChemistry(@NonNull Chemistry base, @NonNull Class<? extends Item> itemClass, Flask<?> checkFlask, @Nullable ItemBinder<? super Item, ? super VH> itemBinder) {
+	public <Item, VH extends ViewHolder> BindFlaskOpChemistry(@NonNull Chemistry base, @NonNull Class<? extends Item> itemClass, Flask<? extends VH> checkFlask, @Nullable ItemBinder<? super Item, ? super VH> itemBinder) {
 		super(base);
 		this.itemClass = itemClass;
 		this.checkFlask = checkFlask;

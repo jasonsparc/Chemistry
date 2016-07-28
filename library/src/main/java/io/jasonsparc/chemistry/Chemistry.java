@@ -136,6 +136,26 @@ public abstract class Chemistry {
 		return new BindFlaskOpChemistry(this, itemClass, flask, itemBinder);
 	}
 
+	public static <Item, VH extends ViewHolder & ItemBindable<? super Item>> ItemBinder<Item, VH> binderForBindableVh() {
+		// TODO Put in a constant
+		return new ItemBinder<Item, VH>() {
+			@Override
+			public void bindViewHolder(VH holder, Item item) {
+				holder.bindItem(item);
+			}
+		};
+	}
+
+	@CheckResult
+	public <Item, VH extends ViewHolder & ItemBindable<? super Item>> Chemistry bind(@NonNull Class<? extends Item> itemClass, @NonNull BindPredicate<? extends VH> bindPredicate) {
+		return new BindOpChemistry(this, itemClass, bindPredicate, Chemistry.<Item, VH>binderForBindableVh());
+	}
+
+	@CheckResult
+	public <Item, VH extends ViewHolder & ItemBindable<? super Item>> Chemistry bind(@NonNull Class<? extends Item> itemClass, Flask<? extends VH> flask) {
+		return bind(itemClass, flask, Chemistry.<Item, VH>binderForBindableVh());
+	}
+
 	@CheckResult
 	public <Item> Chemistry identify(@NonNull Class<? extends Item> itemClass, @Nullable IdSelector<? super Item> idSelector) {
 		return new IdentifyOpChemistry(this, itemClass, idSelector);
