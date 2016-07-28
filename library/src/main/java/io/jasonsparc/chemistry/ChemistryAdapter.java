@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import java.util.IdentityHashMap;
 
 import io.jasonsparc.chemistry.internal.util.ThrowableSignal;
+import io.jasonsparc.chemistry.internal.util.ViewTypes;
 
 import static io.jasonsparc.chemistry.Chemistry.getItemClass;
 
@@ -112,7 +113,10 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 			throw new NullFlaskSignal();
 		}
 
+		@ViewType
 		final int viewType = itemFlask.getViewType();
+		ViewTypes.validateState(viewType);
+
 		final Flask cachedFlask = cacheState.flasks.get(viewType);
 		if (cachedFlask == null) {
 			cacheState.flasks.put(viewType, itemFlask);
