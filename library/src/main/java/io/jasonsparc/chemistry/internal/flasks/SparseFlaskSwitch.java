@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.SparseArray;
 
 import io.jasonsparc.chemistry.Flask;
-import io.jasonsparc.chemistry.IntCaseSelector;
+import io.jasonsparc.chemistry.util.IntCaseSelector;
 import io.jasonsparc.chemistry.flasks.FlaskIntSwitch;
 
 /**

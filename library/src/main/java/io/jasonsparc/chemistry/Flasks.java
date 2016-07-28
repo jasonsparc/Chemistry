@@ -21,6 +21,7 @@ import io.jasonsparc.chemistry.internal.flasks.SingletonFlaskSelector;
 import io.jasonsparc.chemistry.internal.predicates.FlaskArrayBindPredicate;
 import io.jasonsparc.chemistry.internal.predicates.FlaskBindPredicate;
 import io.jasonsparc.chemistry.internal.predicates.FlaskCollectionBindPredicate;
+import io.jasonsparc.chemistry.util.CaseSelector;
 
 /**
  * TODO Docs

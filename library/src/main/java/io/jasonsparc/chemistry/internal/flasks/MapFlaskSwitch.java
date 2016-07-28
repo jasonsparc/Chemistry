@@ -8,7 +8,7 @@ import android.support.v4.util.SimpleArrayMap;
 
 import java.util.Map;
 
-import io.jasonsparc.chemistry.CaseSelector;
+import io.jasonsparc.chemistry.util.CaseSelector;
 import io.jasonsparc.chemistry.Flask;
 import io.jasonsparc.chemistry.flasks.FlaskSwitch;
 
