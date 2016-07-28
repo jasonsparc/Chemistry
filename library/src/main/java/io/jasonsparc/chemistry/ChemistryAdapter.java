@@ -4,12 +4,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.AdapterDataObserver;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.IdentityHashMap;
 
+import io.jasonsparc.chemistry.internal.util.ThreadUtils;
 import io.jasonsparc.chemistry.internal.util.ThrowableSignal;
 import io.jasonsparc.chemistry.internal.util.ViewTypes;
 
@@ -189,6 +193,7 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 		IdentityHashMap<Class<?>, IdSelector> idSelectors = new IdentityHashMap<>();
 		SparseArray<Flask> flasks = new SparseArray<>();
 		LongSparseArray<ItemBinder> itemBinders = new LongSparseArray<>();
+		ArrayList<ItemState<?>> itemStates = new ArrayList<>();
 	}
 
 	private static final IdSelector NO_ID_SELECTOR = new IdSelector() {
@@ -197,4 +202,315 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 			return RecyclerView.NO_ID;
 		}
 	};
+
+	// Item States
+
+	public <T> ItemState<T> getItemState(ViewHolder vh, @ValidRes int stateKey) {
+		final int position = vh.getAdapterPosition();
+		if (position < 0) {
+			throw new IllegalArgumentException("Attempted to get item state of unbound ViewHolder.");
+		}
+		return getItemStateInternal(position, vh.getItemId(), stateKey);
+	}
+
+	public <T> ItemState<T> getItemState(int position, @ValidRes int stateKey) {
+		return getItemStateInternal(position, getItemId(position), stateKey);
+	}
+
+	public <T> ItemState<T> getItemStateForId(long itemId, @ValidRes int stateKey) {
+		return getItemStateForIdInternal(itemId, stateKey);
+	}
+
+	public <T> ItemState<T> initItemState(ViewHolder vh, @ValidRes int stateKey) {
+		final int position = vh.getAdapterPosition();
+		if (position < 0) {
+			throw new IllegalArgumentException("Attempted to get item state of unbound ViewHolder.");
+		}
+		return initItemStateInternal(position, vh.getItemViewType(), vh.getItemId(), stateKey);
+	}
+
+	public <T> ItemState<T> initItemState(int position, @ValidRes int stateKey) {
+		final Item item = getItem(position);
+		return initItemStateInternal(position, 0, getItemId(item), stateKey);
+	}
+
+	public <T> ItemState<T> initItemStateForId(long itemId, @ValidRes int stateKey) {
+		if (itemId == RecyclerView.NO_ID) {
+			throw new IllegalArgumentException("itemId == RecyclerView.NO_ID");
+		}
+		return initItemStateForIdInternal(itemId, stateKey);
+	}
+
+	// Item States Internals
+
+	private <T> ItemState<T> getItemStateInternal(int position, long id, @ValidRes int stateKey) {
+		return (ItemState<T>) (id == RecyclerView.NO_ID
+				? getItemStateForPositionInternal(position, stateKey)
+				: getItemStateForIdInternal(id, stateKey));
+	}
+
+	private <T> ItemState<T> getItemStateForPositionInternal(int position, @ValidRes int stateKey) {
+		final ArrayList<ItemState<?>> itemStates = getCacheState().itemStates;
+		final int index = Collections.binarySearch(itemStates, PositionalItemState.getFinder(position, stateKey));
+		return index < 0 ? null : (ItemState<T>) itemStates.get(index);
+	}
+
+	private <T> ItemState<T> getItemStateForIdInternal(long id, @ValidRes int stateKey) {
+		final ArrayList<ItemState<?>> itemStates = getCacheState().itemStates;
+		final int index = Collections.binarySearch(itemStates, IdBasedItemState.getFinder(id, stateKey));
+		return index < 0 ? null : (ItemState<T>) itemStates.get(index);
+	}
+
+	private <T> ItemState<T> initItemStateInternal(int position, int viewType, long id, @ValidRes int stateKey) {
+		return (ItemState<T>) (id == RecyclerView.NO_ID
+				? initItemStateForPositionInternal(position, viewType, stateKey)
+				: initItemStateForIdInternal(id, stateKey));
+	}
+
+	private <T> ItemState<T> initItemStateForPositionInternal(int position, int viewType, @ValidRes int stateKey) {
+		final ArrayList<ItemState<?>> itemStates = getCacheState().itemStates;
+		int index = Collections.binarySearch(itemStates, PositionalItemState.getFinder(position, stateKey));
+
+		if (index < 0) {
+			index = ~index;
+
+			if (viewType == 0)
+				viewType = getItemViewType(position);
+
+			ItemState itemState = new PositionalItemState<>(position, viewType, stateKey);
+			itemStates.add(index, itemState);
+			return itemState;
+		}
+		return (ItemState<T>) itemStates.get(index);
+	}
+
+	private <T> ItemState<T> initItemStateForIdInternal(long id, @ValidRes int stateKey) {
+		final ArrayList<ItemState<?>> itemStates = getCacheState().itemStates;
+		int index = Collections.binarySearch(itemStates, IdBasedItemState.getFinder(id, stateKey));
+
+		if (index < 0) {
+			index = ~index;
+
+			ItemState itemState = new IdBasedItemState<>(id, stateKey);
+			itemStates.add(index, itemState);
+			return itemState;
+		}
+		return (ItemState<T>) itemStates.get(index);
+	}
+
+	public static abstract class ItemState<T> implements Comparable<ItemState> {
+		int stateKey;
+
+		public T data;
+
+		ItemState() { }
+
+		ItemState(int stateKey) {
+			this.stateKey = stateKey;
+		}
+
+		@Override
+		public int compareTo(@NonNull ItemState other) {
+			final int lhs = this.stateKey;
+			final int rhs = other.stateKey;
+
+			return lhs < rhs ? -1 : lhs == rhs ? 0 : 1;
+		}
+	}
+
+	static final class IdBasedItemState<T> extends ItemState<T> {
+		long id;
+
+		IdBasedItemState() { }
+
+		IdBasedItemState(long id, int stateKey) {
+			super(stateKey);
+			this.id = id;
+		}
+
+		@Override
+		public int compareTo(@NonNull ItemState other) {
+			if (other instanceof IdBasedItemState) {
+				long otherId = ((IdBasedItemState) other).id;
+				long id = this.id;
+
+				if (id < otherId)
+					return -1;
+				if (id == otherId)
+					return super.compareTo(other);
+				return 1;
+			}
+			return -1; // We are always lower than other types.
+		}
+
+		static <T> IdBasedItemState<T> getFinder(long id, int stateKey) {
+			final IdBasedItemState<T> finder = getFinderInternal();
+			finder.id = id;
+			finder.stateKey = stateKey;
+			return finder;
+		}
+
+		static <T> IdBasedItemState<T> getFinderInternal() {
+			// Optimizes for the main thread.
+			return Thread.currentThread() == ThreadUtils.MAIN
+					? sMainThreadInstance : OtherInternal.sInstance.get();
+		}
+
+		static final IdBasedItemState sMainThreadInstance = new IdBasedItemState();
+
+		private static class OtherInternal {
+			static final ThreadLocal<IdBasedItemState> sInstance = new ThreadLocal<IdBasedItemState>() {
+				@Override
+				protected IdBasedItemState initialValue() {
+					return new IdBasedItemState();
+				}
+			};
+		}
+	}
+
+	static final class PositionalItemState<T> extends ItemState<T> {
+		int position;
+
+		// Use only to properly distinguish between data set changes, as well as to prevent
+		// assigning a state to an unexpected/incompatible item of a different view type.
+		int viewType;
+
+		PositionalItemState() { }
+
+		PositionalItemState(int position, int viewType, int stateKey) {
+			super(stateKey);
+			this.position = position;
+			this.viewType = viewType;
+		}
+
+		@Override
+		public int compareTo(@NonNull ItemState other) {
+			if (other instanceof PositionalItemState) {
+				long otherPos = ((PositionalItemState) other).position;
+				long position = this.position;
+
+				if (position < otherPos)
+					return -1;
+				if (position == otherPos)
+					return super.compareTo(other);
+				return 1;
+			}
+			return 1; // We are always higher than other types.
+		}
+
+		static <T> PositionalItemState<T> getFinder(int position, int stateKey) {
+			final PositionalItemState<T> finder = getFinderInternal();
+			finder.position = position;
+			finder.stateKey = stateKey;
+			return finder;
+		}
+
+		static <T> PositionalItemState<T> getFinderInternal() {
+			// Optimizes for the main thread.
+			return Thread.currentThread() == ThreadUtils.MAIN
+					? sMainThreadInstance : OtherInternal.sInstance.get();
+		}
+
+		static final PositionalItemState sMainThreadInstance = new PositionalItemState();
+
+		private static class OtherInternal {
+			static final ThreadLocal<PositionalItemState> sInstance = new ThreadLocal<PositionalItemState>() {
+				@Override
+				protected PositionalItemState initialValue() {
+					return new PositionalItemState();
+				}
+			};
+		}
+	}
+
+	final class PositionalItemStatesInternals extends AdapterDataObserver {
+
+		@Override
+		public void onChanged() {
+			final ArrayList<ItemState<?>> itemStates = getCacheState().itemStates;
+
+			int index = Collections.binarySearch(itemStates, PositionalItemState.getFinder(0, 0));
+			if (index < 0) index = ~index;
+
+			final int size = itemStates.size();
+			if (index < size)
+				itemStates.subList(index, size).clear();
+		}
+
+		@Override
+		public void onItemRangeChanged(int positionStart, int itemCount) {
+			super.onItemRangeChanged(positionStart, itemCount);
+		}
+
+		@Override
+		public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
+			super.onItemRangeChanged(positionStart, itemCount, payload);
+		}
+
+		@Override
+		public void onItemRangeInserted(int positionStart, int itemCount) {
+			if (itemCount == 0) {
+				return;
+			}
+
+			final ArrayList<ItemState<?>> itemStates = getCacheState().itemStates;
+
+			for (int i = itemStates.size() - 1; i >= 0; i--) {
+				final PositionalItemState<?> ps;
+				{
+					final ItemState<?> s = itemStates.get(i);
+					if (s instanceof PositionalItemState<?>) {
+						ps = (PositionalItemState<?>) s;
+					} else
+						break;
+				}
+				if (ps.position < positionStart) {
+					break;
+				}
+				ps.position += itemCount;
+			}
+		}
+
+		@Override
+		public void onItemRangeRemoved(int positionStart, int itemCount) {
+			if (itemCount == 0) {
+				return;
+			}
+
+			final ArrayList<ItemState<?>> itemStates = getCacheState().itemStates;
+
+			int removeStart = -1, removeEnd = -1; // Both are inclusive indices
+
+			for (int i = itemStates.size() - 1; i >= 0; i--) {
+				final PositionalItemState<?> ps;
+				{
+					final ItemState<?> s = itemStates.get(i);
+					if (s instanceof PositionalItemState<?>) {
+						ps = (PositionalItemState<?>) s;
+					} else
+						break;
+				}
+				int position = ps.position;
+				if (position < positionStart) {
+					break;
+				}
+				position -= itemCount;
+				if (position < 0) {
+					removeStart = i;
+					if (removeEnd < 0)
+						removeEnd = i;
+				} else {
+					ps.position = position;
+				}
+			}
+
+			if (removeStart >= 0)
+				itemStates.subList(removeStart, removeEnd + 1).clear();
+		}
+
+		@Override
+		public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+			super.onItemRangeMoved(fromPosition, toPosition, itemCount);
+		}
+	}
 }
