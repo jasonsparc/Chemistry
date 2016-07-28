@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import java.util.IdentityHashMap;
 
+import io.jasonsparc.chemistry.internal.util.ThrowableSignal;
+
 import static io.jasonsparc.chemistry.Chemistry.getItemClass;
 
 /**
@@ -36,9 +38,17 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 		if (!hasStableIds()) {
 			return RecyclerView.NO_ID;
 		}
+		return getItemIdInternal(getItem(position));
+	}
 
-		final Item item = getItem(position);
+	public long getItemId(Item item) {
+		if (!hasStableIds()) {
+			return RecyclerView.NO_ID;
+		}
+		return getItemIdInternal(item);
+	}
 
+	private long getItemIdInternal(Item item) {
 		final CacheState cacheState = getCacheState();
 		final Class<?> itemClass = getItemClass(item);
 		IdSelector idSelector = cacheState.idSelectors.get(itemClass);
@@ -58,7 +68,28 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 	@Override
 	public int getItemViewType(int position) {
 		final Item item = getItem(position);
+		try {
+			return getItemViewTypeInternal(item);
+		} catch (NullFlaskSignal s) {
+			throw new NullPointerException(item == null
+					? "Null `Flask` associated for null item at position " + position
+					: "Null `Flask` associated for item at position " + position + " with class: `" + item.getClass().getName() + "`"
+			);
+		}
+	}
 
+	public int getItemViewType(Item item) {
+		try {
+			return getItemViewTypeInternal(item);
+		} catch (NullFlaskSignal s) {
+			throw new NullPointerException(item == null
+					? "Null `Flask` associated for null item."
+					: "Null `Flask` associated for item! Class: " + item.getClass().getName() + "; Item: " + item
+			);
+		}
+	}
+
+	private int getItemViewTypeInternal(Item item) {
 		final CacheState cacheState = getCacheState();
 		final Class<?> itemClass = getItemClass(item);
 		FlaskSelector flaskSelector = cacheState.flaskSelectors.get(itemClass);
@@ -78,10 +109,7 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 
 		final Flask itemFlask = flaskSelector.getItemFlask(item);
 		if (itemFlask == null) {
-			throw new NullPointerException(item == null
-					? "Null `Flask` associated for null item at position " + position
-					: "Null `Flask` associated for item at position " + position + " with class: `" + itemClass.getName() + "`"
-			);
+			throw new NullFlaskSignal();
 		}
 
 		final int viewType = itemFlask.getViewType();
@@ -91,6 +119,10 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 		}
 
 		return viewType;
+	}
+
+	private static class NullFlaskSignal extends ThrowableSignal {
+		NullFlaskSignal() { }
 	}
 
 	@NonNull
