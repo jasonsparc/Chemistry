@@ -34,12 +34,12 @@ public class Flasks {
 
 	// Composite `Flask` factories
 
-	public static <VH extends ViewHolder> Flask<VH> make(@ViewType @AnyRes final int viewType, @NonNull ViewFactory viewFactory, @NonNull VhFactory<? extends VH> vhFactory) {
+	public static <VH extends ViewHolder> Flask<VH> make(@ViewType @AnyRes int viewType, @NonNull ViewFactory viewFactory, @NonNull VhFactory<? extends VH> vhFactory) {
 		return new CompositeTypedFlask<>(viewType, viewFactory, vhFactory);
 	}
 
-	public static <VH extends ViewHolder> Flask<VH> make(@ViewType @AnyRes int viewType, @NonNull ViewFactory viewFactory, @NonNull Class<? extends VH> vhCls) {
-		return new CompositeReflectiveTypedFlask<>(viewType, viewFactory, vhCls);
+	public static <VH extends ViewHolder> Flask<VH> make(@ViewType @AnyRes int viewType, @NonNull ViewFactory viewFactory, @NonNull Class<? extends VH> vhClass) {
+		return new CompositeReflectiveTypedFlask<>(viewType, viewFactory, vhClass);
 	}
 
 	// Auto-inflate `Flask` factories
@@ -52,12 +52,12 @@ public class Flasks {
 		return new InflateTypedFlask<>(itemLayout, itemLayout, vhFactory);
 	}
 
-	public static <VH extends ViewHolder> Flask<VH> make(@ViewType @AnyRes int viewType, @LayoutRes int itemLayout, @NonNull Class<? extends VH> vhCls) {
-		return new InflateReflectiveTypedFlask<>(viewType, itemLayout, vhCls);
+	public static <VH extends ViewHolder> Flask<VH> make(@ViewType @AnyRes int viewType, @LayoutRes int itemLayout, @NonNull Class<? extends VH> vhClass) {
+		return new InflateReflectiveTypedFlask<>(viewType, itemLayout, vhClass);
 	}
 
-	public static <VH extends ViewHolder> Flask<VH> make(@LayoutRes int itemLayout, @NonNull Class<? extends VH> vhCls) {
-		return new InflateReflectiveTypedFlask<>(itemLayout, itemLayout, vhCls);
+	public static <VH extends ViewHolder> Flask<VH> make(@LayoutRes int itemLayout, @NonNull Class<? extends VH> vhClass) {
+		return new InflateReflectiveTypedFlask<>(itemLayout, itemLayout, vhClass);
 	}
 
 	// Utilities

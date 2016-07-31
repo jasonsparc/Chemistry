@@ -16,8 +16,8 @@ import io.jasonsparc.chemistry.internal.util.InflateUtils;
 public class InflateReflectiveTypedFlask<VH extends ViewHolder> extends ReflectiveTypedFlask<VH> {
 	@LayoutRes final int itemLayout;
 
-	public InflateReflectiveTypedFlask(@ViewType @AnyRes final int viewType, @LayoutRes final int itemLayout, @NonNull Class<? extends VH> vhCls) {
-		super(viewType, vhCls);
+	public InflateReflectiveTypedFlask(@ViewType @AnyRes int viewType, @LayoutRes int itemLayout, @NonNull Class<? extends VH> vhClass) {
+		super(viewType, vhClass);
 		this.itemLayout = itemLayout;
 	}
 

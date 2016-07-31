@@ -16,8 +16,8 @@ public class ReflectiveVhFactory<VH extends ViewHolder> implements VhFactory<VH>
 
 	@NonNull final Constructor<? extends VH> constructor;
 
-	public ReflectiveVhFactory(@NonNull Class<? extends VH> cls) {
-		this.constructor = getConstructor(cls);
+	public ReflectiveVhFactory(@NonNull Class<? extends VH> vhClass) {
+		this.constructor = getConstructor(vhClass);
 	}
 
 	@Override
@@ -30,9 +30,9 @@ public class ReflectiveVhFactory<VH extends ViewHolder> implements VhFactory<VH>
 	}
 
 	@NonNull
-	static <VH> Constructor<? extends VH> getConstructor(@NonNull Class<? extends VH> cls) {
+	static <VH> Constructor<? extends VH> getConstructor(@NonNull Class<? extends VH> vhClass) {
 		try {
-			Constructor<? extends VH> constructor = cls.getDeclaredConstructor(sConstructorSignature);
+			Constructor<? extends VH> constructor = vhClass.getDeclaredConstructor(sConstructorSignature);
 			// the constructor might not be public
 			constructor.setAccessible(true);
 			return constructor;

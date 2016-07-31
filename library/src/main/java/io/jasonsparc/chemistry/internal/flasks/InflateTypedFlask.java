@@ -17,7 +17,7 @@ public class InflateTypedFlask<VH extends ViewHolder> extends TypedFlask<VH> {
 	@LayoutRes final int itemLayout;
 	@NonNull final VhFactory<? extends VH> vhFactory;
 
-	public InflateTypedFlask(@ViewType @AnyRes final int viewType, @LayoutRes final int itemLayout, @NonNull VhFactory<? extends VH> vhFactory) {
+	public InflateTypedFlask(@ViewType @AnyRes int viewType, @LayoutRes int itemLayout, @NonNull VhFactory<? extends VH> vhFactory) {
 		super(viewType);
 		this.itemLayout = itemLayout;
 		this.vhFactory = vhFactory;

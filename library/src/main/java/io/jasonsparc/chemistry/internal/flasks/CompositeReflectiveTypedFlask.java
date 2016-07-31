@@ -15,8 +15,8 @@ import io.jasonsparc.chemistry.util.ViewFactory;
 public class CompositeReflectiveTypedFlask<VH extends ViewHolder> extends ReflectiveTypedFlask<VH> {
 	@NonNull final ViewFactory viewFactory;
 
-	public CompositeReflectiveTypedFlask(@ViewType @AnyRes final int viewType, @NonNull ViewFactory viewFactory, @NonNull Class<? extends VH> vhCls) {
-		super(viewType, vhCls);
+	public CompositeReflectiveTypedFlask(@ViewType @AnyRes int viewType, @NonNull ViewFactory viewFactory, @NonNull Class<? extends VH> vhClass) {
+		super(viewType, vhClass);
 		this.viewFactory = viewFactory;
 	}
 

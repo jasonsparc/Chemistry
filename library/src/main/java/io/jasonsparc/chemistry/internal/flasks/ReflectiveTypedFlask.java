@@ -16,9 +16,9 @@ import io.jasonsparc.chemistry.ViewType;
 public abstract class ReflectiveTypedFlask<VH extends ViewHolder> extends TypedFlask<VH> {
 	@NonNull final Constructor<? extends VH> constructor;
 
-	protected ReflectiveTypedFlask(@ViewType @AnyRes int viewType, @NonNull Class<? extends VH> vhCls) {
+	protected ReflectiveTypedFlask(@ViewType @AnyRes int viewType, @NonNull Class<? extends VH> vhClass) {
 		super(viewType);
-		this.constructor = ReflectiveVhFactory.getConstructor(vhCls);
+		this.constructor = ReflectiveVhFactory.getConstructor(vhClass);
 	}
 
 	protected abstract View createView(ViewGroup parent);

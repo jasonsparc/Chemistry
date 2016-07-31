@@ -16,7 +16,7 @@ public class CompositeTypedFlask<VH extends ViewHolder> extends TypedFlask<VH> {
 	@NonNull final ViewFactory viewFactory;
 	@NonNull final VhFactory<? extends VH> vhFactory;
 
-	public CompositeTypedFlask(@ViewType @AnyRes final int viewType, @NonNull ViewFactory viewFactory, @NonNull VhFactory<? extends VH> vhFactory) {
+	public CompositeTypedFlask(@ViewType @AnyRes int viewType, @NonNull ViewFactory viewFactory, @NonNull VhFactory<? extends VH> vhFactory) {
 		super(viewType);
 		this.viewFactory = viewFactory;
 		this.vhFactory = vhFactory;
