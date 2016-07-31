@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import io.jasonsparc.chemistry.Flask;
 import io.jasonsparc.chemistry.ViewType;
-import io.jasonsparc.chemistry.internal.util.ViewTypes;
+import io.jasonsparc.chemistry.util.ViewTypes;
 
 /**
  * Created by jason on 11/07/2016.

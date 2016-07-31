@@ -17,8 +17,8 @@ public interface BindPredicate<VH extends ViewHolder> {
 	 * class does not match the type parameter specified by this {@link BindPredicate} instance.
 	 *
 	 * @param flask
-	 * @param vhCls
+	 * @param vhClass
 	 * @return
 	 */
-	boolean checkBind(@NonNull Flask<?> flask, @NonNull Class<? extends ViewHolder> vhCls);
+	boolean checkBind(@NonNull Flask<?> flask, @NonNull Class<? extends ViewHolder> vhClass);
 }

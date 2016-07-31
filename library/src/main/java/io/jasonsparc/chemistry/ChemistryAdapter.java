@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import java.util.IdentityHashMap;
 
 import io.jasonsparc.chemistry.internal.util.ThrowableSignal;
-import io.jasonsparc.chemistry.internal.util.ViewTypes;
+import io.jasonsparc.chemistry.util.ViewTypes;
 
 import static io.jasonsparc.chemistry.Chemistry.getItemClass;
 
@@ -20,10 +20,9 @@ import static io.jasonsparc.chemistry.Chemistry.getItemClass;
  *
  * Created by jason on 07/07/2016.
  */
-@SuppressWarnings("unchecked")
 public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHolder> {
 	@NonNull final Chemistry chemistry;
-	@Nullable CacheState cacheState;
+	@Nullable CacheState<Item> cacheState;
 
 	public ChemistryAdapter(@NonNull Chemistry chemistry) {
 		this.chemistry = chemistry;
@@ -49,16 +48,18 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 		return getItemIdInternal(item);
 	}
 
+	@SuppressWarnings("unchecked")
 	private long getItemIdInternal(Item item) {
-		final CacheState cacheState = getCacheState();
-		final Class<?> itemClass = getItemClass(item);
-		IdSelector idSelector = cacheState.idSelectors.get(itemClass);
+		final CacheState<Item> cacheState = getCacheState();
+		final Class<? extends Item> itemClass = getItemClass(item);
+		IdSelector<? super Item> idSelector = cacheState.idSelectors.get(itemClass);
 
 		if (idSelector == null) {
-			idSelector = chemistry.findIdSelector(itemClass, 0);
+			idSelector = chemistry.findIdSelector(itemClass);
 
-			if (idSelector == null)
+			if (idSelector == null) {
 				idSelector = NO_ID_SELECTOR;
+			}
 
 			cacheState.idSelectors.put(itemClass, idSelector);
 		}
@@ -91,12 +92,12 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 	}
 
 	private int getItemViewTypeInternal(Item item) {
-		final CacheState cacheState = getCacheState();
-		final Class<?> itemClass = getItemClass(item);
-		FlaskSelector flaskSelector = cacheState.flaskSelectors.get(itemClass);
+		final CacheState<Item> cacheState = getCacheState();
+		final Class<? extends Item> itemClass = getItemClass(item);
+		FlaskSelector<? super Item> flaskSelector = cacheState.flaskSelectors.get(itemClass);
 
 		if (flaskSelector == null) {
-			flaskSelector = chemistry.findFlaskSelector(itemClass, 0);
+			flaskSelector = chemistry.findFlaskSelector(itemClass);
 
 			if (flaskSelector == null) {
 				throw new NullPointerException(item == null
@@ -108,16 +109,16 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 			cacheState.flaskSelectors.put(itemClass, flaskSelector);
 		}
 
-		final Flask itemFlask = flaskSelector.getItemFlask(item);
+		final Flask<?> itemFlask = flaskSelector.getItemFlask(item);
 		if (itemFlask == null) {
 			throw new NullFlaskSignal();
 		}
 
 		@ViewType
 		final int viewType = itemFlask.getViewType();
-		ViewTypes.validateState(viewType);
+		ViewTypes.validateForState(viewType);
 
-		final Flask cachedFlask = cacheState.flasks.get(viewType);
+		final Flask<?> cachedFlask = cacheState.flasks.get(viewType);
 		if (cachedFlask == null) {
 			cacheState.flasks.put(viewType, itemFlask);
 		}
@@ -136,7 +137,7 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		final Flask flask = getCacheState().flasks.get(viewType);
+		final Flask<?> flask = getCacheState().flasks.get(viewType);
 		if (flask == null) {
 			throw new NullPointerException("`Flask` for the specified `viewType` either does not exist or has not yet been initialized.");
 		}
@@ -147,26 +148,26 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		final Item item = getItem(position);
 
-		final CacheState cacheState = getCacheState();
-		final Class<?> itemClass = getItemClass(item);
+		final CacheState<Item> cacheState = getCacheState();
+		final Class<? extends Item> itemClass = getItemClass(item);
 		final int viewType = holder.getItemViewType();
 
 		final long itemBinderKey = (((long) viewType) << 32) | itemClass.hashCode();
-		ItemBinder itemBinder = cacheState.itemBinders.get(itemBinderKey);
+		ItemBinder<? super Item, ? super ViewHolder> itemBinder = cacheState.itemBinders.get(itemBinderKey);
 
 		if (itemBinder == null) {
-			final Flask flask = cacheState.flasks.get(viewType);
+			final Flask<?> flask = cacheState.flasks.get(viewType);
 			if (flask == null) {
 				// TODO Try to find associated flask before throwing an error
 
 				throw new NullPointerException("`Flask` for the specified `viewType` either does not exist or has not yet been initialized.");
 			}
 
-			itemBinder = chemistry.findItemBinder(itemClass, holder.getClass(), flask, 0);
+			itemBinder = chemistry.findItemBinder(itemClass, holder.getClass(), flask);
 
 			if (itemBinder == null) {
 				throw new NullPointerException(item == null
-						? "No `ItemBinder` found! Item Class: null item; VH Class: " + holder.getClass().getName() + "; Flask: " + flask
+						? "No `ItemBinder` found! Item Class: null; VH Class: " + holder.getClass().getName() + "; Flask: " + flask
 						: "No `ItemBinder` found! Item Class: " + itemClass.getName() + "; VH Class: " + holder.getClass().getName() + "; Flask: " + flask);
 			}
 
@@ -177,18 +178,20 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 	}
 
 	@NonNull
-	CacheState getCacheState() {
+	private CacheState<Item> getCacheState() {
 		if (cacheState == null) {
-			cacheState = new CacheState();
+			cacheState = new CacheState<>();
 		}
 		return cacheState;
 	}
 
-	static class CacheState {
-		IdentityHashMap<Class<?>, FlaskSelector> flaskSelectors = new IdentityHashMap<>();
-		IdentityHashMap<Class<?>, IdSelector> idSelectors = new IdentityHashMap<>();
-		SparseArray<Flask> flasks = new SparseArray<>();
-		LongSparseArray<ItemBinder> itemBinders = new LongSparseArray<>();
+	private static class CacheState<Item> {
+		IdentityHashMap<Class<? extends Item>, FlaskSelector<? super Item>> flaskSelectors = new IdentityHashMap<>();
+		IdentityHashMap<Class<? extends Item>, IdSelector<? super Item>> idSelectors = new IdentityHashMap<>();
+		SparseArray<Flask<?>> flasks = new SparseArray<>();
+		LongSparseArray<ItemBinder<? super Item, ? super ViewHolder>> itemBinders = new LongSparseArray<>();
+
+		CacheState() { }
 	}
 
 	private static final IdSelector NO_ID_SELECTOR = new IdSelector() {

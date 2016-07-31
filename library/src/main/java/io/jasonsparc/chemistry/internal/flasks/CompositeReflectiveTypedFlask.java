@@ -6,8 +6,8 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
 import android.view.ViewGroup;
 
-import io.jasonsparc.chemistry.ViewFactory;
 import io.jasonsparc.chemistry.ViewType;
+import io.jasonsparc.chemistry.util.ViewFactory;
 
 /**
  * Created by jason on 07/07/2016.

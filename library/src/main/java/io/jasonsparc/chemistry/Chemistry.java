@@ -5,16 +5,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
-import io.jasonsparc.chemistry.internal.impl.BindFlaskOpChemistry;
-import io.jasonsparc.chemistry.internal.impl.BindOpChemistry;
-import io.jasonsparc.chemistry.internal.impl.ChemistryDefaults;
-import io.jasonsparc.chemistry.internal.impl.ConcatChemistry;
-import io.jasonsparc.chemistry.internal.impl.FallbackChemistry;
-import io.jasonsparc.chemistry.internal.impl.FlaskOpChemistry;
-import io.jasonsparc.chemistry.internal.impl.IdentifyOpChemistry;
-import io.jasonsparc.chemistry.internal.impl.TranscendentFallbackChemistry;
-import io.jasonsparc.chemistry.internal.impl.TranscendentSignal;
-import io.jasonsparc.chemistry.internal.impl.WrapOpChemistry;
+import io.jasonsparc.chemistry.internal.BindFlaskOpChemistry;
+import io.jasonsparc.chemistry.internal.BindOpChemistry;
+import io.jasonsparc.chemistry.internal.ChemistryDefaults;
+import io.jasonsparc.chemistry.internal.FlaskOpChemistry;
+import io.jasonsparc.chemistry.internal.IdentifyOpChemistry;
+import io.jasonsparc.chemistry.internal.SingletonFlaskOpChemistry;
 import io.jasonsparc.chemistry.util.Function;
 
 /**
@@ -26,22 +22,28 @@ public abstract class Chemistry {
 
 	public static final Class<?> NULL_ITEM_CLASS = void.class;
 
-	/**
-	 * TODO Improve Docs
-	 * If this flag was set, the following should happen:
-	 * <p>
-	 * <br>- the root of the chain must throw {@link TranscendentSignal}.
-	 * <br>- the base must throw {@link TranscendentSignal} and pass any fallbacks upwards.
-	 * <br>- the catcher of the {@link TranscendentSignal} (who set this flag) must clear
-	 * the currently set fallback.
-	 */
-	public static final int SIGNAL_TRANSCENDENT = 1;
+	Chemistry() {
+		this.baseFlaskSelectorFinder = this;
+		this.baseItemBinderFinder = this;
+		this.baseIdSelectorFinder = this;
+	}
 
-	public Chemistry() { }
+	protected Chemistry(@NonNull Chemistry base) {
+		this.baseFlaskSelectorFinder = base.getFlaskSelectorFinder();
+		this.baseItemBinderFinder = base.getItemBinderFinder();
+		this.baseIdSelectorFinder = base.getIdSelectorFinder();
+	}
 
+	protected Chemistry(@NonNull Chemistry baseFlaskSelectorFinder, @NonNull Chemistry baseItemBinderFinder, @NonNull Chemistry baseIdSelectorFinder) {
+		this.baseFlaskSelectorFinder = baseFlaskSelectorFinder;
+		this.baseItemBinderFinder = baseItemBinderFinder;
+		this.baseIdSelectorFinder = baseIdSelectorFinder;
+	}
+
+	@SuppressWarnings("unchecked")
 	@NonNull
-	public static Class<?> getItemClass(Object item) {
-		return item == null ? NULL_ITEM_CLASS : item.getClass();
+	public static <Item> Class<? extends Item> getItemClass(Item item) {
+		return item == null ? (Class) NULL_ITEM_CLASS : item.getClass();
 	}
 
 	@SuppressWarnings("TypeParameterHidesVisibleType")
@@ -58,20 +60,6 @@ public abstract class Chemistry {
 		R apply(Chemistry chemistry);
 	}
 
-	/**
-	 * TODO Improve Docs
-	 * <br>- wraps this chain inside a new Chemistry instance, often used to hide any subclass
-	 * implementations.
-	 * <br>- if the existing chain is already a wrapped Chemistry instance, the implementation can
-	 * first unwrap the chain and then wrap the result inside a new wrapper instance.
-	 *
-	 * @return
-	 */
-	@CheckResult
-	public Chemistry wrap() {
-		return new WrapOpChemistry(this);
-	}
-
 	// Chaining Bases
 
 	@CheckResult
@@ -80,13 +68,8 @@ public abstract class Chemistry {
 	}
 
 	@CheckResult
-	public static Chemistry defaultFallback() {
-		return ChemistryDefaults.DEFAULT_FALLBACK;
-	}
-
-	@CheckResult
-	public static Chemistry emptyBase() {
-		return ChemistryDefaults.EMPTY_BASE;
+	public static Chemistry empty() {
+		return NullChemistry.INSTANCE;
 	}
 
 	// Adapter Composition
@@ -111,7 +94,9 @@ public abstract class Chemistry {
 
 	@CheckResult
 	public <Item> Chemistry flask(@NonNull Class<? extends Item> itemClass, @Nullable Flask<?> flask) {
-		return new FlaskOpChemistry(this, itemClass, flask == null ? null : Flasks.select(flask));
+		return flask == null
+				? new FlaskOpChemistry(this, itemClass, null)
+				: new SingletonFlaskOpChemistry(this, itemClass, flask);
 	}
 
 	/**
@@ -141,61 +126,80 @@ public abstract class Chemistry {
 		return new IdentifyOpChemistry(this, itemClass, idSelector);
 	}
 
-	// Concatenation Operators
-
-	@CheckResult
-	public Chemistry prepend(@NonNull Chemistry chemistry) {
-		return new ConcatChemistry(chemistry, this);
-	}
-
-	@CheckResult
-	public Chemistry append(@NonNull Chemistry chemistry) {
-		return new ConcatChemistry(this, chemistry);
-	}
-
-	@CheckResult
-	public Chemistry prepend(@NonNull Chemistry... chemistries) {
-		Chemistry out = this;
-		for (Chemistry chemistry : chemistries) {
-			out = out.prepend(chemistry);
-		}
-		return out;
-	}
-
-	@CheckResult
-	public Chemistry append(@NonNull Chemistry... chemistries) {
-		Chemistry out = this;
-		for (Chemistry chemistry : chemistries) {
-			out = out.append(chemistry);
-		}
-		return out;
-	}
-
-	// Fallback Mechanism
-
-	@CheckResult
-	public Chemistry fallback(@Nullable Chemistry fallback) {
-		return new FallbackChemistry(this, fallback);
-	}
-
-	@CheckResult
-	public Chemistry asFallback() {
-		return new TranscendentFallbackChemistry(this);
-	}
-
-	@CheckResult
-	public Chemistry asFallbackFor(@NonNull Chemistry target) {
-		return target.fallback(this);
-	}
-
 	// Find Operations
 
 	@Nullable
-	public abstract <Item> FlaskSelector<? super Item> findFlaskSelector(@NonNull Class<? extends Item> itemClass, int flags);
+	public <Item> FlaskSelector<? super Item> findFlaskSelector(@NonNull Class<? extends Item> itemClass) {
+		return baseFlaskSelectorFinder.findFlaskSelector(itemClass);
+	}
 
 	@Nullable
-	public abstract <Item, VH extends ViewHolder> ItemBinder<? super Item, ? super VH> findItemBinder(@NonNull Class<? extends Item> itemClass, @NonNull Class<? extends VH> vhClass, Flask<? extends VH> flask, int flags);
+	public <Item, VH extends ViewHolder> ItemBinder<? super Item, ? super VH> findItemBinder(@NonNull Class<? extends Item> itemClass, @NonNull Class<? extends VH> vhClass, Flask<? extends VH> flask) {
+		return baseItemBinderFinder.findItemBinder(itemClass, vhClass, flask);
+	}
 
 	@Nullable
-	public abstract <Item> IdSelector<? super Item> findIdSelector(@NonNull Class<? extends Item> itemClass, int flags);
+	public <Item> IdSelector<? super Item> findIdSelector(@NonNull Class<? extends Item> itemClass) {
+		return baseIdSelectorFinder.findIdSelector(itemClass);
+	}
+
+	// Internals for Skips
+
+	/*
+	 * Invoking "find***(...)" methods on a Chemistry are optimized by skipping over irrelevant
+	 * Chemistry objects in the chain that are not related to the current find operation.
+	 *
+	 * ------------------------------------------------
+	 *
+	 *     C C C C C C C
+	 * f- -f---------f-x
+	 * b- ---b---b-b---x
+	 * i- -----i-----i-x
+	 *
+	 * Legend:
+	 * C `Chemistry` object
+	 * f `findFlaskSelector` operation
+	 * b `findItemBinder` operation
+	 * i `findIdSelector` operation
+	 *
+	 * ------------------------------------------------
+	 *
+	 * If a Chemistry implementation overrides one of the above "find*" methods, then it should
+	 * also override a corresponding "get*Finder" method below with an implementation returning
+	 * itself. Otherwise, the implementation is lost when chaining.
+	 *
+	 * Example:
+
+			@Nullable
+			@Override
+			public <Item> IdSelector<? super Item> findIdSelector(@NonNull Class<? extends Item> itemClass) {
+				...
+			}
+
+			@NonNull
+			@Override
+			protected Chemistry getIdSelectorFinder() {
+				return this; // Prevents us from being skipped.
+			}
+
+	 */
+
+	@NonNull
+	protected Chemistry getFlaskSelectorFinder() {
+		return baseFlaskSelectorFinder;
+	}
+
+	@NonNull
+	protected Chemistry getItemBinderFinder() {
+		return baseItemBinderFinder;
+	}
+
+	@NonNull
+	protected Chemistry getIdSelectorFinder() {
+		return baseIdSelectorFinder;
+	}
+
+	@NonNull protected final Chemistry baseFlaskSelectorFinder;
+	@NonNull protected final Chemistry baseItemBinderFinder;
+	@NonNull protected final Chemistry baseIdSelectorFinder;
 }

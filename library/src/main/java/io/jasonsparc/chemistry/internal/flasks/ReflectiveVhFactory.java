@@ -6,7 +6,7 @@ import android.view.View;
 
 import java.lang.reflect.Constructor;
 
-import io.jasonsparc.chemistry.VhFactory;
+import io.jasonsparc.chemistry.util.VhFactory;
 
 /**
  * Created by jason on 07/07/2016.

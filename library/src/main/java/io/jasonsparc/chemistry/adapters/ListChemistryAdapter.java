@@ -8,8 +8,8 @@ import java.util.List;
 
 import io.jasonsparc.chemistry.Chemistry;
 import io.jasonsparc.chemistry.ChemistryAdapter;
+import io.jasonsparc.chemistry.util.Consumer;
 import io.jasonsparc.chemistry.util.Function;
-import io.jasonsparc.chemistry.util.Receiver;
 
 /**
  * Created by jason on 21/07/2016.
@@ -95,10 +95,10 @@ public class ListChemistryAdapter<Item> extends ChemistryAdapter<Item> {
 		return this;
 	}
 
-	public ListChemistryAdapter<Item> update(int location, Item item, @NonNull Receiver<? super Item> oldValueReceiver) {
+	public ListChemistryAdapter<Item> update(int location, Item item, @NonNull Consumer<? super Item> oldValueConsumer) {
 		Item prev = itemList.set(location, item);
 		notifyItemChanged(location);
-		oldValueReceiver.accept(prev);
+		oldValueConsumer.accept(prev);
 		return this;
 	}
 
@@ -110,8 +110,8 @@ public class ListChemistryAdapter<Item> extends ChemistryAdapter<Item> {
 
 	// Remove
 
-	public ListChemistryAdapter<Item> remove(int location, @NonNull Receiver<? super Item> oldValueReceiver) {
-		oldValueReceiver.accept(itemList.remove(location));
+	public ListChemistryAdapter<Item> remove(int location, @NonNull Consumer<? super Item> oldValueConsumer) {
+		oldValueConsumer.accept(itemList.remove(location));
 		notifyItemRemoved(location);
 		return this;
 	}
