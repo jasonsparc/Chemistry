@@ -17,9 +17,7 @@ import io.jasonsparc.chemistry.ViewType;
 import io.jasonsparc.chemistry.internal.bindpredicates.FlaskArrayBindPredicate;
 import io.jasonsparc.chemistry.internal.bindpredicates.FlaskBindPredicate;
 import io.jasonsparc.chemistry.internal.bindpredicates.FlaskCollectionBindPredicate;
-import io.jasonsparc.chemistry.internal.flasks.CompositeReflectiveTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.CompositeTypedFlask;
-import io.jasonsparc.chemistry.internal.flasks.InflateReflectiveTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.InflateTypedFlask;
 import io.jasonsparc.chemistry.internal.flaskselectors.CompositeFlaskSelector;
 import io.jasonsparc.chemistry.internal.flaskselectors.MapFlaskSwitch;
@@ -39,7 +37,7 @@ public class Flasks {
 	}
 
 	public static <VH extends ViewHolder> Flask<VH> make(@ViewType @AnyRes int viewType, @NonNull ViewFactory viewFactory, @NonNull Class<? extends VH> vhClass) {
-		return new CompositeReflectiveTypedFlask<>(viewType, viewFactory, vhClass);
+		return new CompositeTypedFlask<>(viewType, viewFactory, VhFactories.make(vhClass));
 	}
 
 	// Auto-inflate `Flask` factories
@@ -53,11 +51,11 @@ public class Flasks {
 	}
 
 	public static <VH extends ViewHolder> Flask<VH> make(@ViewType @AnyRes int viewType, @LayoutRes int itemLayout, @NonNull Class<? extends VH> vhClass) {
-		return new InflateReflectiveTypedFlask<>(viewType, itemLayout, vhClass);
+		return new InflateTypedFlask<>(viewType, itemLayout, VhFactories.make(vhClass));
 	}
 
 	public static <VH extends ViewHolder> Flask<VH> make(@LayoutRes int itemLayout, @NonNull Class<? extends VH> vhClass) {
-		return new InflateReflectiveTypedFlask<>(itemLayout, itemLayout, vhClass);
+		return new InflateTypedFlask<>(itemLayout, itemLayout, VhFactories.make(vhClass));
 	}
 
 	// Utilities
