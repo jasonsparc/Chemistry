@@ -16,9 +16,9 @@ public interface BindPredicate<VH extends ViewHolder> {
 	 * CONTRACT: this method should return {@code false} if the given {@link ViewHolder ViewHolder}
 	 * class does not match the type parameter specified by this {@link BindPredicate} instance.
 	 *
-	 * @param flask
 	 * @param vhClass
+	 * @param flask
 	 * @return
 	 */
-	boolean checkBind(@NonNull Flask<?> flask, @NonNull Class<? extends ViewHolder> vhClass);
+	boolean checkBind(@NonNull Class<? extends ViewHolder> vhClass, @NonNull Flask<?> flask);
 }

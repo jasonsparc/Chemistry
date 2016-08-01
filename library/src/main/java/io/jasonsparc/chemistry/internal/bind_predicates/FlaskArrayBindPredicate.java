@@ -17,7 +17,7 @@ public class FlaskArrayBindPredicate<VH extends ViewHolder> implements BindPredi
 	}
 
 	@Override
-	public boolean checkBind(@NonNull Flask<?> flask, @NonNull Class<? extends ViewHolder> vhClass) {
+	public boolean checkBind(@NonNull Class<? extends ViewHolder> vhClass, @NonNull Flask<?> flask) {
 		for (Flask<?> checkFlask : flasks) {
 			if (flask.equals(checkFlask)) {
 				return true;

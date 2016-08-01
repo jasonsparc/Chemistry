@@ -17,7 +17,7 @@ public class VhClassArrayBindPredicate<VH extends ViewHolder> implements BindPre
 	}
 
 	@Override
-	public boolean checkBind(@NonNull Flask<?> flask, @NonNull Class<? extends ViewHolder> vhClass) {
+	public boolean checkBind(@NonNull Class<? extends ViewHolder> vhClass, @NonNull Flask<?> flask) {
 		for (Class<?> checkClass : vhClasses) {
 			if (checkClass.isAssignableFrom(vhClass)) {
 				return true;

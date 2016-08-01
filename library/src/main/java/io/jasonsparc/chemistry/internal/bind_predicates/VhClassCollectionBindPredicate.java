@@ -19,7 +19,7 @@ public class VhClassCollectionBindPredicate<VH extends ViewHolder> implements Bi
 	}
 
 	@Override
-	public boolean checkBind(@NonNull Flask<?> flask, @NonNull Class<? extends ViewHolder> vhClass) {
+	public boolean checkBind(@NonNull Class<? extends ViewHolder> vhClass, @NonNull Flask<?> flask) {
 		for (Class<?> checkClass : this.vhClasses) {
 			if (checkClass.isAssignableFrom(vhClass)) {
 				return true;

@@ -28,7 +28,7 @@ public final class BindOpChemistry extends BaseBindOpChemistry {
 	@Nullable
 	@Override
 	public <Item, VH extends ViewHolder> ItemBinder<? super Item, ? super VH> findItemBinder(@NonNull Class<? extends Item> itemClass, @NonNull Class<? extends VH> vhClass, Flask<? extends VH> flask) {
-		if (this.itemClass.isAssignableFrom(itemClass) && bindPredicate.checkBind(flask, vhClass)) {
+		if (this.itemClass.isAssignableFrom(itemClass) && bindPredicate.checkBind(vhClass, flask)) {
 			return itemBinder;
 		}
 		return baseItemBinderFinder.findItemBinder(itemClass, vhClass, flask);
