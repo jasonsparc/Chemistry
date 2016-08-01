@@ -1,4 +1,4 @@
-package io.jasonsparc.chemistry.internal.flasks;
+package io.jasonsparc.chemistry.internal.vhfactories;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;

@@ -5,13 +5,13 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
 
 import java.util.Collection;
 
-import io.jasonsparc.chemistry.internal.flasks.InitArrayReflectiveVhFactory;
-import io.jasonsparc.chemistry.internal.flasks.InitArrayVhFactory;
-import io.jasonsparc.chemistry.internal.flasks.InitCollectionReflectiveVhFactory;
-import io.jasonsparc.chemistry.internal.flasks.InitCollectionVhFactory;
-import io.jasonsparc.chemistry.internal.flasks.InitReflectiveVhFactory;
-import io.jasonsparc.chemistry.internal.flasks.InitVhFactory;
-import io.jasonsparc.chemistry.internal.flasks.ReflectiveVhFactory;
+import io.jasonsparc.chemistry.internal.vhfactories.InitArrayReflectiveVhFactory;
+import io.jasonsparc.chemistry.internal.vhfactories.InitArrayVhFactory;
+import io.jasonsparc.chemistry.internal.vhfactories.InitCollectionReflectiveVhFactory;
+import io.jasonsparc.chemistry.internal.vhfactories.InitCollectionVhFactory;
+import io.jasonsparc.chemistry.internal.vhfactories.InitReflectiveVhFactory;
+import io.jasonsparc.chemistry.internal.vhfactories.InitVhFactory;
+import io.jasonsparc.chemistry.internal.vhfactories.ReflectiveVhFactory;
 
 /**
  * TODO Docs
