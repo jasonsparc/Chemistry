@@ -20,16 +20,16 @@ import io.jasonsparc.chemistry.internal.vh_factories.ReflectiveVhFactory;
  */
 public class VhFactories {
 
-	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, VhInitializer<? super VH> vhInitializer) {
+	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, @NonNull VhInitializer<? super VH> vhInitializer) {
 		return new InitVhFactory<>(vhFactory, vhInitializer);
 	}
 
 	@SafeVarargs
-	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, VhInitializer<? super VH>... vhInitializers) {
+	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, @NonNull VhInitializer<? super VH>... vhInitializers) {
 		return new InitArrayVhFactory<>(vhFactory, vhInitializers);
 	}
 
-	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, Collection<? extends VhInitializer<? super VH>> vhInitializers) {
+	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, @NonNull Collection<? extends VhInitializer<? super VH>> vhInitializers) {
 		return new InitCollectionVhFactory<>(vhFactory, vhInitializers);
 	}
 
@@ -37,16 +37,16 @@ public class VhFactories {
 		return new ReflectiveVhFactory<>(vhClass);
 	}
 
-	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull Class<? extends VH> vhClass, VhInitializer<? super VH> vhInitializer) {
+	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull Class<? extends VH> vhClass, @NonNull VhInitializer<? super VH> vhInitializer) {
 		return new InitReflectiveVhFactory<>(vhClass, vhInitializer);
 	}
 
 	@SafeVarargs
-	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull Class<? extends VH> vhClass, VhInitializer<? super VH>... vhInitializers) {
+	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull Class<? extends VH> vhClass, @NonNull VhInitializer<? super VH>... vhInitializers) {
 		return new InitArrayReflectiveVhFactory<>(vhClass, vhInitializers);
 	}
 
-	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull Class<? extends VH> vhClass, Collection<? extends VhInitializer<? super VH>> vhInitializers) {
+	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull Class<? extends VH> vhClass, @NonNull Collection<? extends VhInitializer<? super VH>> vhInitializers) {
 		return new InitCollectionReflectiveVhFactory<>(vhClass, vhInitializers);
 	}
 }
