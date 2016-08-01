@@ -1,4 +1,4 @@
-package io.jasonsparc.chemistry.internal.flaskselectors;
+package io.jasonsparc.chemistry.internal.flask_selectors;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

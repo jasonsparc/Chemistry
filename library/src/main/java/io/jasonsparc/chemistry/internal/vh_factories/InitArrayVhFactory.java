@@ -1,4 +1,4 @@
-package io.jasonsparc.chemistry.internal.vhfactories;
+package io.jasonsparc.chemistry.internal.vh_factories;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -10,19 +10,21 @@ import io.jasonsparc.chemistry.util.VhInitializer;
 /**
  * Created by Jason on 31/07/2016.
  */
-public class InitVhFactory<VH extends ViewHolder> implements VhFactory<VH> {
+public class InitArrayVhFactory<VH extends ViewHolder> implements VhFactory<VH> {
 	@NonNull final VhFactory<? extends VH> vhFactory;
-	@NonNull final VhInitializer<? super VH> vhInitializer;
+	@NonNull final VhInitializer<? super VH>[] vhInitializers;
 
-	public InitVhFactory(@NonNull VhFactory<? extends VH> vhFactory, @NonNull VhInitializer<? super VH> vhInitializer) {
+	public InitArrayVhFactory(@NonNull VhFactory<? extends VH> vhFactory, @NonNull VhInitializer<? super VH>[] vhInitializers) {
 		this.vhFactory = vhFactory;
-		this.vhInitializer = vhInitializer;
+		this.vhInitializers = vhInitializers;
 	}
 
 	@Override
 	public VH createViewHolder(View itemView) {
 		VH vh = vhFactory.createViewHolder(itemView);
-		vhInitializer.initViewHolder(vh);
+		for (VhInitializer<? super VH> vhInitializer : vhInitializers) {
+			vhInitializer.initViewHolder(vh);
+		}
 		return vh;
 	}
 }

@@ -7,9 +7,9 @@ import java.util.Collection;
 
 import io.jasonsparc.chemistry.BindPredicate;
 import io.jasonsparc.chemistry.Flask;
-import io.jasonsparc.chemistry.internal.bindpredicates.VhClassArrayBindPredicate;
-import io.jasonsparc.chemistry.internal.bindpredicates.VhClassBindPredicate;
-import io.jasonsparc.chemistry.internal.bindpredicates.VhClassCollectionBindPredicate;
+import io.jasonsparc.chemistry.internal.bind_predicates.VhClassArrayBindPredicate;
+import io.jasonsparc.chemistry.internal.bind_predicates.VhClassBindPredicate;
+import io.jasonsparc.chemistry.internal.bind_predicates.VhClassCollectionBindPredicate;
 
 /**
  * Created by jason on 12/07/2016.

@@ -14,14 +14,14 @@ import io.jasonsparc.chemistry.BindPredicate;
 import io.jasonsparc.chemistry.Flask;
 import io.jasonsparc.chemistry.FlaskSelector;
 import io.jasonsparc.chemistry.ViewType;
-import io.jasonsparc.chemistry.internal.bindpredicates.FlaskArrayBindPredicate;
-import io.jasonsparc.chemistry.internal.bindpredicates.FlaskBindPredicate;
-import io.jasonsparc.chemistry.internal.bindpredicates.FlaskCollectionBindPredicate;
+import io.jasonsparc.chemistry.internal.bind_predicates.FlaskArrayBindPredicate;
+import io.jasonsparc.chemistry.internal.bind_predicates.FlaskBindPredicate;
+import io.jasonsparc.chemistry.internal.bind_predicates.FlaskCollectionBindPredicate;
 import io.jasonsparc.chemistry.internal.flasks.CompositeTypedFlask;
 import io.jasonsparc.chemistry.internal.flasks.InflateTypedFlask;
-import io.jasonsparc.chemistry.internal.flaskselectors.CompositeFlaskSelector;
-import io.jasonsparc.chemistry.internal.flaskselectors.MapFlaskSwitch;
-import io.jasonsparc.chemistry.internal.flaskselectors.SingletonFlaskSelector;
+import io.jasonsparc.chemistry.internal.flask_selectors.CompositeFlaskSelector;
+import io.jasonsparc.chemistry.internal.flask_selectors.MapFlaskSwitch;
+import io.jasonsparc.chemistry.internal.flask_selectors.SingletonFlaskSelector;
 
 /**
  * TODO Docs

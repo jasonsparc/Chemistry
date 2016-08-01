@@ -1,4 +1,4 @@
-package io.jasonsparc.chemistry.internal.bindpredicates;
+package io.jasonsparc.chemistry.internal.bind_predicates;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;

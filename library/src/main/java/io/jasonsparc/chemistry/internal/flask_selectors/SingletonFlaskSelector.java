@@ -1,4 +1,4 @@
-package io.jasonsparc.chemistry.internal.flaskselectors;
+package io.jasonsparc.chemistry.internal.flask_selectors;
 
 import io.jasonsparc.chemistry.Flask;
 import io.jasonsparc.chemistry.FlaskSelector;
