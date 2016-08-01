@@ -1,4 +1,4 @@
-package io.jasonsparc.chemistry.util;
+package io.jasonsparc.chemistry.util.functions;
 
 /**
  * Created by jason on 21/07/2016.
