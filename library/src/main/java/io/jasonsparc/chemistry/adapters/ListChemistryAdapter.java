@@ -8,8 +8,8 @@ import java.util.List;
 
 import io.jasonsparc.chemistry.Chemistry;
 import io.jasonsparc.chemistry.ChemistryAdapter;
-import io.jasonsparc.chemistry.util.functions.Consumer;
-import io.jasonsparc.chemistry.util.functions.Function;
+import io.jasonsparc.chemistry.util.fn.Consumer;
+import io.jasonsparc.chemistry.util.fn.Function;
 
 /**
  * Created by jason on 21/07/2016.

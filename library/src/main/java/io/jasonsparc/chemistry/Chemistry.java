@@ -11,7 +11,7 @@ import io.jasonsparc.chemistry.internal.ChemistryDefaults;
 import io.jasonsparc.chemistry.internal.FlaskOpChemistry;
 import io.jasonsparc.chemistry.internal.IdentifyOpChemistry;
 import io.jasonsparc.chemistry.internal.SingletonFlaskOpChemistry;
-import io.jasonsparc.chemistry.util.functions.Function;
+import io.jasonsparc.chemistry.util.fn.Function;
 
 /**
  * TODO Docs
