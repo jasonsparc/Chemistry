@@ -9,7 +9,6 @@ import io.jasonsparc.chemistry.BindPredicate;
 import io.jasonsparc.chemistry.Flask;
 import io.jasonsparc.chemistry.internal.bind_predicates.VhClassArrayBindPredicate;
 import io.jasonsparc.chemistry.internal.bind_predicates.VhClassBindPredicate;
-import io.jasonsparc.chemistry.internal.bind_predicates.VhClassCollectionBindPredicate;
 
 /**
  * Created by jason on 12/07/2016.
@@ -38,7 +37,8 @@ public class BindPredicates {
 		return new VhClassArrayBindPredicate<>(vhClasses);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <VH extends ViewHolder> BindPredicate<VH> of(@NonNull Collection<Class<? extends VH>> vhClasses) {
-		return new VhClassCollectionBindPredicate<>(vhClasses);
+		return new VhClassArrayBindPredicate<>(vhClasses.toArray(new Class[vhClasses.size()]));
 	}
 }

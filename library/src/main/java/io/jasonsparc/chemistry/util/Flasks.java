@@ -16,12 +16,11 @@ import io.jasonsparc.chemistry.FlaskSelector;
 import io.jasonsparc.chemistry.ViewType;
 import io.jasonsparc.chemistry.internal.bind_predicates.FlaskArrayBindPredicate;
 import io.jasonsparc.chemistry.internal.bind_predicates.FlaskBindPredicate;
-import io.jasonsparc.chemistry.internal.bind_predicates.FlaskCollectionBindPredicate;
-import io.jasonsparc.chemistry.internal.flasks.CompositeTypedFlask;
-import io.jasonsparc.chemistry.internal.flasks.InflateTypedFlask;
 import io.jasonsparc.chemistry.internal.flask_selectors.CompositeFlaskSelector;
 import io.jasonsparc.chemistry.internal.flask_selectors.MapFlaskSwitch;
 import io.jasonsparc.chemistry.internal.flask_selectors.SingletonFlaskSelector;
+import io.jasonsparc.chemistry.internal.flasks.CompositeTypedFlask;
+import io.jasonsparc.chemistry.internal.flasks.InflateTypedFlask;
 
 /**
  * TODO Docs
@@ -97,7 +96,7 @@ public class Flasks {
 	}
 
 	public static <VH extends ViewHolder> BindPredicate<VH> matches(@NonNull Collection<? extends Flask<? extends VH>> flasks) {
-		return new FlaskCollectionBindPredicate<>(flasks);
+		return new FlaskArrayBindPredicate<>(array(flasks));
 	}
 
 	// Flask Selectors
