@@ -13,8 +13,9 @@ import io.jasonsparc.chemistry.internal.vh_initializers.PairVhInitializer;
  */
 public class VhInitializers {
 
+	@SuppressWarnings("unchecked")
 	public static <VH extends ViewHolder> VhInitializer<VH> make(@NonNull VhInitializer<? super VH> vhInitializer) {
-		return cast(vhInitializer);
+		return (VhInitializer<VH>) vhInitializer;
 	}
 
 	public static <VH extends ViewHolder> VhInitializer<VH> make(@NonNull VhInitializer<? super VH> first, @NonNull VhInitializer<? super VH> second) {
@@ -33,11 +34,6 @@ public class VhInitializers {
 	}
 
 	// Utilities
-
-	@SuppressWarnings("unchecked")
-	public static <VH extends ViewHolder> VhInitializer<VH> cast(@NonNull VhInitializer<? super VH> vhInitializer) {
-		return (VhInitializer<VH>) vhInitializer;
-	}
 
 	@SafeVarargs
 	public static <VHI extends VhInitializer<? extends ViewHolder>> VHI[] array(@NonNull VHI... vhInitializers) {
