@@ -2,7 +2,9 @@ package io.jasonsparc.chemistry.util;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.view.View;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import io.jasonsparc.chemistry.BindPredicate;
@@ -94,6 +96,30 @@ public class BindPredicates {
 
 	public static <VH extends ViewHolder> BindPredicate<VH> either(Collection<? extends BindPredicate<? extends VH>> bindPredicates) {
 		return either(array(bindPredicates));
+	}
+
+	static {
+		class VHS extends ViewHolder {
+			public VHS(View itemView) { super(itemView); }
+		}
+		class VH2 extends VHS {
+			public VH2(View itemView) { super(itemView); }
+		}
+		class VH3 extends VHS {
+			public VH3(View itemView) { super(itemView); }
+		}
+
+		Collection<BindPredicate<? extends VHS>> b1 = Arrays.asList(BindPredicates.of(VH2.class), BindPredicates.of(VH3.class));
+
+		BindPredicate<? extends VHS>[] ba1 = array(b1);
+
+		@SuppressWarnings("unchecked")
+		BindPredicate<? extends VHS>[] ba2 = new BindPredicate[] {BindPredicates.of(VH2.class), BindPredicates.of(VH3.class)};
+
+		BindPredicate<VHS> e1 = either(ba1);
+		BindPredicate<VHS> e2 = either(ba2);
+		BindPredicate<VHS> f1 = fuse(ba1);
+		BindPredicate<VHS> f2 = fuse(ba2);
 	}
 
 	// Utilities
