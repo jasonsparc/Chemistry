@@ -5,11 +5,6 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
 
 import java.util.Collection;
 
-import io.jasonsparc.chemistry.internal.vh_factories.InitArrayReflectiveVhFactory;
-import io.jasonsparc.chemistry.internal.vh_factories.InitArrayVhFactory;
-import io.jasonsparc.chemistry.internal.vh_factories.InitCollectionReflectiveVhFactory;
-import io.jasonsparc.chemistry.internal.vh_factories.InitCollectionVhFactory;
-import io.jasonsparc.chemistry.internal.vh_factories.InitReflectiveVhFactory;
 import io.jasonsparc.chemistry.internal.vh_factories.InitVhFactory;
 import io.jasonsparc.chemistry.internal.vh_factories.ReflectiveVhFactory;
 
@@ -24,13 +19,17 @@ public class VhFactories {
 		return new InitVhFactory<>(vhFactory, vhInitializer);
 	}
 
+	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, @NonNull VhInitializer<? super VH> first, @NonNull VhInitializer<? super VH> second) {
+		return new InitVhFactory<>(vhFactory, VhInitializers.make(first, second));
+	}
+
 	@SafeVarargs
 	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, @NonNull VhInitializer<? super VH>... vhInitializers) {
-		return new InitArrayVhFactory<>(vhFactory, vhInitializers);
+		return new InitVhFactory<>(vhFactory, VhInitializers.make(vhInitializers));
 	}
 
 	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, @NonNull Collection<? extends VhInitializer<? super VH>> vhInitializers) {
-		return new InitCollectionVhFactory<>(vhFactory, vhInitializers);
+		return new InitVhFactory<>(vhFactory, VhInitializers.make(vhInitializers));
 	}
 
 	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull Class<? extends VH> vhClass) {
@@ -38,15 +37,19 @@ public class VhFactories {
 	}
 
 	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull Class<? extends VH> vhClass, @NonNull VhInitializer<? super VH> vhInitializer) {
-		return new InitReflectiveVhFactory<>(vhClass, vhInitializer);
+		return new InitVhFactory<>(make(vhClass), vhInitializer);
+	}
+
+	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull Class<? extends VH> vhClass, @NonNull VhInitializer<? super VH> first, @NonNull VhInitializer<? super VH> second) {
+		return new InitVhFactory<>(make(vhClass), VhInitializers.make(first, second));
 	}
 
 	@SafeVarargs
 	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull Class<? extends VH> vhClass, @NonNull VhInitializer<? super VH>... vhInitializers) {
-		return new InitArrayReflectiveVhFactory<>(vhClass, vhInitializers);
+		return new InitVhFactory<>(make(vhClass), VhInitializers.make(vhInitializers));
 	}
 
 	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull Class<? extends VH> vhClass, @NonNull Collection<? extends VhInitializer<? super VH>> vhInitializers) {
-		return new InitCollectionReflectiveVhFactory<>(vhClass, vhInitializers);
+		return new InitVhFactory<>(make(vhClass), VhInitializers.make(vhInitializers));
 	}
 }

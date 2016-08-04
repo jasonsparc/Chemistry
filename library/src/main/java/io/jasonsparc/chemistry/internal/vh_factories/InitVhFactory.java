@@ -6,15 +6,22 @@ import android.view.View;
 
 import io.jasonsparc.chemistry.util.VhFactory;
 import io.jasonsparc.chemistry.util.VhInitializer;
+import io.jasonsparc.chemistry.util.VhInitializers;
 
 /**
  * Created by Jason on 31/07/2016.
  */
-public class InitVhFactory<VH extends ViewHolder> implements VhFactory<VH> {
+public final class InitVhFactory<VH extends ViewHolder> implements VhFactory<VH> {
 	@NonNull final VhFactory<? extends VH> vhFactory;
 	@NonNull final VhInitializer<? super VH> vhInitializer;
 
+	@SuppressWarnings("unchecked")
 	public InitVhFactory(@NonNull VhFactory<? extends VH> vhFactory, @NonNull VhInitializer<? super VH> vhInitializer) {
+		if (vhFactory instanceof InitVhFactory<?>) {
+			InitVhFactory initVhFactory = (InitVhFactory) vhFactory;
+			vhFactory = initVhFactory.vhFactory;
+			vhInitializer = VhInitializers.make(initVhFactory.vhInitializer, vhInitializer);
+		}
 		this.vhFactory = vhFactory;
 		this.vhInitializer = vhInitializer;
 	}
