@@ -105,28 +105,28 @@ public class Flasks {
 		return new SingletonFlaskSelector<>(flask);
 	}
 
-	public static <Item> FlaskSelector<Item> select(@NonNull TypeSelector<? super Item> typeSelector, @NonNull Flask<?>[] flaskSelections, @Nullable Flask<?> defaultCase) {
-		return new CompositeFlaskSelector<>(typeSelector, flaskSelections, defaultCase);
-	}
-
-	public static <Item> FlaskSelector<Item> select(@NonNull TypeSelector<? super Item> typeSelector, @NonNull Collection<? extends Flask<?>> flaskSelections, @Nullable Flask<?> defaultCase) {
-		return new CompositeFlaskSelector<>(typeSelector, flaskSelections, defaultCase);
-	}
-
 	public static <Item> FlaskSelector<Item> select(@NonNull TypeSelector<? super Item> typeSelector, @NonNull Flask<?>[] flaskSelections) {
 		return new CompositeFlaskSelector<>(typeSelector, flaskSelections, null);
+	}
+
+	public static <Item> FlaskSelector<Item> select(@NonNull TypeSelector<? super Item> typeSelector, @NonNull Flask<?>[] flaskSelections, @Nullable Flask<?> defaultCase) {
+		return new CompositeFlaskSelector<>(typeSelector, flaskSelections, defaultCase);
 	}
 
 	public static <Item> FlaskSelector<Item> select(@NonNull TypeSelector<? super Item> typeSelector, @NonNull Collection<? extends Flask<?>> flaskSelections) {
 		return new CompositeFlaskSelector<>(typeSelector, flaskSelections, null);
 	}
 
-	public static <Item, K> FlaskSwitch<Item, K> mapSelect(@NonNull CaseSelector<? super Item, ? extends K> caseSelector, @NonNull SimpleArrayMap<? super K, ? extends Flask<?>> mapOfCases, @Nullable Flask<?> defaultCase) {
-		return MapFlaskSwitch.make(caseSelector, mapOfCases, defaultCase);
+	public static <Item> FlaskSelector<Item> select(@NonNull TypeSelector<? super Item> typeSelector, @NonNull Collection<? extends Flask<?>> flaskSelections, @Nullable Flask<?> defaultCase) {
+		return new CompositeFlaskSelector<>(typeSelector, flaskSelections, defaultCase);
 	}
 
 	public static <Item, K> FlaskSwitch<Item, K> mapSelect(@NonNull CaseSelector<? super Item, ? extends K> caseSelector, @NonNull SimpleArrayMap<? super K, ? extends Flask<?>> mapOfCases) {
 		return MapFlaskSwitch.make(caseSelector, mapOfCases, null);
+	}
+
+	public static <Item, K> FlaskSwitch<Item, K> mapSelect(@NonNull CaseSelector<? super Item, ? extends K> caseSelector, @NonNull SimpleArrayMap<? super K, ? extends Flask<?>> mapOfCases, @Nullable Flask<?> defaultCase) {
+		return MapFlaskSwitch.make(caseSelector, mapOfCases, defaultCase);
 	}
 
 	public static <Item, K> FlaskSwitch.Boiler<Item, K> mapSelect(@NonNull CaseSelector<? super Item, ? extends K> caseSelector) {
