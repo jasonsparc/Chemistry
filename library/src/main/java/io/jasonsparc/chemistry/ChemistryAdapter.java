@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import java.util.IdentityHashMap;
 
-import io.jasonsparc.chemistry.internal.util.ThrowableSignal;
 import io.jasonsparc.chemistry.util.ViewTypes;
 
 import static io.jasonsparc.chemistry.Chemistry.getItemClass;
@@ -70,7 +69,7 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 		final Item item = getItem(position);
 		try {
 			return getItemViewTypeInternal(item);
-		} catch (NullFlaskSignal s) {
+		} catch (NullFlaskException nfe) {
 			throw new NullPointerException(item == null
 					? "Null `Flask` associated for null item at position " + position
 					: "Null `Flask` associated for item at position " + position + " with class: `" + item.getClass().getName() + "`"
@@ -81,7 +80,7 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 	public int getItemViewType(Item item) {
 		try {
 			return getItemViewTypeInternal(item);
-		} catch (NullFlaskSignal s) {
+		} catch (NullFlaskException nfe) {
 			throw new NullPointerException(item == null
 					? "Null `Flask` associated for null item."
 					: "Null `Flask` associated for item! Class: " + item.getClass().getName() + "; Value: " + item
@@ -89,7 +88,7 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 		}
 	}
 
-	private int getItemViewTypeInternal(Item item) {
+	private int getItemViewTypeInternal(Item item) throws NullFlaskException {
 		final CacheState<Item> cacheState = getCacheState();
 		final Class<? extends Item> itemClass = getItemClass(item);
 		FlaskSelector<? super Item> flaskSelector = cacheState.flaskSelectors.get(itemClass);
@@ -109,7 +108,7 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 
 		final Flask<?> itemFlask = flaskSelector.getItemFlask(item);
 		if (itemFlask == null) {
-			throw new NullFlaskSignal();
+			throw new NullFlaskException();
 		}
 
 		@ViewType
@@ -124,8 +123,8 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 		return viewType;
 	}
 
-	private static class NullFlaskSignal extends ThrowableSignal {
-		NullFlaskSignal() { }
+	private static class NullFlaskException extends NullPointerException {
+		NullFlaskException() { }
 	}
 
 	@NonNull
