@@ -35,17 +35,15 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 
 	@Override
 	public long getItemId(int position) {
-		if (!hasStableIds()) {
-			return RecyclerView.NO_ID;
-		}
-		return getItemIdInternal(getItem(position));
+		return hasStableIds()
+				? getItemIdInternal(getItem(position))
+				: RecyclerView.NO_ID;
 	}
 
 	public long getItemId(Item item) {
-		if (!hasStableIds()) {
-			return RecyclerView.NO_ID;
-		}
-		return getItemIdInternal(item);
+		return hasStableIds()
+				? getItemIdInternal(item)
+				: RecyclerView.NO_ID;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -86,7 +84,7 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 		} catch (NullFlaskSignal s) {
 			throw new NullPointerException(item == null
 					? "Null `Flask` associated for null item."
-					: "Null `Flask` associated for item! Class: " + item.getClass().getName() + "; Item: " + item
+					: "Null `Flask` associated for item! Class: " + item.getClass().getName() + "; Value: " + item
 			);
 		}
 	}
