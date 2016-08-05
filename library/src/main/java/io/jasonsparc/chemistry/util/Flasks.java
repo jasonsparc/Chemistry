@@ -27,6 +27,7 @@ import io.jasonsparc.chemistry.internal.flasks.InflateTypedFlask;
  *
  * Created by jason on 11/07/2016.
  */
+@UtilityClass
 public class Flasks {
 
 	// Composite `Flask` factories

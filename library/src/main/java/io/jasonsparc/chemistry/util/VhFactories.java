@@ -13,6 +13,7 @@ import io.jasonsparc.chemistry.internal.vh_factories.ReflectiveVhFactory;
  *
  * Created by Jason on 31/07/2016.
  */
+@UtilityClass
 public class VhFactories {
 
 	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, @NonNull VhInitializer<? super VH> vhInitializer) {

@@ -11,6 +11,7 @@ import io.jasonsparc.chemistry.internal.vh_initializers.PairVhInitializer;
 /**
  * Created by jason on 01/08/2016.
  */
+@UtilityClass
 public class VhInitializers {
 
 	@SuppressWarnings("unchecked")
