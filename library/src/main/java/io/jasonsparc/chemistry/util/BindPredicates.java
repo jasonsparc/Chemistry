@@ -16,7 +16,7 @@ import io.jasonsparc.chemistry.internal.bind_predicates.VhClassBindPredicate;
  * Created by jason on 12/07/2016.
  */
 @UtilityClass
-public class BindPredicates {
+public final class BindPredicates {
 
 	public static <VH extends ViewHolder> BindPredicate<VH> matches(Flask<? extends VH> flask) {
 		return Flasks.matches(flask);

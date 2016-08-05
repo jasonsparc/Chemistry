@@ -13,7 +13,7 @@ import io.jasonsparc.chemistry.util.UtilityClass;
  * Created by jason on 07/07/2016.
  */
 @UtilityClass
-public class InflateUtils {
+public final class InflateUtils {
 
 	public static View inflate(@NonNull Context context, @LayoutRes int layoutRes, @NonNull ViewGroup parent) {
 		return LayoutInflater.from(context).inflate(layoutRes, parent, false);

@@ -4,7 +4,7 @@ package io.jasonsparc.chemistry.util;
  * Created by jason on 11/07/2016.
  */
 @UtilityClass
-public class ViewTypes {
+public final class ViewTypes {
 
 	static final int MIN_RES_ID = ValidRes.MIN_RES_ID;
 
