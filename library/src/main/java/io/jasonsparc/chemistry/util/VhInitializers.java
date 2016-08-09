@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
 import java.util.Collection;
+import java.util.List;
 
 import io.jasonsparc.chemistry.internal.vh_initializers.ArrayVhInitializer;
 import io.jasonsparc.chemistry.internal.vh_initializers.PairVhInitializer;
@@ -28,6 +29,12 @@ public final class VhInitializers {
 		return vhInitializers.length == 2
 				? new PairVhInitializer<>(vhInitializers[0], vhInitializers[1])
 				: new ArrayVhInitializer<>(vhInitializers);
+	}
+
+	public static <VH extends ViewHolder> VhInitializer<VH> make(@NonNull List<? extends VhInitializer<? super VH>> vhInitializers) {
+		return vhInitializers.size() == 2
+				? new PairVhInitializer<>(vhInitializers.get(0), vhInitializers.get(1))
+				: new ArrayVhInitializer<>(array(vhInitializers));
 	}
 
 	public static <VH extends ViewHolder> VhInitializer<VH> make(@NonNull Collection<? extends VhInitializer<? super VH>> vhInitializers) {
