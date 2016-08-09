@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import java.util.IdentityHashMap;
 
+import io.jasonsparc.chemistry.util.ItemBinder2;
 import io.jasonsparc.chemistry.util.ViewTypes;
 
 import static io.jasonsparc.chemistry.Chemistry.getItemClass;
@@ -169,6 +170,15 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 			}
 
 			cacheState.itemBinders.put(itemBinderKey, itemBinder);
+		}
+
+		if (itemBinder instanceof ItemBinder2<?, ?>) {
+			if (holder.itemView.getTag(R.id.io_chem_vh_initialized) == null) {
+				@SuppressWarnings("unchecked")
+				ItemBinder2<? super Item, ? super ViewHolder> itemBinder2 = (ItemBinder2) itemBinder;
+				itemBinder2.initViewHolder(holder);
+				holder.itemView.setTag(R.id.io_chem_vh_initialized, Boolean.TRUE);
+			}
 		}
 
 		itemBinder.bindViewHolder(holder, item);
