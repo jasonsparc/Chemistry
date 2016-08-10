@@ -146,6 +146,20 @@ public abstract class Chemistry {
 		return baseFlaskSelectorFinder.findFlaskSelector(itemClass);
 	}
 
+	/**
+	 * TODO Improve Docs
+	 * <br>Note: The returned item binder may not necessarily be the same instance as returned by a
+	 * previous invocation of this method of the same exact arguments. Therefore, it is important
+	 * to cache the results returned by this method, not only to speed up access but to prevent the
+	 * creation of new objects.
+	 *
+	 * @param itemClass
+	 * @param vhClass
+	 * @param flask
+	 * @param <Item>
+	 * @param <VH>
+	 * @return
+	 */
 	@Nullable
 	public <Item, VH extends ViewHolder> ItemBinder<? super Item, ? super VH> findItemBinder(@NonNull Class<? extends Item> itemClass, @NonNull Class<? extends VH> vhClass, Flask<? extends VH> flask) {
 		return baseItemBinderFinder.findItemBinder(itemClass, vhClass, flask);
