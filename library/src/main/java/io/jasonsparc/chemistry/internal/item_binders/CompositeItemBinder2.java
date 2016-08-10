@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
 import io.jasonsparc.chemistry.ItemBinder;
-import io.jasonsparc.chemistry.util.ItemBinder2;
+import io.jasonsparc.chemistry.ItemBinder2;
 import io.jasonsparc.chemistry.util.VhInitializer;
 import io.jasonsparc.chemistry.util.VhInitializers;
 

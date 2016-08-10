@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import io.jasonsparc.chemistry.ItemBinder;
+import io.jasonsparc.chemistry.ItemBinder2;
 import io.jasonsparc.chemistry.internal.item_binders.ArrayItemBinder;
 import io.jasonsparc.chemistry.internal.item_binders.CompositeItemBinder2;
 import io.jasonsparc.chemistry.internal.item_binders.PairItemBinder;

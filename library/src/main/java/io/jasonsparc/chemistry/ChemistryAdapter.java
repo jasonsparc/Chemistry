@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import java.util.IdentityHashMap;
 
-import io.jasonsparc.chemistry.util.ItemBinder2;
 import io.jasonsparc.chemistry.util.ViewTypes;
 
 import static io.jasonsparc.chemistry.Chemistry.getItemClass;

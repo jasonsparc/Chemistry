@@ -1,8 +1,8 @@
-package io.jasonsparc.chemistry.util;
+package io.jasonsparc.chemistry;
 
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
-import io.jasonsparc.chemistry.ItemBinder;
+import io.jasonsparc.chemistry.util.VhInitializer;
 
 /**
  * Created by jason on 05/08/2016.
