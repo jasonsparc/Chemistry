@@ -11,6 +11,7 @@ import io.jasonsparc.chemistry.internal.ChemistryDefaults;
 import io.jasonsparc.chemistry.internal.FlaskOpChemistry;
 import io.jasonsparc.chemistry.internal.IdentifyOpChemistry;
 import io.jasonsparc.chemistry.internal.SingletonFlaskOpChemistry;
+import io.jasonsparc.chemistry.util.ItemBinders;
 import io.jasonsparc.chemistry.util.fn.Function;
 
 /**
@@ -119,6 +120,18 @@ public abstract class Chemistry {
 	@CheckResult
 	public <Item, VH extends ViewHolder> Chemistry bind(@NonNull Class<? extends Item> itemClass, Flask<? extends VH> flask, @Nullable ItemBinder<? super Item, ? super VH> itemBinder) {
 		return new BindFlaskOpChemistry(this, itemClass, flask, itemBinder);
+	}
+
+	@SafeVarargs
+	@CheckResult
+	public final <Item, VH extends ViewHolder> Chemistry bind(@NonNull Class<? extends Item> itemClass, @NonNull BindPredicate<? extends VH> bindPredicate, @NonNull ItemBinder<? super Item, ? super VH>... itemBinders) {
+		return bind(itemClass, bindPredicate, ItemBinders.make(itemBinders));
+	}
+
+	@SafeVarargs
+	@CheckResult
+	public final <Item, VH extends ViewHolder> Chemistry bind(@NonNull Class<? extends Item> itemClass, Flask<? extends VH> flask, @NonNull ItemBinder<? super Item, ? super VH>... itemBinders) {
+		return new BindFlaskOpChemistry(this, itemClass, flask, ItemBinders.make(itemBinders));
 	}
 
 	@CheckResult
