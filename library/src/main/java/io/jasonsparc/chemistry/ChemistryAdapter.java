@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import java.util.IdentityHashMap;
 
+import io.jasonsparc.chemistry.util.ValidRes;
 import io.jasonsparc.chemistry.util.ViewTypes;
 
 import static io.jasonsparc.chemistry.Chemistry.getItemClass;
@@ -20,8 +21,11 @@ import static io.jasonsparc.chemistry.Chemistry.getItemClass;
  * Created by jason on 07/07/2016.
  */
 public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHolder> {
+	static final int DEFAULT_KEYED_TAG = 0;
+
 	@NonNull final Chemistry chemistry;
 	@Nullable CacheState<Item> cacheState;
+	@Nullable SparseArray<Object> keyedTags;
 
 	public ChemistryAdapter(@NonNull Chemistry chemistry) {
 		this.chemistry = chemistry;
@@ -181,6 +185,47 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 		}
 
 		itemBinder.bindViewHolder(holder, item);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getTag() {
+		return keyedTags == null ? null : (T) keyedTags.get(DEFAULT_KEYED_TAG);
+	}
+
+	public void setTag(Object tag) {
+		final SparseArray<Object> keyedTags = ensureKeyedTags();
+
+		if (tag != null) {
+			keyedTags.put(DEFAULT_KEYED_TAG, tag);
+		} else {
+			keyedTags.delete(DEFAULT_KEYED_TAG);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getTag(@ValidRes int keyRes) {
+		return keyedTags == null ? null : (T) keyedTags.get(keyRes);
+	}
+
+	public void setTag(@ValidRes int keyRes, Object tag) {
+		if (keyRes < ValidRes.MIN_RES_ID) {
+			throw new IllegalArgumentException("Invalid key! Must be a resource identifier.");
+		}
+
+		final SparseArray<Object> keyedTags = ensureKeyedTags();
+
+		if (tag != null) {
+			keyedTags.put(keyRes, tag);
+		} else {
+			keyedTags.delete(keyRes);
+		}
+	}
+
+	private SparseArray<Object> ensureKeyedTags() {
+		if (keyedTags == null) {
+			keyedTags = new SparseArray<>(2);
+		}
+		return keyedTags;
 	}
 
 	@NonNull
