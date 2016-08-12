@@ -15,8 +15,11 @@ import io.jasonsparc.chemistry.util.ItemBinders;
 import io.jasonsparc.chemistry.util.fn.Function;
 
 /**
- * TODO Docs
- *
+ * A chemistry is a configuration class that describes how items are converted and bound into
+ * views.
+ * <h1>Stateful vs Stateless Chemistry</h1>
+ * A chemistry that can be bound to any
+ * <p>
  * Created by jason on 07/07/2016.
  */
 public abstract class Chemistry {
