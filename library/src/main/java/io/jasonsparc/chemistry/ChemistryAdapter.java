@@ -46,7 +46,13 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 		SparseArray<VhFactory<?>> vhFactories = getVhFactories();
 		if (vhFactories.get(viewType) == null) {
 			ViewTypes.validateForState(viewType);
-			vhFactories.put(viewType, chemistry.getVhFactory(item));
+
+			VhFactory<?> vhFactory = chemistry.getVhFactory(item);
+			if (vhFactory == null) {
+				throw new NullPointerException("vhFactory == null");
+			}
+
+			vhFactories.put(viewType, vhFactory);
 		}
 
 		return viewType;

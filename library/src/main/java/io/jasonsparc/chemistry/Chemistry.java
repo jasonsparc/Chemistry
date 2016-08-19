@@ -1,7 +1,6 @@
 package io.jasonsparc.chemistry;
 
 import android.support.annotation.AnyRes;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
@@ -20,9 +19,7 @@ public abstract class Chemistry<Item, VH extends ViewHolder> implements IdSelect
 	@AnyRes
 	public abstract int getItemViewType(Item item);
 
-	@NonNull
 	public abstract VhFactory<? extends VH> getVhFactory(Item item);
 
-	@NonNull
 	public abstract ItemBinder<? super Item, ? super VH> getItemBinder(Item item);
 }
