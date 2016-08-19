@@ -3,6 +3,8 @@ package io.jasonsparc.chemistry.util;
 import android.support.annotation.AnyRes;
 import android.support.v7.widget.RecyclerView;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import io.jasonsparc.chemistry.ViewType;
 
 /**
@@ -22,7 +24,6 @@ public final class ViewTypes {
 	@AnyRes
 	public static final int INVALID = invalid();
 
-
 	public static boolean isValid(int viewType) {
 		return viewType >= ValidRes.MIN_RES_ID;
 	}
@@ -39,6 +40,21 @@ public final class ViewTypes {
 		}
 	}
 
+	@ViewType
+	@AnyRes
+	public static int generate() {
+		int result;
+		for (; ; ) {
+			result = sNextGeneratedId.get();
+			// aapt-generated IDs have the high byte nonzero; clamp to the range under that.
+			final int newValue = (result + 1) & 0x00FFFFFF;
+			if (sNextGeneratedId.compareAndSet(result, newValue)) {
+				break;
+			}
+		}
+		return CUSTOM_PACKAGE_NAMESPACE_RES | result;
+	}
+
 	// Internals
 
 	@SuppressWarnings("Range")
@@ -47,4 +63,10 @@ public final class ViewTypes {
 	private static int invalid() {
 		return RecyclerView.INVALID_TYPE;
 	}
+
+	static final AtomicInteger sNextGeneratedId =
+			new AtomicInteger(ViewTypes.class.hashCode() & 0x00FFFFFF); // Start with a random id.
+
+	// See, https://android.googlesource.com/platform/frameworks/native/+/jb-dev/libs/utils/README
+	static final int CUSTOM_PACKAGE_NAMESPACE_RES = 0x6F000000;
 }
