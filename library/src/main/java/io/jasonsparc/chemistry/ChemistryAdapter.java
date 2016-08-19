@@ -15,9 +15,9 @@ import io.jasonsparc.chemistry.util.ViewTypes;
  * Created by jason on 07/07/2016.
  */
 public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHolder> {
-	@NonNull final Chemistry<? super Item, ?> chemistry;
+	@NonNull final Chemistry<? super Item> chemistry;
 
-	public ChemistryAdapter(@NonNull Chemistry<? super Item, ?> chemistry) {
+	public ChemistryAdapter(@NonNull Chemistry<? super Item> chemistry) {
 		this.chemistry = chemistry;
 	}
 

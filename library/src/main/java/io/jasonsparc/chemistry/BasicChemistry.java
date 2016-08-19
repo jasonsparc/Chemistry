@@ -14,7 +14,7 @@ import io.jasonsparc.chemistry.util.VhFactories;
 /**
  * Created by Jason on 19/08/2016.
  */
-public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemistry<Item, VH> implements VhFactory<VH>, ItemBinder<Item, VH> {
+public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemistry<Item> implements VhFactory<VH>, ItemBinder<Item, VH> {
 
 	@Override
 	public final int getItemViewType(Item item) {
