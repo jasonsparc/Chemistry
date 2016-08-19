@@ -1,36 +1,35 @@
 package io.jasonsparc.chemistry.internal;
 
-import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.view.ViewGroup;
-
-import io.jasonsparc.chemistry.BasicChemistry;
+import io.jasonsparc.chemistry.Chemistry;
+import io.jasonsparc.chemistry.ItemBinder;
+import io.jasonsparc.chemistry.VhFactory;
 import io.jasonsparc.chemistry.ViewType;
 
 /**
  * Created by Jason on 19/08/2016.
  */
-public final class NullChemistry<Item, VH extends ViewHolder> extends BasicChemistry<Item, VH> {
+public final class NullChemistry<Item> extends Chemistry<Item> {
 	public static final NullChemistry INSTANCE = new NullChemistry<>();
 
 	private NullChemistry() { }
 
 	@SuppressWarnings("unchecked")
-	public static <Item, VH extends ViewHolder> NullChemistry<Item, VH> get() {
+	public static <Item> NullChemistry<Item> get() {
 		return INSTANCE;
 	}
 
 	@Override
-	public int getViewType() {
+	public int getItemViewType(Item item) {
 		return ViewType.INVALID;
 	}
 
 	@Override
-	public VH createViewHolder(ViewGroup parent) {
+	public VhFactory<?> getVhFactory(Item item) {
 		return null;
 	}
 
 	@Override
-	public void bindViewHolder(ViewHolder holder, Object o) {
-		// Do nothing.
+	public ItemBinder<? super Item, ?> getItemBinder(Item item) {
+		return null;
 	}
 }
