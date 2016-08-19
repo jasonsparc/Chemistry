@@ -22,7 +22,7 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 	}
 
 	@NonNull
-	public final Chemistry getChemistry() {
+	public final Chemistry<? super Item> getChemistry() {
 		return chemistry;
 	}
 
