@@ -79,7 +79,12 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 
 		@SuppressWarnings("unchecked")
 		ItemBinder<? super Item, ViewHolder> itemBinder = (ItemBinder) chemistry.getItemBinder(item);
-		itemBinder.bindViewHolder(holder, item);
+
+		try {
+			itemBinder.bindViewHolder(holder, item);
+		} catch (NullPointerException e) {
+			throw itemBinder != null ? e : new NullPointerException("itemBinder == null");
+		}
 	}
 
 	// Internals
