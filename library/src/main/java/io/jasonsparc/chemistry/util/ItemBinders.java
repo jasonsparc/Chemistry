@@ -24,6 +24,10 @@ public final class ItemBinders {
 		return (ItemBinder<Item, VH>) itemBinder;
 	}
 
+	public static <Item, VH extends ViewHolder> ItemBinder<Item, VH> make(@NonNull ItemBinder<? super Item, ? super VH> first, @NonNull ItemBinder<? super Item, ? super VH> second) {
+		return new PairItemBinder<>(first, second);
+	}
+
 	@SafeVarargs
 	public static <Item, VH extends ViewHolder> ItemBinder<Item, VH> make(@NonNull ItemBinder<? super Item, ? super VH>... itemBinders) {
 		switch (itemBinders.length) {
@@ -32,7 +36,7 @@ public final class ItemBinders {
 			case 1:
 				return make(itemBinders[0]);
 			case 2:
-				return new PairItemBinder<>(itemBinders[0], itemBinders[1]);
+				return make(itemBinders[0], itemBinders[1]);
 			default:
 				return new ArrayItemBinder<>(itemBinders);
 		}
@@ -45,7 +49,7 @@ public final class ItemBinders {
 			case 1:
 				return make(itemBinders.get(0));
 			case 2:
-				return new PairItemBinder<>(itemBinders.get(0), itemBinders.get(1));
+				return make(itemBinders.get(0), itemBinders.get(1));
 			default:
 				return new ArrayItemBinder<>(array(itemBinders));
 		}

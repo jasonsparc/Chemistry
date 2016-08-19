@@ -36,7 +36,7 @@ public final class VhInitializers {
 			case 1:
 				return make(vhInitializers[0]);
 			case 2:
-				return new PairVhInitializer<>(vhInitializers[0], vhInitializers[1]);
+				return make(vhInitializers[0], vhInitializers[1]);
 			default:
 				return new ArrayVhInitializer<>(vhInitializers);
 		}
@@ -49,7 +49,7 @@ public final class VhInitializers {
 			case 1:
 				return make(vhInitializers.get(0));
 			case 2:
-				return new PairVhInitializer<>(vhInitializers.get(0), vhInitializers.get(1));
+				return make(vhInitializers.get(0), vhInitializers.get(1));
 			default:
 				return new ArrayVhInitializer<>(array(vhInitializers));
 		}
