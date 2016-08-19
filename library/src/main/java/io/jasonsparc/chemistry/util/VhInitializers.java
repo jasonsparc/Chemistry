@@ -31,6 +31,8 @@ public final class VhInitializers {
 	@SafeVarargs
 	public static <VH extends ViewHolder> VhInitializer<VH> make(@NonNull VhInitializer<? super VH>... vhInitializers) {
 		switch (vhInitializers.length) {
+			case 0:
+				return empty();
 			case 1:
 				return make(vhInitializers[0]);
 			case 2:
@@ -42,6 +44,8 @@ public final class VhInitializers {
 
 	public static <VH extends ViewHolder> VhInitializer<VH> make(@NonNull List<? extends VhInitializer<? super VH>> vhInitializers) {
 		switch (vhInitializers.size()) {
+			case 0:
+				return empty();
 			case 1:
 				return make(vhInitializers.get(0));
 			case 2:

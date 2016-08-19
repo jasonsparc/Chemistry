@@ -27,6 +27,8 @@ public final class ItemBinders {
 	@SafeVarargs
 	public static <Item, VH extends ViewHolder> ItemBinder<Item, VH> make(@NonNull ItemBinder<? super Item, ? super VH>... itemBinders) {
 		switch (itemBinders.length) {
+			case 0:
+				return empty();
 			case 1:
 				return make(itemBinders[0]);
 			case 2:
@@ -38,6 +40,8 @@ public final class ItemBinders {
 
 	public static <Item, VH extends ViewHolder> ItemBinder<Item, VH> make(@NonNull List<? extends ItemBinder<? super Item, ? super VH>> itemBinders) {
 		switch (itemBinders.size()) {
+			case 0:
+				return empty();
 			case 1:
 				return make(itemBinders.get(0));
 			case 2:
