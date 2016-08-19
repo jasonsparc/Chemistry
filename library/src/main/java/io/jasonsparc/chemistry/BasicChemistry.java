@@ -3,6 +3,7 @@ package io.jasonsparc.chemistry;
 import android.support.annotation.AnyRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.ViewGroup;
 
@@ -92,6 +93,13 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 			return this;
 		}
 
+		public Boiler<Item, VH> useUniqueViewType() {
+			//noinspection Range
+			this.viewType = 0; // Defer id generation. See CompositeImpl below...
+			return this;
+		}
+
+
 		public Boiler<Item, VH> useVhFactory(@NonNull VhFactory<? extends VH> vhFactory) {
 			this.vhFactory = vhFactory;
 			return this;
@@ -159,19 +167,16 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 
 		// Internals
 
-		@NonNull VhFactory<? extends VH> vhFactory;
+		@Nullable VhFactory<? extends VH> vhFactory;
 		final ArrayList<VhInitializer<? super VH>> vhInitializers;
 		final ArrayList<ItemBinder<? super Item, ? super VH>> itemBinders;
 
 		@NonNull IdSelector<? super Item> idSelector = IdSelectors.empty();
 		@ViewType @AnyRes int viewType;
 
-		Boiler(@ViewType @AnyRes int viewType, @NonNull VhFactory<? extends VH> vhFactory) {
-			ViewTypes.validateArgument(viewType);
-			this.vhFactory = vhFactory;
+		Boiler() {
 			this.vhInitializers = new ArrayList<>(4);
 			this.itemBinders = new ArrayList<>(4);
-			this.viewType = viewType;
 		}
 
 		@SuppressWarnings("unchecked")
@@ -200,10 +205,18 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		@ViewType @AnyRes final int viewType;
 
 		CompositeImpl(@NonNull BasicChemistry.Boiler<Item, VH> boiler) {
+			// Must perform a special null-check for vhFactory, in case the user forgot to set it.
+			if (boiler.vhFactory == null)
+				throw new NullPointerException("vhFactory == null; forgot to set it?");
+
 			this.vhFactory = VhFactories.make(boiler.vhFactory, VhInitializers.make(boiler.vhInitializers));
 			this.itemBinder = ItemBinders.make(boiler.itemBinders);
 			this.idSelector = boiler.idSelector;
-			this.viewType = boiler.viewType;
+
+			int viewType = boiler.viewType;
+			if (viewType == 0)
+				viewType = ViewTypes.generate();
+			this.viewType = viewType;
 		}
 
 		@Override
