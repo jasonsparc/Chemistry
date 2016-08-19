@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import io.jasonsparc.chemistry.BasicChemistry;
 import io.jasonsparc.chemistry.VhInitializer;
+import io.jasonsparc.chemistry.ViewType;
 
 /**
  * Created by Jason on 19/08/2016.
@@ -21,12 +22,12 @@ public final class NullChemistry<Item, VH extends ViewHolder> extends BasicChemi
 
 	@Override
 	public int getViewType() {
-		throw new UnsupportedOperationException();
+		return ViewType.INVALID;
 	}
 
 	@Override
 	public VH createViewHolder(ViewGroup parent) {
-		throw new UnsupportedOperationException();
+		return null;
 	}
 
 	@Override
