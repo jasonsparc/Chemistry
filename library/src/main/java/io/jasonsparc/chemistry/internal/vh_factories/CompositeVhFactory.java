@@ -11,7 +11,7 @@ import io.jasonsparc.chemistry.ViewFactory;
 /**
  * Created by Jason on 19/08/2016.
  */
-public class CompositeVhFactory<VH extends ViewHolder> implements VhFactory<VH> {
+public final class CompositeVhFactory<VH extends ViewHolder> implements VhFactory<VH> {
 	@NonNull final ViewFactory viewFactory;
 	@NonNull final ItemVhFactory<? extends VH> itemVhFactory;
 

@@ -27,8 +27,16 @@ public final class VhFactories {
 		return (VhFactory<VH>) vhFactory;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, @NonNull VhInitializer<? super VH> vhInitializer) {
-		return vhInitializer == VhInitializers.EMPTY ? make(vhFactory) : new InitVhFactory<>(vhFactory, vhInitializer);
+		if (vhInitializer == VhInitializers.EMPTY) {
+			return make(vhFactory);
+		} else if (vhFactory instanceof CompositeVhFactory<?>) {
+			return new CompositeInitVhFactory<>((CompositeVhFactory<? extends VH>) vhFactory, vhInitializer);
+		} else if (vhFactory instanceof CompositeInitVhFactory<?>) {
+			return new CompositeInitVhFactory<>((CompositeInitVhFactory<? extends VH>) vhFactory, vhInitializer);
+		}
+		return new InitVhFactory<>(vhFactory, vhInitializer);
 	}
 
 	// Composite Factories
