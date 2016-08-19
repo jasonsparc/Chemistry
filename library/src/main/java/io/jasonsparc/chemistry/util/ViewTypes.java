@@ -22,6 +22,11 @@ public final class ViewTypes {
 	@AnyRes
 	public static final int INVALID = invalid();
 
+
+	public static boolean isValid(int viewType) {
+		return viewType >= ValidRes.MIN_RES_ID;
+	}
+
 	public static void validateArgument(int viewType) {
 		if (viewType < ValidRes.MIN_RES_ID) {
 			throw new IllegalArgumentException("Invalid view type! Must be a resource identifier.");
