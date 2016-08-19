@@ -81,7 +81,6 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 			return this;
 		}
 
-
 		public Boiler<Item, VH> useItemIds(@NonNull IdSelector<? super Item> idSelector) {
 			this.idSelector = idSelector;
 			return this;
@@ -104,7 +103,6 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 			this.vhFactory = vhFactory;
 			return this;
 		}
-
 
 		public Boiler<Item, VH> useVhFactory(@NonNull ViewFactory viewFactory, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
 			vhFactory = VhFactories.make(viewFactory, itemVhFactory);
@@ -167,12 +165,12 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 
 		// Internals
 
+		@NonNull IdSelector<? super Item> idSelector = IdSelectors.empty();
+		@ViewType @AnyRes int viewType;
+
 		@Nullable VhFactory<? extends VH> vhFactory;
 		final ArrayList<VhInitializer<? super VH>> vhInitializers;
 		final ArrayList<ItemBinder<? super Item, ? super VH>> itemBinders;
-
-		@NonNull IdSelector<? super Item> idSelector = IdSelectors.empty();
-		@ViewType @AnyRes int viewType;
 
 		Boiler() {
 			this.vhInitializers = new ArrayList<>(4);
@@ -198,11 +196,11 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 	}
 
 	static final class CompositeImpl<Item, VH extends ViewHolder> extends BasicChemistry<Item, VH> {
-		@NonNull final VhFactory<? extends VH> vhFactory;
-		@NonNull final ItemBinder<? super Item, ? super VH> itemBinder;
-
 		@NonNull final IdSelector<? super Item> idSelector;
 		@ViewType @AnyRes final int viewType;
+
+		@NonNull final VhFactory<? extends VH> vhFactory;
+		@NonNull final ItemBinder<? super Item, ? super VH> itemBinder;
 
 		CompositeImpl(@NonNull BasicChemistry.Boiler<Item, VH> boiler) {
 			// Must perform a special null-check for vhFactory, in case the user forgot to set it.
