@@ -3,7 +3,6 @@ package io.jasonsparc.chemistry;
 import android.support.annotation.AnyRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ import io.jasonsparc.chemistry.util.VhFactories;
 public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<Item> {
 
 	public long getItemId(Item item) {
-		return RecyclerView.NO_ID;
+		return NO_ID;
 	}
 
 	@ViewType
