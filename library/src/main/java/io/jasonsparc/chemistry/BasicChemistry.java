@@ -100,13 +100,31 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 			return add(itemBinder);
 		}
 
-
 		public Boiler<Item, VH> add(@NonNull VhInitializer<? super VH> vhInitializer) {
 			vhInitializers.add(vhInitializer);
 			return this;
 		}
 
 		public Boiler<Item, VH> add(@NonNull ItemBinder<? super Item, ? super VH> itemBinder) {
+			itemBinders.add(itemBinder);
+			return this;
+		}
+
+
+		public Boiler<Item, VH> removeInit(@NonNull VhInitializer<? super VH> vhInitializer) {
+			return remove(vhInitializer);
+		}
+
+		public Boiler<Item, VH> removeBinder(@NonNull ItemBinder<? super Item, ? super VH> itemBinder) {
+			return remove(itemBinder);
+		}
+
+		public Boiler<Item, VH> remove(@NonNull VhInitializer<? super VH> vhInitializer) {
+			vhInitializers.add(vhInitializer);
+			return this;
+		}
+
+		public Boiler<Item, VH> remove(@NonNull ItemBinder<? super Item, ? super VH> itemBinder) {
 			itemBinders.add(itemBinder);
 			return this;
 		}
