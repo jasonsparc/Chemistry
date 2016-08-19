@@ -162,6 +162,11 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		}
 
 		@Override
+		public long getItemId(Item item) {
+			return idSelector.getItemId(item);
+		}
+
+		@Override
 		public int getViewType() {
 			return viewType;
 		}
