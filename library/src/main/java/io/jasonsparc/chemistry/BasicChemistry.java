@@ -1,6 +1,7 @@
 package io.jasonsparc.chemistry;
 
 import android.support.annotation.AnyRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.ViewGroup;
@@ -91,6 +92,32 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 			return this;
 		}
 
+		public Boiler<Item, VH> useVhFactory(@NonNull VhFactory<? extends VH> vhFactory) {
+			this.vhFactory = vhFactory;
+			return this;
+		}
+
+
+		public Boiler<Item, VH> useVhFactory(@NonNull ViewFactory viewFactory, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
+			vhFactory = VhFactories.make(viewFactory, itemVhFactory);
+			return this;
+		}
+
+		public Boiler<Item, VH> useVhFactory(@NonNull ViewFactory viewFactory, @NonNull Class<? extends VH> vhClass) {
+			vhFactory = VhFactories.make(viewFactory, vhClass);
+			return this;
+		}
+
+		public Boiler<Item, VH> useVhFactory(@LayoutRes int itemLayout, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
+			vhFactory = VhFactories.make(itemLayout, itemVhFactory);
+			return this;
+		}
+
+		public Boiler<Item, VH> useVhFactory(@LayoutRes int itemLayout, @NonNull Class<? extends VH> vhClass) {
+			vhFactory = VhFactories.make(itemLayout, vhClass);
+			return this;
+		}
+
 
 		public Boiler<Item, VH> addInit(@NonNull VhInitializer<? super VH> vhInitializer) {
 			return add(vhInitializer);
@@ -132,7 +159,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 
 		// Internals
 
-		@NonNull final VhFactory<? extends VH> vhFactory;
+		@NonNull VhFactory<? extends VH> vhFactory;
 		final ArrayList<VhInitializer<? super VH>> vhInitializers;
 		final ArrayList<ItemBinder<? super Item, ? super VH>> itemBinders;
 
