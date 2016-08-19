@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import io.jasonsparc.chemistry.VhInitializer;
-import io.jasonsparc.chemistry.internal.NullChemistry;
+import io.jasonsparc.chemistry.internal.NullComponent;
 import io.jasonsparc.chemistry.internal.vh_initializers.ArrayVhInitializer;
 import io.jasonsparc.chemistry.internal.vh_initializers.PairVhInitializer;
 
@@ -79,5 +79,5 @@ public final class VhInitializers {
 
 	// Internals
 
-	static final VhInitializer EMPTY = NullChemistry.INSTANCE;
+	static final VhInitializer EMPTY = NullComponent.INSTANCE;
 }

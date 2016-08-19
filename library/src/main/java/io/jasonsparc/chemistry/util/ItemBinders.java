@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import io.jasonsparc.chemistry.ItemBinder;
-import io.jasonsparc.chemistry.internal.NullChemistry;
+import io.jasonsparc.chemistry.internal.NullComponent;
 import io.jasonsparc.chemistry.internal.item_binders.ArrayItemBinder;
 import io.jasonsparc.chemistry.internal.item_binders.PairItemBinder;
 
@@ -79,5 +79,5 @@ public final class ItemBinders {
 
 	// Internals
 
-	static final ItemBinder EMPTY = NullChemistry.INSTANCE;
+	static final ItemBinder EMPTY = NullComponent.INSTANCE;
 }

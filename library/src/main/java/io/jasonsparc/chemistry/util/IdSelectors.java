@@ -1,7 +1,7 @@
 package io.jasonsparc.chemistry.util;
 
 import io.jasonsparc.chemistry.IdSelector;
-import io.jasonsparc.chemistry.internal.NullChemistry;
+import io.jasonsparc.chemistry.internal.NullComponent;
 
 /**
  * Created by Jason on 19/08/2016.
@@ -20,5 +20,5 @@ public final class IdSelectors {
 
 	// Internals
 
-	static final IdSelector EMPTY = NullChemistry.INSTANCE;
+	static final IdSelector EMPTY = NullComponent.INSTANCE;
 }
