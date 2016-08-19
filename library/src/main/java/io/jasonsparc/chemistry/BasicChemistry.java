@@ -11,6 +11,7 @@ import io.jasonsparc.chemistry.util.IdSelectors;
 import io.jasonsparc.chemistry.util.ItemBinders;
 import io.jasonsparc.chemistry.util.VhFactories;
 import io.jasonsparc.chemistry.util.VhInitializers;
+import io.jasonsparc.chemistry.util.ViewTypes;
 
 /**
  * Created by Jason on 19/08/2016.
@@ -85,6 +86,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		}
 
 		public Boiler<Item, VH> setViewType(@ViewType @AnyRes int viewType) {
+			ViewTypes.validateArgument(viewType);
 			this.viewType = viewType;
 			return this;
 		}
@@ -120,6 +122,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		@ViewType @AnyRes int viewType;
 
 		Boiler(@ViewType @AnyRes int viewType, @NonNull VhFactory<? extends VH> vhFactory) {
+			ViewTypes.validateArgument(viewType);
 			this.vhFactory = vhFactory;
 			this.vhInitializers = new ArrayList<>(4);
 			this.itemBinders = new ArrayList<>(4);
