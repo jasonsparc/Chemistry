@@ -11,7 +11,7 @@ import io.jasonsparc.chemistry.util.VhInitializers;
 /**
  * Created by Jason on 31/07/2016.
  */
-public class InitVhFactory<VH extends ViewHolder> implements VhFactory<VH> {
+public final class InitVhFactory<VH extends ViewHolder> implements VhFactory<VH> {
 	@NonNull final VhFactory<? extends VH> vhFactory;
 	@NonNull final VhInitializer<? super VH> vhInitializer;
 
