@@ -9,6 +9,7 @@ import io.jasonsparc.chemistry.VhFactory;
 import io.jasonsparc.chemistry.VhInitializer;
 import io.jasonsparc.chemistry.ViewFactory;
 import io.jasonsparc.chemistry.internal.item_vh_factories.ReflectiveItemVhFactory;
+import io.jasonsparc.chemistry.internal.vh_factories.CompositeInitVhFactory;
 import io.jasonsparc.chemistry.internal.vh_factories.CompositeVhFactory;
 import io.jasonsparc.chemistry.internal.vh_factories.InitVhFactory;
 import io.jasonsparc.chemistry.internal.view_factories.InflateViewFactory;
@@ -46,5 +47,23 @@ public final class VhFactories {
 
 	public static <VH extends ViewHolder> VhFactory<VH> make(@LayoutRes int itemLayout, @NonNull Class<? extends VH> vhClass) {
 		return new CompositeVhFactory<>(new InflateViewFactory(itemLayout), new ReflectiveItemVhFactory<>(vhClass));
+	}
+
+	// Composite Factories (with initializer)
+
+	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull ViewFactory viewFactory, @NonNull ItemVhFactory<? extends VH> itemVhFactory, @NonNull VhInitializer<? super VH> vhInitializer) {
+		return new CompositeInitVhFactory<>(viewFactory, itemVhFactory, vhInitializer);
+	}
+
+	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull ViewFactory viewFactory, @NonNull Class<? extends VH> vhClass, @NonNull VhInitializer<? super VH> vhInitializer) {
+		return new CompositeInitVhFactory<>(viewFactory, new ReflectiveItemVhFactory<>(vhClass), vhInitializer);
+	}
+
+	public static <VH extends ViewHolder> VhFactory<VH> make(@LayoutRes int itemLayout, @NonNull ItemVhFactory<? extends VH> itemVhFactory, @NonNull VhInitializer<? super VH> vhInitializer) {
+		return new CompositeInitVhFactory<>(new InflateViewFactory(itemLayout), itemVhFactory, vhInitializer);
+	}
+
+	public static <VH extends ViewHolder> VhFactory<VH> make(@LayoutRes int itemLayout, @NonNull Class<? extends VH> vhClass, @NonNull VhInitializer<? super VH> vhInitializer) {
+		return new CompositeInitVhFactory<>(new InflateViewFactory(itemLayout), new ReflectiveItemVhFactory<>(vhClass), vhInitializer);
 	}
 }
