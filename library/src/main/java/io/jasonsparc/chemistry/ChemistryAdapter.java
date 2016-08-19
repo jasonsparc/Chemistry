@@ -78,7 +78,7 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 		final Item item = getItem(position);
 
 		@SuppressWarnings("unchecked")
-		ItemBinder<Item, ViewHolder> itemBinder = (ItemBinder) chemistry.getItemBinder(item);
+		ItemBinder<? super Item, ViewHolder> itemBinder = (ItemBinder) chemistry.getItemBinder(item);
 		itemBinder.bindViewHolder(holder, item);
 	}
 
