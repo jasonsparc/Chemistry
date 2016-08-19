@@ -54,6 +54,7 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 				throw new NullPointerException("vhFactory == null");
 			}
 
+			// TODO Make references to vhFactory weak.
 			vhFactories.put(viewType, vhFactory);
 		}
 
