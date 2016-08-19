@@ -68,7 +68,6 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 
 	public static class Boiler<Item, VH extends ViewHolder> {
 
-		// Composition operations
 
 		public BasicChemistry<Item, VH> boil() {
 			return new CompositeImpl<>(this);
