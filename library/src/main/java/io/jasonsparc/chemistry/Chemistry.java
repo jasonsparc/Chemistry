@@ -31,6 +31,7 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 
 	public abstract ItemBinder<? super Item, ?> getItemBinder(Item item);
 
+
 	// Utilities
 
 	public static View inflate(@NonNull ViewGroup parent, @LayoutRes int layoutRes) {
@@ -51,6 +52,8 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 		return new BasicChemistry.Boiler<>(viewType, VhFactories.make(viewFactory, vhClass));
 	}
 
+	// Auto-inflate Factories
+
 	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@ViewType @AnyRes int viewType, @LayoutRes int itemLayout, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
 		return new BasicChemistry.Boiler<>(viewType, VhFactories.make(itemLayout, itemVhFactory));
 	}
@@ -67,6 +70,8 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 		return new BasicChemistry.Boiler<>(itemLayout, VhFactories.make(itemLayout, vhClass));
 	}
 
+	// Base-Extending Factories
+
 	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@NonNull BasicChemistry<? super Item, VH> base) {
 		return new Boiler<>(base);
 	}
@@ -75,6 +80,7 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 		final Boiler<Item, VH> boiler = new Boiler<>(base);
 		return boiler.setViewType(viewType);
 	}
+
 
 	// Factories - with item class specifiers
 
@@ -89,6 +95,8 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@NonNull Class<? extends Item> itemClass, @ViewType @AnyRes int viewType, @NonNull ViewFactory viewFactory, @NonNull Class<? extends VH> vhClass) {
 		return make(viewType, viewFactory, vhClass);
 	}
+
+	// Auto-inflate Factories - with item class specifiers
 
 	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@NonNull Class<? extends Item> itemClass, @ViewType @AnyRes int viewType, @LayoutRes int itemLayout, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
 		return make(viewType, itemLayout, itemVhFactory);
@@ -105,6 +113,8 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@NonNull Class<? extends Item> itemClass, @LayoutRes int itemLayout, @NonNull Class<? extends VH> vhClass) {
 		return make(itemLayout, vhClass);
 	}
+
+	// Base-Extending Factories - with item class specifiers
 
 	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@NonNull Class<? extends Item> itemClass, @NonNull BasicChemistry<? super Item, VH> base) {
 		return make(base);
