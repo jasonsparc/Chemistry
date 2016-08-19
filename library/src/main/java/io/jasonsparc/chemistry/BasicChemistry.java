@@ -80,12 +80,12 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		}
 
 
-		public Boiler<Item, VH> setItemIds(@NonNull IdSelector<? super Item> idSelector) {
+		public Boiler<Item, VH> useItemIds(@NonNull IdSelector<? super Item> idSelector) {
 			this.idSelector = idSelector;
 			return this;
 		}
 
-		public Boiler<Item, VH> setViewType(@ViewType @AnyRes int viewType) {
+		public Boiler<Item, VH> useViewType(@ViewType @AnyRes int viewType) {
 			ViewTypes.validateArgument(viewType);
 			this.viewType = viewType;
 			return this;
