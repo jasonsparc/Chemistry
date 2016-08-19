@@ -43,7 +43,9 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 		final Item item = getItem(position);
 		final int viewType = chemistry.getItemViewType(item);
 
-		SparseArray<VhFactory<?>> vhFactories = getVhFactories();
+		if (vhFactories == null)
+			vhFactories = new SparseArray<>();
+
 		if (vhFactories.get(viewType) == null) {
 			ViewTypes.validateForState(viewType);
 
@@ -60,11 +62,15 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		VhFactory<?> vhFactory = getVhFactories().get(viewType);
-		if (vhFactory == null) {
-			throw new NullPointerException("`VhFactory` for the specified `viewType` either does not exist or has not yet been initialized.");
+		op:
+		{
+			if (vhFactories == null) break op;
+			VhFactory<?> vhFactory = vhFactories.get(viewType);
+
+			if (vhFactory == null) break op;
+			return vhFactory.createViewHolder(parent);
 		}
-		return vhFactory.createViewHolder(parent);
+		throw new NullPointerException("`VhFactory` for the specified `viewType` either does not exist or has not yet been initialized.");
 	}
 
 	@Override
@@ -80,12 +86,4 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 
 	@Nullable
 	private SparseArray<VhFactory<?>> vhFactories;
-
-	@NonNull
-	private SparseArray<VhFactory<?>> getVhFactories() {
-		if (vhFactories == null) {
-			vhFactories = new SparseArray<>();
-		}
-		return vhFactories;
-	}
 }
