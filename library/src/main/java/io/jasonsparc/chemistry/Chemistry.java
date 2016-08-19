@@ -76,7 +76,7 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 		return new Boiler<>(base);
 	}
 
-	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@ViewType int viewType, @NonNull BasicChemistry<? super Item, VH> base) {
+	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@ViewType @AnyRes int viewType, @NonNull BasicChemistry<? super Item, VH> base) {
 		final Boiler<Item, VH> boiler = new Boiler<>(base);
 		return boiler.setViewType(viewType);
 	}
@@ -120,7 +120,7 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 		return make(base);
 	}
 
-	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@NonNull Class<? extends Item> itemClass, @ViewType int viewType, @NonNull BasicChemistry<? super Item, VH> base) {
+	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@NonNull Class<? extends Item> itemClass, @ViewType @AnyRes int viewType, @NonNull BasicChemistry<? super Item, VH> base) {
 		return make(viewType, base);
 	}
 }
