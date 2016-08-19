@@ -28,7 +28,7 @@ public final class VhFactories {
 	}
 
 	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, @NonNull VhInitializer<? super VH> vhInitializer) {
-		return vhInitializer == VhInitializers.empty() ? make(vhFactory) : new InitVhFactory<>(vhFactory, vhInitializer);
+		return vhInitializer == VhInitializers.EMPTY ? make(vhFactory) : new InitVhFactory<>(vhFactory, vhInitializer);
 	}
 
 	// Composite Factories

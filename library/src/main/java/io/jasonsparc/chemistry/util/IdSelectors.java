@@ -13,7 +13,12 @@ public final class IdSelectors {
 
 	// Utilities
 
+	@SuppressWarnings("unchecked")
 	public static <Item> IdSelector<Item> empty() {
-		return NullChemistry.get();
+		return EMPTY;
 	}
+
+	// Internals
+
+	static final IdSelector EMPTY = NullChemistry.INSTANCE;
 }

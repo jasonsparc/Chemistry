@@ -62,8 +62,9 @@ public final class ItemBinders {
 
 	// Utilities
 
+	@SuppressWarnings("unchecked")
 	public static <Item, VH extends ViewHolder> ItemBinder<Item, VH> empty() {
-		return NullChemistry.get();
+		return EMPTY;
 	}
 
 	@SafeVarargs
@@ -75,4 +76,8 @@ public final class ItemBinders {
 	public static <Item, VH extends ViewHolder> ItemBinder<? super Item, ? super VH>[] array(@NonNull Collection<? extends ItemBinder<? super Item, ? super VH>> itemBinders) {
 		return itemBinders.toArray(new ItemBinder[itemBinders.size()]);
 	}
+
+	// Internals
+
+	static final ItemBinder EMPTY = NullChemistry.INSTANCE;
 }

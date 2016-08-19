@@ -62,8 +62,9 @@ public final class VhInitializers {
 
 	// Utilities
 
+	@SuppressWarnings("unchecked")
 	public static <VH extends ViewHolder> VhInitializer<VH> empty() {
-		return NullChemistry.get();
+		return EMPTY;
 	}
 
 	@SafeVarargs
@@ -75,4 +76,8 @@ public final class VhInitializers {
 	public static <VH extends ViewHolder> VhInitializer<? super VH>[] array(@NonNull Collection<? extends VhInitializer<? super VH>> vhInitializers) {
 		return vhInitializers.toArray(new VhInitializer[vhInitializers.size()]);
 	}
+
+	// Internals
+
+	static final VhInitializer EMPTY = NullChemistry.INSTANCE;
 }

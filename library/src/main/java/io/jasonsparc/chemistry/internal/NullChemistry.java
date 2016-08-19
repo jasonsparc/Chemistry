@@ -10,7 +10,7 @@ import io.jasonsparc.chemistry.VhInitializer;
  * Created by Jason on 19/08/2016.
  */
 public final class NullChemistry<Item, VH extends ViewHolder> extends BasicChemistry<Item, VH> implements VhInitializer<VH> {
-	private static final NullChemistry INSTANCE = new NullChemistry<>();
+	public static final NullChemistry INSTANCE = new NullChemistry<>();
 
 	private NullChemistry() { }
 
