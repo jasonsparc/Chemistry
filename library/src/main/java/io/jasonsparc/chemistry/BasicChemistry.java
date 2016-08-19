@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import io.jasonsparc.chemistry.util.IdSelectors;
 import io.jasonsparc.chemistry.util.ItemBinders;
 import io.jasonsparc.chemistry.util.VhFactories;
+import io.jasonsparc.chemistry.util.VhInitializers;
 
 /**
  * Created by Jason on 19/08/2016.
@@ -152,7 +153,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		@ViewType @AnyRes final int viewType;
 
 		CompositeImpl(@NonNull BasicChemistry.Boiler<Item, VH> boiler) {
-			this.vhFactory = VhFactories.make(boiler.vhFactory, boiler.vhInitializers);
+			this.vhFactory = VhFactories.make(boiler.vhFactory, VhInitializers.make(boiler.vhInitializers));
 			this.itemBinder = ItemBinders.make(boiler.itemBinders);
 			this.idSelector = boiler.idSelector;
 			this.viewType = boiler.viewType;

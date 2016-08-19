@@ -4,9 +4,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
-import java.util.Collection;
-import java.util.List;
-
 import io.jasonsparc.chemistry.ItemVhFactory;
 import io.jasonsparc.chemistry.VhFactory;
 import io.jasonsparc.chemistry.VhInitializer;
@@ -30,23 +27,10 @@ public final class VhFactories {
 	}
 
 	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, @NonNull VhInitializer<? super VH> vhInitializer) {
-		return new InitVhFactory<>(vhFactory, vhInitializer);
+		return vhInitializer == VhInitializers.empty() ? make(vhFactory) : new InitVhFactory<>(vhFactory, vhInitializer);
 	}
 
-	@SafeVarargs
-	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, @NonNull VhInitializer<? super VH>... vhInitializers) {
-		return vhInitializers.length == 0 ? make(vhFactory) : new InitVhFactory<>(vhFactory, VhInitializers.make(vhInitializers));
-	}
-
-	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, @NonNull List<? extends VhInitializer<? super VH>> vhInitializers) {
-		return vhInitializers.size() == 0 ? make(vhFactory) : new InitVhFactory<>(vhFactory, VhInitializers.make(vhInitializers));
-	}
-
-	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull VhFactory<? extends VH> vhFactory, @NonNull Collection<? extends VhInitializer<? super VH>> vhInitializers) {
-		return vhInitializers.size() == 0 ? make(vhFactory) : new InitVhFactory<>(vhFactory, VhInitializers.make(vhInitializers));
-	}
-
-	// Composites
+	// Composite Factories
 
 	public static <VH extends ViewHolder> VhFactory<VH> make(@NonNull ViewFactory viewFactory, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
 		return new CompositeVhFactory<>(viewFactory, itemVhFactory);
