@@ -140,10 +140,12 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 			if (base instanceof CompositeImpl<?, ?>) {
 				@SuppressWarnings("unchecked")
 				CompositeImpl<? super Item, VH> composite = (CompositeImpl) base;
+				idSelector = composite.idSelector;
 				viewType = composite.viewType;
 				vhFactory = composite.vhFactory;
 				itemBinders.add(composite.itemBinder);
 			} else {
+				idSelector = base;
 				viewType = base.getViewType();
 				vhFactory = base;
 				itemBinders.add(base);
