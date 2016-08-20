@@ -46,7 +46,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 	public abstract void bindViewHolder(VH holder, Item item);
 
 
-	// Utilities
+	// Boiler Utilities
 
 	public <RI extends Item> Boiler<RI, VH> boiler() {
 		return make(this);
@@ -57,13 +57,65 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 	}
 
 
+	// Boiler-delegating methods
+
 	public interface Transformer<Item, VH extends ViewHolder> {
 
 		void apply(Boiler<? extends Item, ? extends VH> boiler);
 	}
 
-	public <RI extends Item> Boiler<RI, VH> compose(@NonNull Transformer<? super RI, ? super VH> transformer) {
-		return this.<RI>boiler().compose(transformer);
+	public Boiler<Item, VH> compose(@NonNull Transformer<? super Item, ? super VH> transformer) {
+		return boiler().compose(transformer);
+	}
+
+	public Boiler<Item, VH> useItemIds(@NonNull IdSelector<? super Item> idSelector) {
+		return boiler().useItemIds(idSelector);
+	}
+
+	public Boiler<Item, VH> useViewType(@ViewType @AnyRes int viewType) {
+		return boiler().useViewType(viewType);
+	}
+
+	public Boiler<Item, VH> useUniqueViewType() {
+		return boiler().useUniqueViewType();
+	}
+
+
+	public final Boiler<Item, VH> useVhFactory(@NonNull VhFactory<? extends VH> vhFactory) {
+		return boiler().useVhFactory(vhFactory);
+	}
+
+	public final Boiler<Item, VH> useVhFactory(@NonNull ViewFactory viewFactory, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
+		return boiler().useVhFactory(viewFactory, itemVhFactory);
+	}
+
+	public final Boiler<Item, VH> useVhFactory(@NonNull ViewFactory viewFactory, @NonNull Class<? extends VH> vhClass) {
+		return boiler().useVhFactory(viewFactory, vhClass);
+	}
+
+	public final Boiler<Item, VH> useVhFactory(@LayoutRes int itemLayout, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
+		return boiler().useVhFactory(itemLayout, itemVhFactory);
+	}
+
+	public final Boiler<Item, VH> useVhFactory(@LayoutRes int itemLayout, @NonNull Class<? extends VH> vhClass) {
+		return boiler().useVhFactory(itemLayout, vhClass);
+	}
+
+
+	public final Boiler<Item, VH> addInit(@NonNull VhInitializer<? super VH> vhInitializer) {
+		return boiler().addInit(vhInitializer);
+	}
+
+	public final Boiler<Item, VH> addBinder(@NonNull ItemBinder<? super Item, ? super VH> itemBinder) {
+		return boiler().addBinder(itemBinder);
+	}
+
+	public final Boiler<Item, VH> add(@NonNull VhInitializer<? super VH> vhInitializer) {
+		return boiler().add(vhInitializer);
+	}
+
+	public final Boiler<Item, VH> add(@NonNull ItemBinder<? super Item, ? super VH> itemBinder) {
+		return boiler().add(itemBinder);
 	}
 
 
@@ -186,6 +238,9 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 			return this;
 		}
 	}
+
+
+	// Internals
 
 	static final class CompositeImpl<Item, VH extends ViewHolder> extends BasicChemistry<Item, VH> {
 		@NonNull final IdSelector<? super Item> idSelector;
