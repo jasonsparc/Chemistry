@@ -48,11 +48,11 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 
 	// Utilities
 
-	public <RI extends Item> Boiler<RI, VH> compose() {
+	public <RI extends Item> Boiler<RI, VH> boiler() {
 		return make(this);
 	}
 
-	public <RI extends Item> Boiler<RI, VH> compose(@ViewType @AnyRes int viewType) {
+	public <RI extends Item> Boiler<RI, VH> boiler(@ViewType @AnyRes int viewType) {
 		return make(viewType, this);
 	}
 
@@ -63,7 +63,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 	}
 
 	public <RI extends Item> Boiler<RI, VH> compose(@NonNull Transformer<? super RI, ? super VH> transformer) {
-		return this.<RI>compose().compose(transformer);
+		return this.<RI>boiler().compose(transformer);
 	}
 
 
