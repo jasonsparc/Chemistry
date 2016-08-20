@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.jasonsparc.chemistry.util.IdSelectors;
 import io.jasonsparc.chemistry.util.ItemBinders;
@@ -253,6 +254,15 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		public Boiler<Item, VH> remove(@NonNull ItemBinder<? super Item, ? super VH> itemBinder) {
 			itemBinders.remove(itemBinder);
 			return this;
+		}
+
+
+		public List<VhInitializer<? super VH>> vhInitializers() {
+			return vhInitializers;
+		}
+
+		public List<ItemBinder<? super Item, ? super VH>> itemBinders() {
+			return itemBinders;
 		}
 	}
 
