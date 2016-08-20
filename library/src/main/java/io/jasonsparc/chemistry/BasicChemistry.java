@@ -61,10 +61,10 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 
 	public interface Transformer<Item, VH extends ViewHolder> {
 
-		void apply(Boiler<? extends Item, ? extends VH> boiler);
+		void apply(Boiler<Item, VH> boiler);
 	}
 
-	public final Boiler<Item, VH> compose(@NonNull Transformer<? super Item, ? super VH> transformer) {
+	public final Boiler<Item, VH> compose(@NonNull Transformer<? super Item, VH> transformer) {
 		return boiler().compose(transformer);
 	}
 
@@ -155,8 +155,9 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 			return new CompositeImpl<>(this);
 		}
 
-		public Boiler<Item, VH> compose(@NonNull Transformer<? super Item, ? super VH> transformer) {
-			transformer.apply(this);
+		@SuppressWarnings("unchecked")
+		public Boiler<Item, VH> compose(@NonNull Transformer<? super Item, VH> transformer) {
+			((Transformer<Item, VH>) transformer).apply(this);
 			return this;
 		}
 
@@ -286,7 +287,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		}
 
 
-		public <VH extends ViewHolder> Boiler<Item, VH> compose(@NonNull Transformer<? super Item, ? super VH> transformer) {
+		public <VH extends ViewHolder> Boiler<Item, VH> compose(@NonNull Transformer<? super Item, VH> transformer) {
 			return this.<VH>makeBoiler().compose(transformer);
 		}
 
