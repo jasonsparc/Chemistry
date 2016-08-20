@@ -37,12 +37,12 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 
 	// Factories
 
-	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make() {
-		return new BasicChemistry.Boiler<>();
+	public static <Item> BasicChemistry.Preperator<Item> make() {
+		return new BasicChemistry.Preperator<>();
 	}
 
-	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@ViewType @AnyRes int viewType) {
-		return new BasicChemistry.Boiler<Item, VH>().useViewType(viewType);
+	public static <Item> BasicChemistry.Preperator<Item> make(@ViewType @AnyRes int viewType) {
+		return new BasicChemistry.Preperator<Item>().useViewType(viewType);
 	}
 
 	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@NonNull BasicChemistry<? super Item, VH> base) {

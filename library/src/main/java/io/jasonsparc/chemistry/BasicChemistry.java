@@ -46,7 +46,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 	public abstract void bindViewHolder(VH holder, Item item);
 
 
-	// Boiler Utilities
+	// Utilities
 
 	public <RI extends Item> Boiler<RI, VH> boiler() {
 		return make(this);
@@ -126,18 +126,17 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		@ViewType @AnyRes int viewType;
 
 		@Nullable VhFactory<? extends VH> vhFactory;
-		final ArrayList<VhInitializer<? super VH>> vhInitializers;
-		final ArrayList<ItemBinder<? super Item, ? super VH>> itemBinders;
+		final ArrayList<VhInitializer<? super VH>> vhInitializers = new ArrayList<>(4);
+		final ArrayList<ItemBinder<? super Item, ? super VH>> itemBinders = new ArrayList<>(4);
 
-		protected Boiler() {
-			this.vhInitializers = new ArrayList<>(4);
-			this.itemBinders = new ArrayList<>(4);
+		protected Boiler() { }
+
+		protected Boiler(Preperator<? super Item> preperator) {
+			this.idSelector = preperator.idSelector;
+			this.viewType = preperator.viewType;
 		}
 
 		protected Boiler(@NonNull BasicChemistry<? super Item, VH> base) {
-			vhInitializers = new ArrayList<>(4);
-			itemBinders = new ArrayList<>(4);
-
 			if (base instanceof CompositeImpl<?, ?>) {
 				@SuppressWarnings("unchecked")
 				CompositeImpl<? super Item, VH> composite = (CompositeImpl) base;
@@ -236,6 +235,63 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		public Boiler<Item, VH> remove(@NonNull ItemBinder<? super Item, ? super VH> itemBinder) {
 			itemBinders.add(itemBinder);
 			return this;
+		}
+	}
+
+
+	// Preperator implementation
+
+	public static class Preperator<Item> {
+		@NonNull IdSelector<? super Item> idSelector = IdSelectors.empty();
+		@ViewType @AnyRes int viewType;
+
+		protected Preperator() { }
+
+		public Preperator<Item> useItemIds(@NonNull IdSelector<? super Item> idSelector) {
+			this.idSelector = idSelector;
+			return this;
+		}
+
+		public Preperator<Item> useViewType(@ViewType @AnyRes int viewType) {
+			ViewTypes.validateArgument(viewType);
+			this.viewType = viewType;
+			return this;
+		}
+
+		public Preperator<Item> useUniqueViewType() {
+			//noinspection Range
+			this.viewType = 0; // Defer id generation. See CompositeImpl below...
+			return this;
+		}
+
+
+		public <VH extends ViewHolder> Boiler<Item, VH> useVhFactory(@NonNull VhFactory<? extends VH> vhFactory) {
+			return this.<VH>makeBoiler().useVhFactory(vhFactory);
+		}
+
+		public <VH extends ViewHolder> Boiler<Item, VH> useVhFactory(@NonNull ViewFactory viewFactory, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
+			return this.<VH>makeBoiler().useVhFactory(VhFactories.make(viewFactory, itemVhFactory));
+		}
+
+		public <VH extends ViewHolder> Boiler<Item, VH> useVhFactory(@NonNull ViewFactory viewFactory, @NonNull Class<? extends VH> vhClass) {
+			return this.<VH>makeBoiler().useVhFactory(VhFactories.make(viewFactory, vhClass));
+		}
+
+		public <VH extends ViewHolder> Boiler<Item, VH> useVhFactory(@LayoutRes int itemLayout, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
+			return this.<VH>makeBoiler().useVhFactory(VhFactories.make(itemLayout, itemVhFactory));
+		}
+
+		public <VH extends ViewHolder> Boiler<Item, VH> useVhFactory(@LayoutRes int itemLayout, @NonNull Class<? extends VH> vhClass) {
+			return this.<VH>makeBoiler().useVhFactory(VhFactories.make(itemLayout, vhClass));
+		}
+
+
+		public <VH extends ViewHolder> Boiler<Item, VH> compose(@NonNull Transformer<? super Item, ? super VH> transformer) {
+			return this.<VH>makeBoiler().compose(transformer);
+		}
+
+		public <VH extends ViewHolder> Boiler<Item, VH> makeBoiler() {
+			return new Boiler<>(this);
 		}
 	}
 
