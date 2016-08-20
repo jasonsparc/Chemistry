@@ -105,23 +105,19 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		}
 
 		public Boiler<Item, VH> useVhFactory(@NonNull ViewFactory viewFactory, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
-			vhFactory = VhFactories.make(viewFactory, itemVhFactory);
-			return this;
+			return useVhFactory(VhFactories.make(viewFactory, itemVhFactory));
 		}
 
 		public Boiler<Item, VH> useVhFactory(@NonNull ViewFactory viewFactory, @NonNull Class<? extends VH> vhClass) {
-			vhFactory = VhFactories.make(viewFactory, vhClass);
-			return this;
+			return useVhFactory(VhFactories.make(viewFactory, vhClass));
 		}
 
 		public Boiler<Item, VH> useVhFactory(@LayoutRes int itemLayout, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
-			vhFactory = VhFactories.make(itemLayout, itemVhFactory);
-			return this;
+			return useVhFactory(VhFactories.make(itemLayout, itemVhFactory));
 		}
 
 		public Boiler<Item, VH> useVhFactory(@LayoutRes int itemLayout, @NonNull Class<? extends VH> vhClass) {
-			vhFactory = VhFactories.make(itemLayout, vhClass);
-			return this;
+			return useVhFactory(VhFactories.make(itemLayout, vhClass));
 		}
 
 
@@ -172,13 +168,13 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		final ArrayList<VhInitializer<? super VH>> vhInitializers;
 		final ArrayList<ItemBinder<? super Item, ? super VH>> itemBinders;
 
-		Boiler() {
+		protected Boiler() {
 			this.vhInitializers = new ArrayList<>(4);
 			this.itemBinders = new ArrayList<>(4);
 		}
 
 		@SuppressWarnings("unchecked")
-		Boiler(@NonNull BasicChemistry<? super Item, VH> base) {
+		protected Boiler(@NonNull BasicChemistry<? super Item, VH> base) {
 			vhInitializers = new ArrayList<>(4);
 			itemBinders = new ArrayList<>(4);
 
