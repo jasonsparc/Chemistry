@@ -70,6 +70,34 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 	// Boiler implementation
 
 	public static class Boiler<Item, VH extends ViewHolder> {
+		@NonNull IdSelector<? super Item> idSelector = IdSelectors.empty();
+		@ViewType @AnyRes int viewType;
+
+		@Nullable VhFactory<? extends VH> vhFactory;
+		final ArrayList<VhInitializer<? super VH>> vhInitializers;
+		final ArrayList<ItemBinder<? super Item, ? super VH>> itemBinders;
+
+		protected Boiler() {
+			this.vhInitializers = new ArrayList<>(4);
+			this.itemBinders = new ArrayList<>(4);
+		}
+
+		protected Boiler(@NonNull BasicChemistry<? super Item, VH> base) {
+			vhInitializers = new ArrayList<>(4);
+			itemBinders = new ArrayList<>(4);
+
+			if (base instanceof CompositeImpl<?, ?>) {
+				@SuppressWarnings("unchecked")
+				CompositeImpl<? super Item, VH> composite = (CompositeImpl) base;
+				viewType = composite.viewType;
+				vhFactory = composite.vhFactory;
+				itemBinders.add(composite.itemBinder);
+			} else {
+				viewType = base.getViewType();
+				vhFactory = base;
+				itemBinders.add(base);
+			}
+		}
 
 
 		public BasicChemistry<Item, VH> boil() {
@@ -156,38 +184,6 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		public Boiler<Item, VH> remove(@NonNull ItemBinder<? super Item, ? super VH> itemBinder) {
 			itemBinders.add(itemBinder);
 			return this;
-		}
-
-
-		// Internals
-
-		@NonNull IdSelector<? super Item> idSelector = IdSelectors.empty();
-		@ViewType @AnyRes int viewType;
-
-		@Nullable VhFactory<? extends VH> vhFactory;
-		final ArrayList<VhInitializer<? super VH>> vhInitializers;
-		final ArrayList<ItemBinder<? super Item, ? super VH>> itemBinders;
-
-		protected Boiler() {
-			this.vhInitializers = new ArrayList<>(4);
-			this.itemBinders = new ArrayList<>(4);
-		}
-
-		@SuppressWarnings("unchecked")
-		protected Boiler(@NonNull BasicChemistry<? super Item, VH> base) {
-			vhInitializers = new ArrayList<>(4);
-			itemBinders = new ArrayList<>(4);
-
-			if (base instanceof CompositeImpl<?, ?>) {
-				CompositeImpl<? super Item, VH> composite = (CompositeImpl) base;
-				vhFactory = composite.vhFactory;
-				itemBinders.add(composite.itemBinder);
-				viewType = composite.viewType;
-			} else {
-				vhFactory = base;
-				itemBinders.add(base);
-				viewType = base.getViewType();
-			}
 		}
 	}
 
