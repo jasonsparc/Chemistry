@@ -181,7 +181,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 			if (base instanceof CompositeImpl<?, ?>) {
 				CompositeImpl<? super Item, VH> composite = (CompositeImpl) base;
 				vhFactory = composite.vhFactory;
-				itemBinders.add(base);
+				itemBinders.add(composite.itemBinder);
 				viewType = composite.viewType;
 			} else {
 				vhFactory = base;
