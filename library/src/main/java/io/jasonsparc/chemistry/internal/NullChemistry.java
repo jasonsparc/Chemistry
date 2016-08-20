@@ -32,4 +32,9 @@ public final class NullChemistry<Item> extends Chemistry<Item> {
 	public ItemBinder<? super Item, ?> getItemBinder(Item item) {
 		return null;
 	}
+
+	@Override
+	public String toString() {
+		return "io.chemistry.NullChemistry";
+	}
 }
