@@ -1,6 +1,7 @@
 package io.jasonsparc.chemistry.util;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
 import java.util.Collection;
@@ -65,6 +66,12 @@ public final class VhInitializers {
 	@SuppressWarnings("unchecked")
 	public static <VH extends ViewHolder> VhInitializer<VH> empty() {
 		return EMPTY;
+	}
+
+	@SuppressWarnings("unchecked")
+	@NonNull
+	public static <VH extends ViewHolder> VhInitializer<VH> ensureNonNull(@Nullable VhInitializer<VH> vhInitializer) {
+		return vhInitializer != null ? vhInitializer : EMPTY;
 	}
 
 	@SafeVarargs

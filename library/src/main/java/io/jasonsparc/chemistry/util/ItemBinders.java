@@ -1,6 +1,7 @@
 package io.jasonsparc.chemistry.util;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 
 import java.util.Collection;
@@ -65,6 +66,12 @@ public final class ItemBinders {
 	@SuppressWarnings("unchecked")
 	public static <Item, VH extends ViewHolder> ItemBinder<Item, VH> empty() {
 		return EMPTY;
+	}
+
+	@SuppressWarnings("unchecked")
+	@NonNull
+	public static <Item, VH extends ViewHolder> ItemBinder<Item, VH> ensureNonNull(@Nullable ItemBinder<Item, VH> itemBinder) {
+		return itemBinder != null ? itemBinder : EMPTY;
 	}
 
 	@SafeVarargs
