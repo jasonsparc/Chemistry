@@ -236,27 +236,6 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		}
 
 
-		public Boiler<Item, VH> removeInit(@NonNull VhInitializer<? super VH> vhInitializer) {
-			vhInitializers.remove(vhInitializer);
-			return this;
-		}
-
-		public Boiler<Item, VH> removeBinder(@NonNull ItemBinder<? super Item, ? super VH> itemBinder) {
-			itemBinders.remove(itemBinder);
-			return this;
-		}
-
-		public Boiler<Item, VH> remove(@NonNull VhInitializer<? super VH> vhInitializer) {
-			vhInitializers.remove(vhInitializer);
-			return this;
-		}
-
-		public Boiler<Item, VH> remove(@NonNull ItemBinder<? super Item, ? super VH> itemBinder) {
-			itemBinders.remove(itemBinder);
-			return this;
-		}
-
-
 		public List<VhInitializer<? super VH>> vhInitializers() {
 			return vhInitializers;
 		}
