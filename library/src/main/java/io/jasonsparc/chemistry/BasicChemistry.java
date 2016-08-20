@@ -130,12 +130,12 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		final ArrayList<ItemBinder<? super Item, ? super VH>> itemBinders = new ArrayList<>(4);
 
 		protected Boiler() {
-			this.idSelector = IdSelectors.empty();
+			idSelector = IdSelectors.empty();
 		}
 
 		protected Boiler(Preperator<? super Item> preperator) {
-			this.idSelector = preperator.idSelector;
-			this.viewType = preperator.viewType;
+			idSelector = preperator.idSelector;
+			viewType = preperator.viewType;
 		}
 
 		protected Boiler(@NonNull BasicChemistry<? super Item, VH> base) {
@@ -315,14 +315,12 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 			if (boiler.vhFactory == null)
 				throw new NullPointerException("vhFactory == null; forgot to set it?");
 
-			this.vhFactory = VhFactories.make(boiler.vhFactory, VhInitializers.make(boiler.vhInitializers));
-			this.itemBinder = ItemBinders.make(boiler.itemBinders);
-			this.idSelector = boiler.idSelector;
+			vhFactory = VhFactories.make(boiler.vhFactory, VhInitializers.make(boiler.vhInitializers));
+			itemBinder = ItemBinders.make(boiler.itemBinders);
+			idSelector = boiler.idSelector;
 
-			int viewType = boiler.viewType;
-			if (viewType == 0)
-				viewType = ViewTypes.generate();
-			this.viewType = viewType;
+			//noinspection Range
+			viewType = boiler.viewType != 0 ? boiler.viewType : ViewTypes.generate();
 		}
 
 		@Override
