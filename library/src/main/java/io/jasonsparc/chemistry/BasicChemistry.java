@@ -122,7 +122,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 	// Boiler implementation
 
 	public static class Boiler<Item, VH extends ViewHolder> {
-		@NonNull IdSelector<? super Item> idSelector = IdSelectors.empty();
+		@Nullable IdSelector<? super Item> idSelector;
 		@ViewType @AnyRes int viewType;
 
 		@Nullable VhFactory<? extends VH> vhFactory;
@@ -242,7 +242,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 	// Preperator implementation
 
 	public static class Preperator<Item> {
-		@NonNull IdSelector<? super Item> idSelector = IdSelectors.empty();
+		@Nullable IdSelector<? super Item> idSelector;
 		@ViewType @AnyRes int viewType;
 
 		protected Preperator() { }
@@ -312,7 +312,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 
 			this.vhFactory = VhFactories.make(boiler.vhFactory, VhInitializers.make(boiler.vhInitializers));
 			this.itemBinder = ItemBinders.make(boiler.itemBinders);
-			this.idSelector = boiler.idSelector;
+			this.idSelector = IdSelectors.ensureNoNull(boiler.idSelector);
 
 			int viewType = boiler.viewType;
 			if (viewType == 0)
