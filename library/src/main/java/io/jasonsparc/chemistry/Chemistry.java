@@ -52,4 +52,8 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@ViewType @AnyRes int viewType, @NonNull BasicChemistry<? super Item, VH> base) {
 		return new BasicChemistry.Boiler<>(base).useViewType(viewType);
 	}
+
+	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@NonNull BasicChemistry.Transformer<? super Item, ? super VH> transformer) {
+		return new BasicChemistry.Boiler<Item, VH>().compose(transformer);
+	}
 }
