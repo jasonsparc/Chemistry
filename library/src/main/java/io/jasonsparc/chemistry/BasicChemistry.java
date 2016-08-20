@@ -64,19 +64,19 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		void apply(Boiler<? extends Item, ? extends VH> boiler);
 	}
 
-	public Boiler<Item, VH> compose(@NonNull Transformer<? super Item, ? super VH> transformer) {
+	public final Boiler<Item, VH> compose(@NonNull Transformer<? super Item, ? super VH> transformer) {
 		return boiler().compose(transformer);
 	}
 
-	public Boiler<Item, VH> useItemIds(@NonNull IdSelector<? super Item> idSelector) {
+	public final Boiler<Item, VH> useItemIds(@NonNull IdSelector<? super Item> idSelector) {
 		return boiler().useItemIds(idSelector);
 	}
 
-	public Boiler<Item, VH> useViewType(@ViewType @AnyRes int viewType) {
+	public final Boiler<Item, VH> useViewType(@ViewType @AnyRes int viewType) {
 		return boiler().useViewType(viewType);
 	}
 
-	public Boiler<Item, VH> useUniqueViewType() {
+	public final Boiler<Item, VH> useUniqueViewType() {
 		return boiler().useUniqueViewType();
 	}
 
