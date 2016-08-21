@@ -49,11 +49,11 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 
 	// Utilities
 
-	public final <RI extends Item> Boiler<RI, VH> boiler() {
+	public final <RI extends Item> Boiler<RI, VH> wrap() {
 		return make(this);
 	}
 
-	public final <RI extends Item> Boiler<RI, VH> boiler(@ViewType @AnyRes int viewType) {
+	public final <RI extends Item> Boiler<RI, VH> wrap(@ViewType @AnyRes int viewType) {
 		return make(viewType, this);
 	}
 
