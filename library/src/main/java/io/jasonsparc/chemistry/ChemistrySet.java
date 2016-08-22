@@ -3,6 +3,7 @@ package io.jasonsparc.chemistry;
 import android.support.annotation.AnyRes;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.SparseArray;
 
@@ -153,9 +154,12 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 			return this;
 		}
 
-		public Boiler<Item, K> defaultCase(@NonNull Chemistry<? super Item> defaultCase) {
+		public Boiler<Item, K> defaultCase(@Nullable Chemistry<? super Item> defaultCase) {
 			@SuppressWarnings("unchecked") K defaultKey = (K) Default.class;
-			mapOfCases.put(defaultKey, defaultCase);
+			if (defaultCase != null) {
+				mapOfCases.put(defaultKey, defaultCase);
+			} else
+				mapOfCases.remove(defaultKey);
 			return this;
 		}
 
@@ -195,8 +199,11 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 			return this;
 		}
 
-		public ClassBoiler<Item> defaultCase(@NonNull Chemistry<? super Item> defaultCase) {
-			mapOfCases.put(Default.class, defaultCase);
+		public ClassBoiler<Item> defaultCase(@Nullable Chemistry<? super Item> defaultCase) {
+			if (defaultCase != null) {
+				mapOfCases.put(Default.class, defaultCase);
+			} else
+				mapOfCases.remove(Default.class);
 			return this;
 		}
 
@@ -224,8 +231,11 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 			return this;
 		}
 
-		public TypeBoiler<Item> defaultCase(@NonNull Chemistry<? super Item> defaultCase) {
-			chemistries.put(DEFAULT_VIEW_TYPE_KEY, defaultCase);
+		public TypeBoiler<Item> defaultCase(@Nullable Chemistry<? super Item> defaultCase) {
+			if (defaultCase != null) {
+				chemistries.put(DEFAULT_VIEW_TYPE_KEY, defaultCase);
+			} else
+				chemistries.delete(DEFAULT_VIEW_TYPE_KEY);
 			return this;
 		}
 	}
