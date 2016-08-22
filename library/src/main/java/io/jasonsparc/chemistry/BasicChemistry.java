@@ -50,11 +50,11 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 	// Utilities
 
 	public final <RI extends Item> Boiler<RI, VH> wrap() {
-		return make(this);
+		return compose(this);
 	}
 
 	public final <RI extends Item> Boiler<RI, VH> wrap(@ViewType @AnyRes int viewType) {
-		return make(viewType, this);
+		return compose(viewType, this);
 	}
 
 
@@ -65,58 +65,54 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		void apply(Boiler<Item, VH> boiler);
 	}
 
-	public final Boiler<Item, VH> compose(@NonNull Transformer<? super Item, VH> transformer) {
-		return make(this).compose(transformer);
-	}
-
 	public final Boiler<Item, VH> useItemIds(@NonNull IdSelector<? super Item> idSelector) {
-		return make(this).useItemIds(idSelector);
+		return compose(this).useItemIds(idSelector);
 	}
 
 	public final Boiler<Item, VH> useViewType(@ViewType @AnyRes int viewType) {
-		return make(this).useViewType(viewType);
+		return compose(this).useViewType(viewType);
 	}
 
 	public final Boiler<Item, VH> useUniqueViewType() {
-		return make(this).useUniqueViewType();
+		return compose(this).useUniqueViewType();
 	}
 
 
 	public final Boiler<Item, VH> useVhFactory(@NonNull VhFactory<? extends VH> vhFactory) {
-		return make(this).useVhFactory(vhFactory);
+		return compose(this).useVhFactory(vhFactory);
 	}
 
 	public final Boiler<Item, VH> useVhFactory(@NonNull ViewFactory viewFactory, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
-		return make(this).useVhFactory(viewFactory, itemVhFactory);
+		return compose(this).useVhFactory(viewFactory, itemVhFactory);
 	}
 
 	public final Boiler<Item, VH> useVhFactory(@NonNull ViewFactory viewFactory, @NonNull Class<? extends VH> vhClass) {
-		return make(this).useVhFactory(viewFactory, vhClass);
+		return compose(this).useVhFactory(viewFactory, vhClass);
 	}
 
 	public final Boiler<Item, VH> useVhFactory(@LayoutRes int itemLayout, @NonNull ItemVhFactory<? extends VH> itemVhFactory) {
-		return make(this).useVhFactory(itemLayout, itemVhFactory);
+		return compose(this).useVhFactory(itemLayout, itemVhFactory);
 	}
 
 	public final Boiler<Item, VH> useVhFactory(@LayoutRes int itemLayout, @NonNull Class<? extends VH> vhClass) {
-		return make(this).useVhFactory(itemLayout, vhClass);
+		return compose(this).useVhFactory(itemLayout, vhClass);
 	}
 
 
 	public final Boiler<Item, VH> addInit(@NonNull VhInitializer<? super VH> vhInitializer) {
-		return make(this).addInit(vhInitializer);
+		return compose(this).addInit(vhInitializer);
 	}
 
 	public final Boiler<Item, VH> addBinder(@NonNull ItemBinder<? super Item, ? super VH> itemBinder) {
-		return make(this).addBinder(itemBinder);
+		return compose(this).addBinder(itemBinder);
 	}
 
 	public final Boiler<Item, VH> add(@NonNull VhInitializer<? super VH> vhInitializer) {
-		return make(this).add(vhInitializer);
+		return compose(this).add(vhInitializer);
 	}
 
 	public final Boiler<Item, VH> add(@NonNull ItemBinder<? super Item, ? super VH> itemBinder) {
-		return make(this).add(itemBinder);
+		return compose(this).add(itemBinder);
 	}
 
 

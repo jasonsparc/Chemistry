@@ -37,32 +37,32 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 
 	// Factories
 
-	public static <Item> BasicChemistry.Preperator<Item> make() {
+	public static <Item> BasicChemistry.Preperator<Item> compose() {
 		return new BasicChemistry.Preperator<>();
 	}
 
-	public static <Item> BasicChemistry.Preperator<Item> make(@ViewType @AnyRes int viewType) {
+	public static <Item> BasicChemistry.Preperator<Item> compose(@ViewType @AnyRes int viewType) {
 		return new BasicChemistry.Preperator<Item>().useViewType(viewType);
 	}
 
-	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@NonNull BasicChemistry<? super Item, VH> base) {
+	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> compose(@NonNull BasicChemistry<? super Item, VH> base) {
 		return new BasicChemistry.Boiler<>(base);
 	}
 
-	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@ViewType @AnyRes int viewType, @NonNull BasicChemistry<? super Item, VH> base) {
+	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> compose(@ViewType @AnyRes int viewType, @NonNull BasicChemistry<? super Item, VH> base) {
 		return new BasicChemistry.Boiler<>(base).useViewType(viewType);
 	}
 
-	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@NonNull BasicChemistry.Transformer<? super Item, VH> transformer) {
+	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> compose(@NonNull BasicChemistry.Transformer<? super Item, VH> transformer) {
 		return new BasicChemistry.Boiler<Item, VH>().compose(transformer);
 	}
 
 
-	public static <Item> ChemistrySet.ClassBoiler<Item> makeSet() {
+	public static <Item> ChemistrySet.ClassBoiler<Item> select() {
 		return new ChemistrySet.ClassBoiler<>();
 	}
 
-	public static <Item, K> ChemistrySet.Boiler<Item, K> makeSet(@NonNull ChemistrySet.Selector<? super Item, ? extends K> caseSelector) {
+	public static <Item, K> ChemistrySet.Boiler<Item, K> select(@NonNull ChemistrySet.Selector<? super Item, ? extends K> caseSelector) {
 		return new ChemistrySet.Boiler<>(caseSelector);
 	}
 }
