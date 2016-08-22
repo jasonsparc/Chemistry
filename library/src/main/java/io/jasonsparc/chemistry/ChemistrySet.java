@@ -330,6 +330,9 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 			if (chemistry != null)
 				return chemistry;
 
+			// Search through test cases
+			// Memoize on successful case
+
 			final Predicate<? super K>[] t = this.testCases;
 			for (int i = 0, len = t.length; i < len; i++) {
 				if (t[i].test(key)) {
@@ -338,6 +341,8 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 					return chemistry;
 				}
 			}
+
+			// Default case fallback
 
 			chemistry = mapOfCases.get(Default.class);
 			if (chemistry != null)
@@ -364,6 +369,9 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 			if (chemistry != null)
 				return chemistry;
 
+			// Search through test cases
+			// Memoize on successful case
+
 			final Object[] t = this.testCases;
 			for (int i = 0, len = t.length; i < len; i++) {
 				Object testCase = t[i];
@@ -383,6 +391,8 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 					}
 				}
 			}
+
+			// Default case fallback
 
 			chemistry = mapOfCases.get(Default.class);
 			if (chemistry != null)
