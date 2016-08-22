@@ -352,6 +352,7 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 
 		ChemistryClassSet(@NonNull ClassBoiler<Item> boiler) {
 			super(boiler.memoizeLimit);
+			mapOfCases.putAll(boiler.mapOfCases);
 			testCases = boiler.testCases.toArray(new Object[boiler.testCases.size()]);
 		}
 
