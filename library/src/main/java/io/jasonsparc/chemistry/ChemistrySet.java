@@ -251,8 +251,8 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		@NonNull final Selector<? super Item, ? extends K> caseSelector;
 
 		ChemistryKeyedSet(@NonNull Boiler<Item, K> boiler) {
-			caseSelector = boiler.caseSelector;
 			mapOfCases.putAll(boiler.mapOfCases);
+			caseSelector = boiler.caseSelector;
 		}
 
 		@SuppressWarnings("unchecked")
@@ -313,8 +313,8 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		@SuppressWarnings("unchecked")
 		ChemistryCaseSet(@NonNull Boiler<Item, K> boiler) {
 			super(boiler.memoizeLimit);
-			caseSelector = boiler.caseSelector;
 			mapOfCases.putAll(boiler.mapOfCases);
+			caseSelector = boiler.caseSelector;
 
 			int testCount = boiler.testCases.size();
 			testCases = boiler.testCases.toArray(new Predicate[testCount]);
@@ -398,8 +398,8 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		@Nullable final Chemistry defaultCase;
 
 		ChemistrySparseSet(@NonNull IntBoiler<Item> boiler) {
-			caseSelector = boiler.caseSelector;
 			intMapOfCases = boiler.intMapOfCases.clone();
+			caseSelector = boiler.caseSelector;
 			defaultCase = boiler.defaultCase;
 		}
 
