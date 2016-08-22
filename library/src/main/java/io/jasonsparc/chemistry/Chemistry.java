@@ -65,4 +65,8 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 	public static <Item, K> ChemistrySet.Boiler<Item, K> select(@NonNull ChemistrySet.Selector<? super Item, ? extends K> caseSelector) {
 		return new ChemistrySet.Boiler<>(caseSelector);
 	}
+
+	public static <Item> ChemistrySet.IntBoiler<Item> select(@NonNull ChemistrySet.IntSelector<? super Item> caseSelector) {
+		return new ChemistrySet.IntBoiler<>(caseSelector);
+	}
 }
