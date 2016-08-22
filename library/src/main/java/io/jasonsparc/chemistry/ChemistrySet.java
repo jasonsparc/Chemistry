@@ -2,7 +2,9 @@ package io.jasonsparc.chemistry;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.SimpleArrayMap;
+import android.util.SparseArray;
 
 import java.util.ArrayList;
 
@@ -121,6 +123,11 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		boolean test(T t);
 	}
 
+	public interface IntSelector<T> {
+
+		int select(T t);
+	}
+
 	// Boiler implementations
 
 	public static final class Boiler<Item, K> {
@@ -200,6 +207,30 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 
 		public ClassBoiler<Item> limitMemoize(@IntRange(from = 0) int memoizeLimit) {
 			this.memoizeLimit = memoizeLimit;
+			return this;
+		}
+	}
+
+	public static final class IntBoiler<Item> {
+		final SparseArray<Chemistry<?>> intMapOfCases = new SparseArray<>();
+		@NonNull final IntSelector<? super Item> caseSelector;
+		@Nullable Chemistry<?> defaultCase;
+
+		IntBoiler(@NonNull IntSelector<? super Item> caseSelector) {
+			this.caseSelector = caseSelector;
+		}
+
+		public ChemistrySet<Item> boil() {
+			return new ChemistrySparseSet<>(this);
+		}
+
+		public <T extends Item> IntBoiler<Item> map(int caseKey, @NonNull Chemistry<? super T> mapping) {
+			intMapOfCases.put(caseKey, mapping);
+			return this;
+		}
+
+		public IntBoiler<Item> defaultCase(@NonNull Chemistry<? super Item> defaultCase) {
+			this.defaultCase = defaultCase;
 			return this;
 		}
 	}
@@ -358,6 +389,25 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 				memoize(itemClass, chemistry);
 
 			return chemistry;
+		}
+	}
+
+	static final class ChemistrySparseSet<Item> extends ChemistrySet<Item> {
+		final SparseArray<Chemistry<?>> intMapOfCases;
+		@NonNull final IntSelector<? super Item> caseSelector;
+		@Nullable final Chemistry defaultCase;
+
+		ChemistrySparseSet(@NonNull IntBoiler<Item> boiler) {
+			caseSelector = boiler.caseSelector;
+			intMapOfCases = boiler.intMapOfCases.clone();
+			defaultCase = boiler.defaultCase;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <T extends Item> Chemistry<? super T> getItemChemistry(T item) {
+			Chemistry chemistry = intMapOfCases.get(caseSelector.select(item));
+			return chemistry != null ? chemistry : defaultCase;
 		}
 	}
 }
