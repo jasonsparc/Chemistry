@@ -56,4 +56,13 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 	public static <Item, VH extends ViewHolder> BasicChemistry.Boiler<Item, VH> make(@NonNull BasicChemistry.Transformer<? super Item, VH> transformer) {
 		return new BasicChemistry.Boiler<Item, VH>().compose(transformer);
 	}
+
+
+	public static <Item> ChemistrySet.ClassBoiler<Item> makeSet() {
+		return new ChemistrySet.ClassBoiler<>();
+	}
+
+	public static <Item, K> ChemistrySet.Boiler<Item, K> makeSet(@NonNull ChemistrySet.Selector<? super Item, ? extends K> caseSelector) {
+		return new ChemistrySet.Boiler<>(caseSelector);
+	}
 }
