@@ -1,8 +1,8 @@
 package io.jasonsparc.chemistry;
 
+import android.support.annotation.AnyRes;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.SparseArray;
 
@@ -123,11 +123,6 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		boolean test(T t);
 	}
 
-	public interface IntSelector<T> {
-
-		int select(T t);
-	}
-
 	// Boiler implementations
 
 	public static final class Boiler<Item, K> {
@@ -211,26 +206,26 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		}
 	}
 
-	public static final class IntBoiler<Item> {
-		final SparseArray<Chemistry<?>> intMapOfCases = new SparseArray<>();
-		@NonNull final IntSelector<? super Item> caseSelector;
-		@Nullable Chemistry<?> defaultCase;
+	public static final class TypeBoiler<Item> {
+		// Use Arrays (with binary search) instead!?
+		final SparseArray<Chemistry<?>> chemistries = new SparseArray<>();
+		@NonNull final TypeSelector<? super Item> typeSelector;
 
-		IntBoiler(@NonNull IntSelector<? super Item> caseSelector) {
-			this.caseSelector = caseSelector;
+		TypeBoiler(@NonNull TypeSelector<? super Item> typeSelector) {
+			this.typeSelector = typeSelector;
 		}
 
 		public ChemistrySet<Item> boil() {
 			return new ChemistrySparseSet<>(this);
 		}
 
-		public <T extends Item> IntBoiler<Item> map(int caseKey, @NonNull Chemistry<? super T> mapping) {
-			intMapOfCases.put(caseKey, mapping);
+		public <T extends Item> TypeBoiler<Item> add(@NonNull BasicChemistry<? super T, ?> chemistry) {
+			chemistries.put(chemistry.getViewType(), chemistry);
 			return this;
 		}
 
-		public IntBoiler<Item> defaultCase(@NonNull Chemistry<? super Item> defaultCase) {
-			this.defaultCase = defaultCase;
+		public TypeBoiler<Item> defaultCase(@NonNull Chemistry<? super Item> defaultCase) {
+			chemistries.put(DEFAULT_VIEW_TYPE_KEY, defaultCase);
 			return this;
 		}
 	}
@@ -240,6 +235,8 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 	static final int DEFAULT_MEMOIZE_LIMIT = 16;
 	static final int MIN_CAPACITY_INCREMENT = 8;
 	static final Object[] EMPTY = new Object[0];
+
+	@ViewType @AnyRes static final int DEFAULT_VIEW_TYPE_KEY = ViewType.INVALID;
 
 	/** Default key/class/classKey **/
 	static final class Default {
@@ -403,21 +400,20 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 	}
 
 	static final class ChemistrySparseSet<Item> extends ChemistrySet<Item> {
-		final SparseArray<Chemistry<?>> intMapOfCases;
-		@NonNull final IntSelector<? super Item> caseSelector;
-		@Nullable final Chemistry defaultCase;
+		// Use Arrays (with binary search) instead!?
+		final SparseArray<Chemistry<?>> chemistries;
+		@NonNull final TypeSelector<? super Item> typeSelector;
 
-		ChemistrySparseSet(@NonNull IntBoiler<Item> boiler) {
-			intMapOfCases = boiler.intMapOfCases.clone();
-			caseSelector = boiler.caseSelector;
-			defaultCase = boiler.defaultCase;
+		ChemistrySparseSet(@NonNull TypeBoiler<Item> boiler) {
+			chemistries = boiler.chemistries.clone();
+			typeSelector = boiler.typeSelector;
 		}
 
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T extends Item> Chemistry<? super T> getItemChemistry(T item) {
-			Chemistry chemistry = intMapOfCases.get(caseSelector.select(item));
-			return chemistry != null ? chemistry : defaultCase;
+			Chemistry chemistry = chemistries.get(typeSelector.getItemViewType(item));
+			return chemistry != null ? chemistry : chemistries.get(DEFAULT_VIEW_TYPE_KEY);
 		}
 	}
 }
