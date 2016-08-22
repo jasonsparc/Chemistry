@@ -145,9 +145,9 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 		}
 
 		Boiler(@NonNull BasicChemistry<? super Item, VH> base) {
-			if (base instanceof CompositeImpl<?, ?>) {
+			if (base instanceof CompositeChemistry<?, ?>) {
 				@SuppressWarnings("unchecked")
-				CompositeImpl<? super Item, VH> composite = (CompositeImpl) base;
+				CompositeChemistry<? super Item, VH> composite = (CompositeChemistry) base;
 				idSelector = composite.idSelector;
 				viewType = composite.viewType;
 				vhFactory = composite.vhFactory;
@@ -162,7 +162,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 
 
 		public BasicChemistry<Item, VH> boil() {
-			return new CompositeImpl<>(this);
+			return new CompositeChemistry<>(this);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -184,7 +184,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 
 		public Boiler<Item, VH> useUniqueViewType() {
 			//noinspection Range
-			this.viewType = 0; // Defer id generation. See CompositeImpl below...
+			this.viewType = 0; // Defer id generation. See CompositeChemistry below...
 			return this;
 		}
 
@@ -267,7 +267,7 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 
 		public Preperator<Item> useUniqueViewType() {
 			//noinspection Range
-			this.viewType = 0; // Defer id generation. See CompositeImpl below...
+			this.viewType = 0; // Defer id generation. See CompositeChemistry below...
 			return this;
 		}
 
@@ -305,14 +305,14 @@ public abstract class BasicChemistry<Item, VH extends ViewHolder> extends Chemis
 
 	// Internals
 
-	static final class CompositeImpl<Item, VH extends ViewHolder> extends BasicChemistry<Item, VH> {
+	static final class CompositeChemistry<Item, VH extends ViewHolder> extends BasicChemistry<Item, VH> {
 		@NonNull final IdSelector<? super Item> idSelector;
 		@ViewType @AnyRes final int viewType;
 
 		@NonNull final VhFactory<? extends VH> vhFactory;
 		@NonNull final ItemBinder<? super Item, ? super VH> itemBinder;
 
-		CompositeImpl(@NonNull BasicChemistry.Boiler<Item, VH> boiler) {
+		CompositeChemistry(@NonNull BasicChemistry.Boiler<Item, VH> boiler) {
 			// Must perform a special null-check for vhFactory, in case the user forgot to set it.
 			if (boiler.vhFactory == null)
 				throw new NullPointerException("vhFactory == null; forgot to set it?");
