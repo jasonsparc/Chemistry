@@ -247,11 +247,11 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 	}
 
 	static final class ChemistryKeyedSet<Item, K> extends ChemistrySet<Item> {
-		final SimpleArrayMap<K, Chemistry> mapOfCases = new SimpleArrayMap<>();
+		final SimpleArrayMap<K, Chemistry> mapOfCases;
 		@NonNull final Selector<? super Item, ? extends K> caseSelector;
 
 		ChemistryKeyedSet(@NonNull Boiler<Item, K> boiler) {
-			mapOfCases.putAll(boiler.mapOfCases);
+			mapOfCases = new SimpleArrayMap<>(boiler.mapOfCases);
 			caseSelector = boiler.caseSelector;
 		}
 
@@ -264,13 +264,14 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 	}
 
 	static abstract class ChemistryMemoizedSet<Item, K> extends ChemistrySet<Item> {
-		final SimpleArrayMap<K, Chemistry> mapOfCases = new SimpleArrayMap<>();
+		final SimpleArrayMap<K, Chemistry<?>> mapOfCases;
 
 		Object[] memoizedKeys = EMPTY;
 		int memoizeCursor;
 		final int memoizeLimit;
 
-		ChemistryMemoizedSet(int memoizeLimit) {
+		ChemistryMemoizedSet(SimpleArrayMap<K, Chemistry<?>> copyContent, int memoizeLimit) {
+			this.mapOfCases = new SimpleArrayMap<>(copyContent);
 			this.memoizeLimit = memoizeLimit;
 		}
 
@@ -312,8 +313,7 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 
 		@SuppressWarnings("unchecked")
 		ChemistryCaseSet(@NonNull Boiler<Item, K> boiler) {
-			super(boiler.memoizeLimit);
-			mapOfCases.putAll(boiler.mapOfCases);
+			super(boiler.mapOfCases, boiler.memoizeLimit);
 			caseSelector = boiler.caseSelector;
 
 			int testCount = boiler.testCases.size();
@@ -351,8 +351,7 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		final Object[] testCases; // Either Class<?> or Predicate + Chemistry
 
 		ChemistryClassSet(@NonNull ClassBoiler<Item> boiler) {
-			super(boiler.memoizeLimit);
-			mapOfCases.putAll(boiler.mapOfCases);
+			super(boiler.mapOfCases, boiler.memoizeLimit);
 			testCases = boiler.testCases.toArray(new Object[boiler.testCases.size()]);
 		}
 
