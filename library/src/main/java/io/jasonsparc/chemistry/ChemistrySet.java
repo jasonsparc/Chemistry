@@ -8,6 +8,7 @@ import android.support.v4.util.SimpleArrayMap;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * TODO Docs
@@ -424,6 +425,38 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		public <T extends Item> Chemistry<? super T> getItemChemistry(T item) {
 			Chemistry chemistry = chemistries.get(typeSelector.getItemViewType(item));
 			return chemistry != null ? chemistry : chemistries.get(DEFAULT_VIEW_TYPE_KEY);
+		}
+	}
+
+	// TODO Expose utility?
+	@SafeVarargs
+	static <Cs extends ChemistrySet<?>> Cs[] array(@NonNull Cs... chemistrySets) {
+		return chemistrySets;
+	}
+
+	// TODO Expose utility?
+	@SuppressWarnings("unchecked")
+	static <Item> ChemistrySet<? super Item>[] array(@NonNull Collection<? extends ChemistrySet<? super Item>> chemistrySets) {
+		return chemistrySets.toArray(new ChemistrySet[chemistrySets.size()]);
+	}
+
+	// TODO Move to `internal` package?
+	static final class ArrayChemistrySet<Item> extends ChemistrySet<Item> {
+		@NonNull final ChemistrySet<? super Item>[] testCases;
+
+		ArrayChemistrySet(@NonNull ChemistrySet<? super Item>[] testCases) {
+			this.testCases = testCases;
+		}
+
+		@Override
+		public <T extends Item> Chemistry<? super T> getItemChemistry(T item) {
+			for (ChemistrySet<? super Item> testCase : testCases) {
+				Chemistry<? super T> chemistry = testCase.getItemChemistry(item);
+				if (chemistry != null) {
+					return chemistry;
+				}
+			}
+			return null;
 		}
 	}
 }

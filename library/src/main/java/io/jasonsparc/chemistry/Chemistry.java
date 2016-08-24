@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Collection;
+
 import io.jasonsparc.chemistry.util.InflateUtils;
 
 /**
@@ -68,5 +70,14 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 
 	public static <Item> ChemistrySet.TypeBoiler<Item> typeSelect(@NonNull TypeSelector<? super Item> typeSelector) {
 		return new ChemistrySet.TypeBoiler<>(typeSelector);
+	}
+
+	@SafeVarargs
+	public static <Item> ChemistrySet<Item> select(@NonNull ChemistrySet<? super Item>... testCases) {
+		return new ChemistrySet.ArrayChemistrySet<>(testCases);
+	}
+
+	public static <Item> ChemistrySet<Item> select(@NonNull Collection<? extends ChemistrySet<? super Item>> testCases) {
+		return new ChemistrySet.ArrayChemistrySet<>(ChemistrySet.array(testCases));
 	}
 }
