@@ -459,4 +459,22 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 			return null;
 		}
 	}
+
+	// TODO Move to `internal` package?
+	static final class PredicateChemistrySet<Item> extends ChemistrySet<Item> {
+		@NonNull final Predicate<? super Item> condition;
+		@Nullable final Chemistry<? super Item> consequent, alternative;
+
+		PredicateChemistrySet(@NonNull Predicate<? super Item> condition, @Nullable Chemistry<? super Item> consequent, @Nullable Chemistry<? super Item> alternative) {
+			this.condition = condition;
+			this.consequent = consequent;
+			this.alternative = alternative;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <T extends Item> Chemistry<? super T> getItemChemistry(T item) {
+			return condition.test(item) ? (Chemistry) consequent : alternative;
+		}
+	}
 }
