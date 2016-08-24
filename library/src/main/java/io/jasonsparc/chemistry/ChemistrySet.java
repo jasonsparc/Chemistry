@@ -144,12 +144,12 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 			return testCases.size() == 0 ? new ChemistryKeyedSet<>(this) : new ChemistryCaseSet<>(this);
 		}
 
-		public <T extends Item> Boiler<Item, K> map(K caseKey, @NonNull Chemistry<? super T> mapping) {
+		public <T extends Item> Boiler<Item, K> map(K caseKey, Chemistry<? super T> mapping) {
 			mapOfCases.put(caseKey, mapping);
 			return this;
 		}
 
-		public <T extends Item> Boiler<Item, K> test(@NonNull Predicate<? super K> testCase, @NonNull Chemistry<? super T> result) {
+		public <T extends Item> Boiler<Item, K> test(@NonNull Predicate<? super K> testCase, Chemistry<? super T> result) {
 			testCases.add(testCase);
 			testResults.add(result);
 			return this;
@@ -182,19 +182,23 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 			return new ChemistryClassSet<>(this);
 		}
 
-		public <T extends Item> ClassBoiler<Item> bind(@NonNull Class<? extends T> itemClass, @NonNull Chemistry<? super T> chemistry) {
-			if (mapOfCases.put(itemClass, chemistry) != null) {
+		public <T extends Item> ClassBoiler<Item> bind(@NonNull Class<? extends T> itemClass, Chemistry<? super T> chemistry) {
+			int i = mapOfCases.indexOfKey(itemClass);
+			if (i < 0) {
+				mapOfCases.put(itemClass, chemistry);
+			} else {
+				mapOfCases.setValueAt(i, chemistry);
 				testCases.remove(itemClass); // Remapped! Therefore, Reorder!
 			}
 			testCases.add(itemClass);
 			return this;
 		}
 
-		public <T extends Item> ClassBoiler<Item> map(@NonNull Class<? extends T> caseKey, @NonNull Chemistry<? super T> mapping) {
+		public <T extends Item> ClassBoiler<Item> map(@NonNull Class<? extends T> caseKey, Chemistry<? super T> mapping) {
 			return bind(caseKey, mapping);
 		}
 
-		public <T extends Item> ClassBoiler<Item> test(@NonNull Predicate<? super Class<? extends Item>> testCase, @NonNull Chemistry<? super T> result) {
+		public <T extends Item> ClassBoiler<Item> test(@NonNull Predicate<? super Class<? extends Item>> testCase, Chemistry<? super T> result) {
 			testCases.add(testCase);
 			testCases.add(result);
 			return this;
@@ -266,8 +270,8 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T extends Item> Chemistry<? super T> getItemChemistry(T item) {
-			Chemistry chemistry = mapOfCases.get(caseSelector.select(item));
-			return chemistry != null ? chemistry : mapOfCases.get(Default.class);
+			int i = mapOfCases.indexOfKey(caseSelector.select(item));
+			return i >= 0 ? mapOfCases.valueAt(i) : mapOfCases.get(Default.class);
 		}
 	}
 
@@ -333,14 +337,16 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		@Override
 		public <T extends Item> Chemistry<? super T> getItemChemistry(T item) {
 			K key = caseSelector.select(item);
-			Chemistry chemistry = mapOfCases.get(key);
-
-			if (chemistry != null)
-				return chemistry;
+			{
+				int i = mapOfCases.indexOfKey(key);
+				if (i >= 0)
+					return (Chemistry) mapOfCases.valueAt(i);
+			}
 
 			// Search through test cases
 			// Memoize on successful case
 
+			final Chemistry chemistry;
 			final Predicate<? super K>[] t = this.testCases;
 			for (int i = 0, len = t.length; i < len; i++) {
 				if (t[i].test(key)) {
@@ -353,8 +359,7 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 			// Default case fallback
 
 			chemistry = mapOfCases.get(Default.class);
-			if (chemistry != null)
-				memoize(key, chemistry);
+			memoize(key, chemistry); // Default case always memoized
 
 			return chemistry;
 		}
@@ -372,14 +377,16 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		@Override
 		public <T extends Item> Chemistry<? super T> getItemChemistry(T item) {
 			Class<?> itemClass = item.getClass();
-			Chemistry chemistry = mapOfCases.get(itemClass);
-
-			if (chemistry != null)
-				return chemistry;
+			{
+				int i = mapOfCases.indexOfKey(itemClass);
+				if (i >= 0)
+					return (Chemistry) mapOfCases.valueAt(i);
+			}
 
 			// Search through test cases
 			// Memoize on successful case
 
+			final Chemistry chemistry;
 			final Object[] t = this.testCases;
 			for (int i = 0, len = t.length; i < len; i++) {
 				Object testCase = t[i];
@@ -403,8 +410,7 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 			// Default case fallback
 
 			chemistry = mapOfCases.get(Default.class);
-			if (chemistry != null)
-				memoize(itemClass, chemistry);
+			memoize(itemClass, chemistry); // Default case always memoized
 
 			return chemistry;
 		}
@@ -423,8 +429,10 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T extends Item> Chemistry<? super T> getItemChemistry(T item) {
-			Chemistry chemistry = chemistries.get(typeSelector.getItemViewType(item));
-			return chemistry != null ? chemistry : chemistries.get(DEFAULT_VIEW_TYPE_KEY);
+			int i = chemistries.indexOfKey(typeSelector.getItemViewType(item));
+			return i >= 0
+					? (Chemistry) chemistries.valueAt(i)
+					: chemistries.get(DEFAULT_VIEW_TYPE_KEY);
 		}
 	}
 
@@ -463,9 +471,9 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 	// TODO Move to `internal` package?
 	static final class PredicateChemistrySet<Item> extends ChemistrySet<Item> {
 		@NonNull final Predicate<? super Item> condition;
-		@Nullable final Chemistry<? super Item> consequent, alternative;
+		final Chemistry<? super Item> consequent, alternative;
 
-		PredicateChemistrySet(@NonNull Predicate<? super Item> condition, @Nullable Chemistry<? super Item> consequent, @Nullable Chemistry<? super Item> alternative) {
+		PredicateChemistrySet(@NonNull Predicate<? super Item> condition, Chemistry<? super Item> consequent, Chemistry<? super Item> alternative) {
 			this.condition = condition;
 			this.consequent = consequent;
 			this.alternative = alternative;

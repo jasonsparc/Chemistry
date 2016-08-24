@@ -3,7 +3,6 @@ package io.jasonsparc.chemistry;
 import android.support.annotation.AnyRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,11 +73,11 @@ public abstract class Chemistry<Item> implements IdSelector<Item>, TypeSelector<
 		return new ChemistrySet.TypeBoiler<>(typeSelector);
 	}
 
-	public static <Item> ChemistrySet<Item> select(@NonNull Predicate<? super Item> condition, @NonNull Chemistry<? super Item> consequent) {
+	public static <Item> ChemistrySet<Item> select(@NonNull Predicate<? super Item> condition, Chemistry<? super Item> consequent) {
 		return new ChemistrySet.PredicateChemistrySet<>(condition, consequent, null);
 	}
 
-	public static <Item> ChemistrySet<Item> select(@NonNull Predicate<? super Item> condition, @Nullable Chemistry<? super Item> consequent, @Nullable Chemistry<? super Item> alternative) {
+	public static <Item> ChemistrySet<Item> select(@NonNull Predicate<? super Item> condition, Chemistry<? super Item> consequent, Chemistry<? super Item> alternative) {
 		return new ChemistrySet.PredicateChemistrySet<>(condition, consequent, alternative);
 	}
 
