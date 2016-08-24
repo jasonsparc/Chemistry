@@ -228,7 +228,7 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		}
 
 		public ChemistrySet<Item> boil() {
-			return new ChemistrySparseSet<>(this);
+			return new ChemistryTypeSet<>(this);
 		}
 
 		public <T extends Item> TypeBoiler<Item> add(@NonNull BasicChemistry<? super T, ?> chemistry) {
@@ -416,12 +416,12 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		}
 	}
 
-	static final class ChemistrySparseSet<Item> extends ChemistrySet<Item> {
+	static final class ChemistryTypeSet<Item> extends ChemistrySet<Item> {
 		// Use Arrays (with binary search) instead!?
 		final SparseArray<Chemistry<?>> chemistries;
 		@NonNull final TypeSelector<? super Item> typeSelector;
 
-		ChemistrySparseSet(@NonNull TypeBoiler<Item> boiler) {
+		ChemistryTypeSet(@NonNull TypeBoiler<Item> boiler) {
 			chemistries = boiler.chemistries.clone();
 			typeSelector = boiler.typeSelector;
 		}
@@ -429,10 +429,8 @@ public abstract class ChemistrySet<Item> extends Chemistry<Item> {
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T extends Item> Chemistry<? super T> getItemChemistry(T item) {
-			int i = chemistries.indexOfKey(typeSelector.getItemViewType(item));
-			return i >= 0
-					? (Chemistry) chemistries.valueAt(i)
-					: chemistries.get(DEFAULT_VIEW_TYPE_KEY);
+			Chemistry chemistry = chemistries.get(typeSelector.getItemViewType(item));
+			return chemistry != null ? chemistry : chemistries.get(DEFAULT_VIEW_TYPE_KEY);
 		}
 	}
 
