@@ -29,7 +29,7 @@ public abstract class ChemistryAdapter<Item> extends RecyclerView.Adapter<ViewHo
 	@Override
 	public abstract int getItemCount();
 
-	public abstract Item getItem(int position);
+	public abstract Item getItem(int position) throws UnsupportedOperationException;
 
 	@Override
 	public long getItemId(int position) {
